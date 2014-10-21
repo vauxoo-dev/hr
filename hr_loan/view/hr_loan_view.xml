@@ -53,8 +53,8 @@
                     </group>
                     <notebook>
                         <page string="Shares">
-                            <field name="share_ids">
-                                <tree>
+                            <field name="share_ids" >
+                                <tree editable="bottom">
                                     <field name="name"/>
                                     <field name="payment_date"/>
                                     <field name="share"/>
