@@ -7,8 +7,12 @@
         <field name="model">hr.loan</field>
         <field name="arch" type="xml">
             <tree string="Loan">
+                <field name="name"/>
                 <field name="amount_approved" />
+                <field name="share_quantity" />
                 <field name="payment_type" />
+                <field name="employee_id" />
+                <field name="partner_id" />
             </tree>
         </field>
     </record>
