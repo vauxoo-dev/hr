@@ -169,7 +169,6 @@ class hr_payslip(osv.Model):
     _inherit = 'hr.payslip'
 
     def compute_sheet(self, cr, uid, ids, context=None):
-        res = super(hr_payslip, self).compute_sheet(cr, uid, ids, context=context)
         hr_loan_obj = self.pool.get('hr.loan')
         hr_loan_line_obj = self.pool.get('hr.loan.line')
 
@@ -196,6 +195,7 @@ class hr_payslip(osv.Model):
                     total_loan += loan_line_brw.share
             self.write(cr, uid, [payslip.id], {'total_loan':total_loan},
                     context=context)
+        res = super(hr_payslip, self).compute_sheet(cr, uid, ids, context=context)
         return res
 
     def _total_loan(self, cr, uid, ids, name, args, context=None):
