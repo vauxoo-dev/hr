@@ -117,10 +117,11 @@ class hr_loan(osv.Model):
                 if hr_loan.payment_type == 'fortnightly':
                     if ds.day < 15:
                         ds = ds.replace(day=15)
-                    elif ds.day == 15:
-                        ds = self.last_day_of_month(ds)
                     elif ds == self.last_day_of_month(ds):
                         ds = ds + relativedelta(days=15)
+                    else:
+                        ds = self.last_day_of_month(ds)
+
                 if hr_loan.payment_type == 'weekly':
                     ds = ds + relativedelta(days=7)
                 if hr_loan.payment_type == 'monthly':
