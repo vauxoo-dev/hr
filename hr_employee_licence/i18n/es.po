@@ -1,0 +1,42 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* hr_employee_licence
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-10-22 22:48+0000\n"
+"PO-Revision-Date: 2014-10-22 22:48+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_employee_licence
+#: model:ir.model,name:hr_employee_licence.model_hr_employee
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: hr_employee_licence
+#: field:hr.employee,expiration_date_licence:0
+msgid "Expiration Date"
+msgstr "Fecha de expiración"
+
+#. module: hr_employee_licence
+#: help:hr.employee,expiration_date_licence:0
+msgid "Expiration date of employee licence"
+msgstr "Fecha de expiración de la licencia del empleado"
+
+#. module: hr_employee_licence
+#: view:hr.employee:hr_employee_licence.view_dates_psport_employee_form
+msgid "Licence"
+msgstr "Licencia"
+
+#. module: hr_employee_licence
+#: view:hr.employee:hr_employee_licence.view_dates_psport_employee_form
+msgid "N° Licence"
+msgstr "N° Licencia"
+
