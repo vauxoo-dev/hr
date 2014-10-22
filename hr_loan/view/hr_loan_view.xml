@@ -53,6 +53,8 @@
                                 attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
                             <field name="currency_id" groups="base.group_multi_currency"
                                 attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                            <field name="company_id" groups="base.group_multi_company"
+                                attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
                         </group>
                     </group>
                     <notebook>
@@ -63,17 +65,16 @@
                                     <field name="name"/>
                                     <field name="payment_date"/>
                                     <field name="share"/>
-                                    <field name="hr_payslip_id"/>
-                                    <field name="partner_id"/>
-                                    <field name="state"/>
+                                    <field name="hr_payslip_id" readonly="1"/>
+                                    <field name="state" readonly="1"/>
                                 </tree>
                                 <form>
                                     <field name="name"/>
                                     <field name="payment_date"/>
                                     <field name="share"/>
-                                    <field name="hr_payslip_id"/>
-                                    <field name="partner_id"/>
-                                    <field name="state"/>
+                                    <field name="hr_payslip_id" readonly="1"/>
+                                    <field name="partner_id" readonly="1"/>
+                                    <field name="state" readonly="1"/>
                                 </form>
                             </field>
                         </page>

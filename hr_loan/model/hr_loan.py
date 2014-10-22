@@ -55,6 +55,7 @@ class hr_loan(osv.Model):
         'employee_id': fields.many2one('hr.contract', 'Employee Contract'),
         'date_start': fields.date('Start Date'),
         'date_stop': fields.date('End Date'),
+        'company_id': fields.many2one('res.company', 'Company'),
         'currency_id': fields.many2one('res.currency', 'Currency'),
         'state': fields.selection(STATE_LOAN, 'State'),
         'share_ids': fields.one2many('hr.loan.line', 'hr_loan_id', 'Shares'),
@@ -67,6 +68,9 @@ class hr_loan(osv.Model):
         'currency_id': lambda s, c, u, ctx:
         s.pool.get('res.users').browse(
             c, u, u, context=ctx).company_id.currency_id.id,
+        'company_id': lambda s, c, u, ctx:
+        s.pool.get('res.users').browse(
+            c, u, u, context=ctx).company_id.id,
     }
 
     def activate_loan(self, cr, uid, ids, context=None):
@@ -142,7 +146,7 @@ class hr_loan(osv.Model):
                         ds = self.last_day_of_month(ds)
 
                 hr_loan_line_obj.create(cr, uid, {
-                    'name':  "%s %s" % (_('Share'), ds.strftime('%Y-%m-%d')),
+                    'name':  "%s %s (%s)" % (_('Share'), i+1, ds.strftime('%Y-%m-%d')),
                     'payment_date': ds,
                     'state': 'unpaid',
                     'hr_loan_id': hr_loan.id,
