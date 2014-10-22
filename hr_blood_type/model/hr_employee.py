@@ -29,7 +29,7 @@ This file add a field to assign blood type to employee.
 from openerp import models, fields, api
 
 
-class account_voucher_line_tax(models.Model):
+class hr_employee(models.Model):
     '''
     Inherit hr.employee to added field blood type
     '''
