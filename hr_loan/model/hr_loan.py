@@ -60,6 +60,7 @@ class hr_loan(osv.Model):
         'state': fields.selection(STATE_LOAN, 'State'),
         'share_ids': fields.one2many('hr.loan.line', 'hr_loan_id', 'Shares'),
         'share_quantity': fields.integer('Share Quantity'),
+        'hr_payslip_id': fields.many2one('hr.payslip', 'Payslip ID'),
     }
 
     _defaults = {
@@ -149,26 +150,57 @@ class hr_loan_line(osv.Model):
     _columns = {
         'name': fields.char('Name'),
         'hr_loan_id': fields.many2one('hr.loan', 'Loan ID'),
-        'hr_payslip_id': fields.many2one('hr.payslip', 'Payslip ID'),
+        'hr_payslip_id': fields.many2one('hr.payslip', 'Payslip'),
         'payment_date': fields.date('Payment Date'),
         'share': fields.float('Share', help='Share to pay'),
-        'payslip_line_id': fields.many2one('hr.payslip.line', 'Payslip Line'),
-        'partner_id': fields.related('payslip_line_id', 'partner_id',
+        #~'payslip_line_id': fields.many2one('hr.payslip.line', 'Payslip Line'),
+        'partner_id': fields.related('hr_loan_id', 'partner_id',
                                      type='many2one', string='Bank',
                                      relation="res.partner"),
+        'employee_id': fields.related('hr_loan_id', 'employee_id',
+                                     type='many2one', string='Employee Contract',
+                                     relation="hr.contract"),
         #~'paid': fields.boolean('Paid'),
         'state': fields.selection([('unpaid', 'Unpaid'), ('paid', 'Paid')], 'State'),
-
     }
 
 class hr_payslip(osv.Model):
 
     _inherit = 'hr.payslip'
 
+    def compute_sheet(self, cr, uid, ids, context=None):
+        res = super(hr_payslip, self).compute_sheet(cr, uid, ids, context=context)
+        hr_loan_obj = self.pool.get('hr.loan')
+        hr_loan_line_obj = self.pool.get('hr.loan.line')
+
+        for payslip in self.browse(cr, uid, ids, context=context):
+            hr_loan_line_ids = hr_loan_line_obj.search(cr, uid, [('employee_id', '=',
+                payslip.contract_id.id)], context=context)
+
+            payslip_loan_ids = hr_loan_line_obj.search(cr, uid, [('hr_payslip_id', '=', payslip.id)], context=context)
+            if payslip_loan_ids:
+                #~hr_loan_line_obj.unlink(cr, uid, payslip_loan_ids, context=context)
+                hr_loan_line_obj.write(cr, uid, payslip_loan_ids,
+                        {'hr_payslip_id':None },context=context)
+
+            for loan_line_brw in hr_loan_line_obj.browse(cr, uid,
+                    hr_loan_line_ids, context = context):
+                if payslip.date_from <= loan_line_brw.payment_date and \
+                    loan_line_brw.payment_date <= payslip.date_to and \
+                    loan_line_brw.state == 'unpaid' and \
+                    loan_line_brw.hr_loan_id.state == 'active':
+                    hr_loan_line_obj.write(cr, uid, [loan_line_brw.id],
+                            {'hr_payslip_id': payslip.id},context=context)
+
+        return res
+
     _columns = {
 
         'share_line_ids': fields.one2many('hr.loan.line', 'hr_payslip_id',
             'Share Line'),
+
+        #'share_line_ids': fields.function(_get_share_lines, method=True,
+        #    type='one2many', relation='hr.loan.line', string='Share Lines'),
 
         #~'total_loan': fields.function(_total_loan,
         #~    digits_compute=dp.get_precision('Account'), string='Total Loan',

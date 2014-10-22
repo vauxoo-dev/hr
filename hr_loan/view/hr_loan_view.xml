@@ -53,12 +53,13 @@
                     </group>
                     <notebook>
                         <page string="Shares">
-                            <field name="share_ids" >
+                            <field name="share_ids"
+                                attrs="{'readonly': [('state', 'not in', ('draft'))]}">
                                 <tree editable="bottom">
                                     <field name="name"/>
                                     <field name="payment_date"/>
                                     <field name="share"/>
-                                    <field name="payslip_line_id"/>
+                                    <field name="hr_payslip_id"/>
                                     <field name="partner_id"/>
                                     <field name="state"/>
                                 </tree>
@@ -66,7 +67,7 @@
                                     <field name="name"/>
                                     <field name="payment_date"/>
                                     <field name="share"/>
-                                    <field name="payslip_line_id"/>
+                                    <field name="hr_payslip_id"/>
                                     <field name="partner_id"/>
                                     <field name="state"/>
                                 </form>
