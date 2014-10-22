@@ -183,6 +183,8 @@ class hr_payslip(osv.Model):
                 hr_loan_line_obj.write(cr, uid, payslip_loan_ids,
                         {'hr_payslip_id':None },context=context)
 
+            total_loan = 0.0
+
             for loan_line_brw in hr_loan_line_obj.browse(cr, uid,
                     hr_loan_line_ids, context = context):
                 if payslip.date_from <= loan_line_brw.payment_date and \
@@ -191,20 +193,23 @@ class hr_payslip(osv.Model):
                     loan_line_brw.hr_loan_id.state == 'active':
                     hr_loan_line_obj.write(cr, uid, [loan_line_brw.id],
                             {'hr_payslip_id': payslip.id},context=context)
+                    total_loan += loan_line_brw.share
+            self.write(cr, uid, [payslip.id], {'total_loan':total_loan},
+                    context=context)
+        return res
 
+    def _total_loan(self, cr, uid, ids, name, args, context=None):
+        res = {}
+        for payslip in self.browse(cr, uid, ids, context=context):
+            res[payslip.id] = {
+                'total_loan': 0.0
+            }
+            for line in payslip.share_line_ids:
+                res[payslip.id]['total_loan'] += line.share
         return res
 
     _columns = {
-
         'share_line_ids': fields.one2many('hr.loan.line', 'hr_payslip_id',
             'Share Line'),
-
-        #'share_line_ids': fields.function(_get_share_lines, method=True,
-        #    type='one2many', relation='hr.loan.line', string='Share Lines'),
-
-        #~'total_loan': fields.function(_total_loan,
-        #~    digits_compute=dp.get_precision('Account'), string='Total Loan',
-        #~    store={
-        #~        'hr.payslip': (lambda self, cr, uid, ids, c={}: ids, ['share_line_ids'], 20),
-        #~    },
+        'total_loan': fields.float('Total Loan', help='Total Loan'),
     }

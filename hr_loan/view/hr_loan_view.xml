@@ -110,6 +110,9 @@
                                     <field name="state"/>
                                 </tree>
                             </field>
+                            <label for="total_loan" string="Total Loan"
+                                class="oe_inline"/>
+                            <field name="total_loan" class="oe_inline"/>
                         </page>
                 </xpath>
             </data>
