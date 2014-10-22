@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record model='ir.ui.view' id='view_dates_psport_employee_form'>
+            <field name='name'>view.dates.psport.employee.form</field>
+            <field name='model'>hr.employee</field>
+            <field name='inherit_id' ref='hr.view_employee_form'/>
+            <field name='arch' type='xml'>
+                <xpath expr="//field[@name='passport_id']" position="replace"/>
+                <xpath expr="//page[@string='Personal Information']/group" position="after">
+                    <group string="Passport">
+                        <field name="passport_id" groups="base.group_hr_user"/>
+                        <field name="expedition_date_psport"/>
+                        <field name="expiration_date_psport"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
