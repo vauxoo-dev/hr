@@ -24,10 +24,18 @@
             <form string="Loan" version="7.0">
                 <header>
                     <field name="state" widget="statusbar" nolabel="1" />
-                    <button name="compute_shares" string="Compute Shares" states="draft" class="oe_highlight" type="object"/>
-                    <button name="activate_loan" string="Activate Loan" states="draft" type="object"/>
-                    <button name="cancel_loan" string="Cancel Loan" states="active" type="object"/>
-                    <button name="draft_loan" string="Set to Draft" states="active" type="object"/>
+                    <button name="compute_shares" string="Compute Shares" 
+                        groups="hr_loan.group_hr_loan_manager"
+                        states="draft" class="oe_highlight" type="object"/>
+                    <button name="activate_loan" string="Activate Loan" 
+                        groups="hr_loan.group_hr_loan_manager"
+                        states="draft" type="object"/>
+                    <button name="cancel_loan" string="Cancel Loan" 
+                        groups="hr_loan.group_hr_loan_manager"
+                        states="active" type="object"/>
+                    <button name="draft_loan" string="Set to Draft" 
+                        groups="hr_loan.group_hr_loan_manager"
+                        states="active" type="object"/>
                 </header>
                 <sheet>
                     <group>
@@ -74,6 +82,7 @@
                                     <field name="share"/>
                                     <field name="hr_payslip_id" readonly="1"/>
                                     <field name="partner_id" readonly="1"/>
+                                    <field name="employee_id" readonly="1"/>
                                     <field name="state" readonly="1"/>
                                 </form>
                             </field>
