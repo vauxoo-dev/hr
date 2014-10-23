@@ -39,7 +39,7 @@ class hr_employee(models.Model):
     product_accessory_ids = fields.Many2many(
         'product.product', 'employee_product_accessory_ids', 'product_id',
         'employee_id', 'Product Accessory', help='Indicate the products that \
-        provide to the employee and your size, example, shirt XL, etc. Only \
+        provide to the employee, example, shirt XL, etc. Only \
         can see products that have active the field "Accessory Employee"',
         domain=[('hr_employee_accessory_ok', '=', True)],)
 
@@ -53,4 +53,4 @@ class product_template(models.Model):
 
     hr_employee_accessory_ok = fields.Boolean(
         'Accessory Employee?', help='Indicate if this is an accessory to the \
-        employees as shirt, shoes, est.')
+        employees as shirt, shoes, etc.')
