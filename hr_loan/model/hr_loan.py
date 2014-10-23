@@ -147,7 +147,7 @@ class hr_loan(osv.Model):
                         ds = self.last_day_of_month(ds)
 
                 hr_loan_line_obj.create(cr, uid, {
-                    'name':  "%s %s %s (%s)" % (hr_loan.name ,_('Share'), i+1, ds.strftime('%Y-%m-%d')),
+                    'name':  "%s %s %s (%s)" % (hr_loan.name, _('Share'), i + 1, ds.strftime('%Y-%m-%d')),
                     'payment_date': ds,
                     'state': 'unpaid',
                     'hr_loan_id': hr_loan.id,
@@ -174,8 +174,8 @@ class hr_loan_line(osv.Model):
                                       type='many2one', string='Employee Contract',
                                       relation="hr.contract"),
         'company_id': fields.related('hr_loan_id', 'company_id',
-                                      type='many2one', string='Company',
-                                      relation="res.company"),
+                                     type='many2one', string='Company',
+                                     relation="res.company"),
         'currency_id': fields.related('hr_loan_id', 'currency_id',
                                       type='many2one', string='Currency',
                                       relation="hr.contract"),
@@ -203,11 +203,13 @@ class hr_payslip(osv.Model):
             amount_list = {}
             amount_num = 0
             for m in payslip.share_line_ids:
-                key = 'loan_' + str(m.id) + ' ' + loan_brw['code'] + '-' + str(loan_brw['contract_id'])
+                key = 'loan_' + \
+                    str(m.id) + ' ' + loan_brw['code'] + \
+                    '-' + str(loan_brw['contract_id'])
                 amount = m.share
                 line = deepcopy(loan_brw)
                 line['amount'] = amount
-                result.append(line )
+                result.append(line)
 
         return result
 
