@@ -78,7 +78,7 @@ class hr_loan(osv.Model):
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
-        for brw in self.browse(cr, uid, ids,  context=context):
+        for brw in self.browse(cr, uid, ids, context=context):
             self.compute_shares(cr, uid, [brw.id], context=context)
             self.write(cr, uid, [brw.id], {'state': 'active'}, context=context)
         return True
@@ -87,7 +87,7 @@ class hr_loan(osv.Model):
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
-        for brw in self.browse(cr, uid, ids,  context=context):
+        for brw in self.browse(cr, uid, ids, context=context):
             self.write(cr, uid, [brw.id], {'state': 'draft'}, context=context)
         return True
 
@@ -95,7 +95,7 @@ class hr_loan(osv.Model):
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
-        for brw in self.browse(cr, uid, ids,  context=context):
+        for brw in self.browse(cr, uid, ids, context=context):
             self.write(cr, uid, [brw.id], {'state': 'cancel'}, context=context)
         return True
 
@@ -147,7 +147,7 @@ class hr_loan(osv.Model):
                         ds = self.last_day_of_month(ds)
 
                 hr_loan_line_obj.create(cr, uid, {
-                    'name':  "%s %s %s (%s)" % (hr_loan.name, _('Share'), i + 1, ds.strftime('%Y-%m-%d')),
+                    'name': "%s %s %s (%s)" % (hr_loan.name, _('Share'), i + 1, ds.strftime('%Y-%m-%d')),
                     'payment_date': ds,
                     'state': 'unpaid',
                     'hr_loan_id': hr_loan.id,
