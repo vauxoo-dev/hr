@@ -120,15 +120,19 @@
                         <page string="Loan Shares">
                             <field name="share_line_ids" readonly="1">
                                 <tree>
-                                    <field name="share"/>
+                                    <field name="name"/>
                                     <field name="payment_date"/>
+                                    <field name="share"/>
                                     <field name="partner_id"/>
                                     <field name="state"/>
                                 </tree>
                             </field>
-                            <label for="total_loan" string="Total Loan"
-                                class="oe_inline"/>
-                            <field name="total_loan" class="oe_inline"/>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="total_loan"
+                                    class="oe_subtotal_footer_separator"
+                                    widget="monetary"
+                                    options="{'currency_field': 'currency_id'}"/>
+                            </group>
                         </page>
                 </xpath>
             </data>
