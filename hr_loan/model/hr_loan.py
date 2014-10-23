@@ -28,6 +28,7 @@ from openerp.tools.translate import _
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from datetime import timedelta
+from copy import deepcopy
 
 PAYMENT_TYPE = [
     ('fortnightly', 'Fortnightly'),
@@ -185,6 +186,30 @@ class hr_loan_line(osv.Model):
 class hr_payslip(osv.Model):
 
     _inherit = 'hr.payslip'
+
+    def get_payslip_lines(self, cr, uid, contract_ids, payslip_id, context):
+        result = super(hr_payslip, self).get_payslip_lines(
+            cr, uid, contract_ids, payslip_id, context=context)
+
+        payslip_obj = self.pool.get('hr.payslip')
+        payslip = payslip_obj.browse(cr, uid, payslip_id, context=context)
+
+        for i in result:
+            if i['code'] == 'LOAN':
+                loan_brw = i
+                result.remove(i)
+
+        if payslip.share_line_ids:
+            amount_list = {}
+            amount_num = 0
+            for m in payslip.share_line_ids:
+                key = 'loan_' + str(m.id) + ' ' + loan_brw['code'] + '-' + str(loan_brw['contract_id'])
+                amount = m.share
+                line = deepcopy(loan_brw)
+                line['amount'] = amount
+                result.append(line )
+
+        return result
 
     def compute_sheet(self, cr, uid, ids, context=None):
         if context is None:
