@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record model='ir.ui.view' id='view_accessories_employee_form'>
+            <field name='name'>view.accesories.employee.form</field>
+            <field name='model'>hr.employee</field>
+            <field name='inherit_id' ref='hr.view_employee_form'/>
+            <field name='arch' type='xml'>
+                <xpath expr="//page[@string='Personal Information']/group" position="after">
+                    <group string="Accessories">
+                        <field name="product_accessory_ids">
+                            <tree string='Accessories'>
+                                <field name="name"/>
+                                <field name="type"/>
+                            </tree>
+                        </field>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record model='ir.ui.view' id='view_is_accessory_product_form'>
+            <field name='name'>view.is.accessory.product.form</field>
+            <field name='model'>product.template</field>
+            <field name='inherit_id' ref='product.product_template_form_view'/>
+            <field name='arch' type='xml'>
+                <xpath expr="//div[@name='options']/div" position="after">
+                    <div>
+                        <field name="hr_employee_accessory_ok"/>
+                        <label for="hr_employee_accessory_ok"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
