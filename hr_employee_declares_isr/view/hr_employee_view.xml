@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record model='ir.ui.view' id='view_declares_isr_employee_form'>
+            <field name='name'>view.declares.isr.employee.form</field>
+            <field name='model'>hr.employee</field>
+            <field name='inherit_id' ref='hr.view_employee_form'/>
+            <field name='arch' type='xml'>
+                <xpath expr="//field[@name='otherid']" position="after">
+                    <field name="declares_isr"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
