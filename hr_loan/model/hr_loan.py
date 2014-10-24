@@ -188,6 +188,9 @@ class hr_payslip(osv.Model):
     _inherit = 'hr.payslip'
 
     def get_payslip_lines(self, cr, uid, contract_ids, payslip_id, context):
+        if context is None:
+            context = {}
+        contract_ids = isinstance(contract_ids, (int, long)) and [contract_ids] or contract_ids
         result = super(hr_payslip, self).get_payslip_lines(
             cr, uid, contract_ids, payslip_id, context=context)
 
@@ -208,6 +211,7 @@ class hr_payslip(osv.Model):
                     '-' + str(loan_brw['contract_id'])
                 amount = m.share
                 line = deepcopy(loan_brw)
+                line['name'] = m.name
                 line['amount'] = amount
                 result.append(line)
 
@@ -248,6 +252,27 @@ class hr_payslip(osv.Model):
             cr, uid, ids, context=context)
         return res
 
+
+#~    def process_sheet(self, cr, uid, ids, context=None):
+#~        if context is None:
+#~            context = {}
+#~        ids = isinstance(ids, (int, long)) and [ids] or ids
+#~
+#~        move_line_pool = self.pool.get('account.move.line')
+#~
+#~        import pdb; pdb.set_trace()
+#~        for i in self.browse(cr, uid, ids, context=context):
+#~            if i.move_id:
+#~                for aml in i.move_id.line_id:
+#~                    if aml.name == 'Loan':
+#~                        move_line_pool.write(cr, uid, [aml.id],
+#~                                {'partner_id':0}, context=context)
+#~                import pdb; pdb.set_trace()
+#~        #self.write(cr, uid, [slip.id], {'move_id': move_id, 'period_id' : period_id}, context=context)
+#~        result = super(hr_payslip, self).process_sheet(cr, uid, ids, context=context)
+#~
+#~        return result
+
     def _total_loan(self, cr, uid, ids, name, args, context=None):
         if context is None:
             context = {}
@@ -266,3 +291,17 @@ class hr_payslip(osv.Model):
                                           'Share Line'),
         'total_loan': fields.float('Total Loan', help='Total Loan'),
     }
+
+
+#~class hr_salary_rule(osv.Model):
+#~
+#~    _inherit = 'hr.salary.rule'
+#~
+#~    _columns = {
+#~        'partner_employee_ok': fields.boolean('Use the partner employee', help="If this field check with True, it will be create journal entries with partner from partner of employee."),
+#~        'partner_id': fields.many2one('res.partner', 'Partner'),
+#~    }
+#~
+#~    _defaults = {
+#~        'partner_employee_ok': True,
+#~    }
