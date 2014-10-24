@@ -31,7 +31,7 @@ from openerp import models, fields
 
 class hr_employee(models.Model):
     '''
-    Inherit hr.employee to added fields expedition_date & exxpiration_date to
+    Inherit hr.employee to added fields expedition_date & expiration_date to
     passport
     '''
     _inherit = 'hr.employee'
