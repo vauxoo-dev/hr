@@ -88,6 +88,10 @@ class hr_loan(osv.Model):
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
         for brw in self.browse(cr, uid, ids, context=context):
+            for loan_share in brw.share_ids:
+                if loan_share.state == 'paid':
+                    raise osv.except_osv(_("Set to Draft is not allowed"),
+                                     _('There are paid lines.'))
             self.write(cr, uid, [brw.id], {'state': 'draft'}, context=context)
         return True
 
@@ -253,25 +257,19 @@ class hr_payslip(osv.Model):
         return res
 
 
-#~    def process_sheet(self, cr, uid, ids, context=None):
-#~        if context is None:
-#~            context = {}
-#~        ids = isinstance(ids, (int, long)) and [ids] or ids
-#~
-#~        move_line_pool = self.pool.get('account.move.line')
-#~
-#~        import pdb; pdb.set_trace()
-#~        for i in self.browse(cr, uid, ids, context=context):
-#~            if i.move_id:
-#~                for aml in i.move_id.line_id:
-#~                    if aml.name == 'Loan':
-#~                        move_line_pool.write(cr, uid, [aml.id],
-#~                                {'partner_id':0}, context=context)
-#~                import pdb; pdb.set_trace()
-#~        #self.write(cr, uid, [slip.id], {'move_id': move_id, 'period_id' : period_id}, context=context)
-#~        result = super(hr_payslip, self).process_sheet(cr, uid, ids, context=context)
-#~
-#~        return result
+    def process_sheet(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        ids = isinstance(ids, (int, long)) and [ids] or ids
+        result = super(hr_payslip, self).process_sheet(cr, uid, ids, context=context)
+
+        hr_loan_line_pool = self.pool.get('hr.loan.line')
+        for i in self.browse(cr, uid, ids, context=context):
+            if i.share_line_ids:
+                for slip in i.share_line_ids:
+                    hr_loan_line_pool.write(cr, uid, [slip.id],
+                            {'state':'paid'}, context=context)
+        return result
 
     def _total_loan(self, cr, uid, ids, name, args, context=None):
         if context is None:
@@ -292,16 +290,3 @@ class hr_payslip(osv.Model):
         'total_loan': fields.float('Total Loan', help='Total Loan'),
     }
 
-
-#~class hr_salary_rule(osv.Model):
-#~
-#~    _inherit = 'hr.salary.rule'
-#~
-#~    _columns = {
-#~        'partner_employee_ok': fields.boolean('Use the partner employee', help="If this field check with True, it will be create journal entries with partner from partner of employee."),
-#~        'partner_id': fields.many2one('res.partner', 'Partner'),
-#~    }
-#~
-#~    _defaults = {
-#~        'partner_employee_ok': True,
-#~    }
