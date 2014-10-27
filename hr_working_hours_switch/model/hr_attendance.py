@@ -1,5 +1,10 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
+
+"""
+Inherit the hr.attendance model.
+"""
+
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -24,7 +29,22 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-from . import hr_working_hours_switch
-from . import hr_contract
-from . import working_template
-from . import hr_attendance
+from openerp.osv import fields, osv
+
+
+class hr_attendance(osv.Model):
+    """
+    Inherit the hr.attendance model.
+    """
+
+    _inherit = 'hr.attendance'
+    _columns = {
+        'working_id': fields.many2one(
+            'hr.working.template',
+            'Working Template',
+            help='Working Template'),
+        'contract_id': fields.many2one(
+            'hr.contract',
+            'Contract',
+            help='Contract'),
+    }
