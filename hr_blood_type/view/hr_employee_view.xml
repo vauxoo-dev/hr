@@ -7,7 +7,7 @@
             <field name='model'>hr.employee</field>
             <field name='inherit_id' ref='hr.view_employee_form'/>
             <field name='arch' type='xml'>
-                <xpath expr="//field[@name='birthday']" position="after">
+                <xpath expr="//field[@name='otherid']" position="after">
                     <field name="blood_type" widget="selection"/>
                 </xpath>
             </field>
