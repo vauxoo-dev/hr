@@ -26,3 +26,4 @@
 
 from . import hr_working_hours_switch
 from . import hr_contract
+from . import working_template
