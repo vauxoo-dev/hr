@@ -35,5 +35,7 @@ class hr_employee(models.Model):
     '''
     _inherit = 'hr.employee'
 
+    licence_number = fields.Char(
+        'Licence', help='License number of employee')
     expiration_date_licence = fields.Date(
         'Expiration Date', help='Expiration date of employee licence')

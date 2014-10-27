@@ -7,10 +7,9 @@
             <field name='model'>hr.employee</field>
             <field name='inherit_id' ref='hr.view_employee_form'/>
             <field name='arch' type='xml'>
-                <xpath expr="//field[@name='otherid']" position="replace"/>
                 <xpath expr="//page[@string='Personal Information']/group" position="after">
                     <group string="Licence">
-                        <field name="otherid" string="N° Licence" groups="base.group_hr_user"/>
+                        <field name="licence_number" string="N° Licence"/>
                         <field name="expiration_date_licence"/>
                     </group>
                 </xpath>
