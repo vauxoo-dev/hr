@@ -37,6 +37,7 @@ HR Working Hours Switch
     'depends': [
         'hr',
         'hr_contract',
+        'hr_attendance',
     ],
     'data': [],
     'demo': [],
