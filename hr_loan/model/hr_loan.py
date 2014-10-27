@@ -66,41 +66,41 @@ class hr_loan(osv.Model):
 
     _defaults = {
         'state': 'draft',
-        'currency_id': lambda s, c, u, ctx:
-        s.pool.get('res.users').browse(
-            c, u, u, context=ctx).company_id.currency_id.id,
-        'company_id': lambda s, c, u, ctx:
-        s.pool.get('res.users').browse(
-            c, u, u, context=ctx).company_id.id,
+        'currency_id': lambda self, cur, uid, ctx:
+        self.pool.get('res.users').browse(
+            cur, uid, uid, context=ctx).company_id.currency_id.id,
+        'company_id': lambda self, cur, uid, ctx:
+        self.pool.get('res.users').browse(
+            cur, uid, uid, context=ctx).company_id.id,
     }
 
-    def activate_loan(self, cr, uid, ids, context=None):
+    def activate_loan(self, cur, uid, ids, context=None):
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
-        for brw in self.browse(cr, uid, ids, context=context):
-            self.compute_shares(cr, uid, [brw.id], context=context)
-            self.write(cr, uid, [brw.id], {'state': 'active'}, context=context)
+        for brw in self.browse(cur, uid, ids, context=context):
+            self.compute_shares(cur, uid, [brw.id], context=context)
+            self.write(cur, uid, [brw.id], {'state': 'active'}, context=context)
         return True
 
-    def draft_loan(self, cr, uid, ids, context=None):
+    def draft_loan(self, cur, uid, ids, context=None):
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
-        for brw in self.browse(cr, uid, ids, context=context):
+        for brw in self.browse(cur, uid, ids, context=context):
             for loan_share in brw.share_ids:
                 if loan_share.state == 'paid':
                     raise osv.except_osv(_("Set to Draft is not allowed"),
                                      _('There are paid lines.'))
-            self.write(cr, uid, [brw.id], {'state': 'draft'}, context=context)
+            self.write(cur, uid, [brw.id], {'state': 'draft'}, context=context)
         return True
 
-    def cancel_loan(self, cr, uid, ids, context=None):
+    def cancel_loan(self, cur, uid, ids, context=None):
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
-        for brw in self.browse(cr, uid, ids, context=context):
-            self.write(cr, uid, [brw.id], {'state': 'cancel'}, context=context)
+        for brw in self.browse(cur, uid, ids, context=context):
+            self.write(cur, uid, [brw.id], {'state': 'cancel'}, context=context)
         return True
 
     def last_day_of_month(self, date):
@@ -108,17 +108,17 @@ class hr_loan(osv.Model):
             return date.replace(day=31)
         return date.replace(month=date.month + 1, day=1) - timedelta(days=1)
 
-    def compute_shares(self, cr, uid, ids, context=None):
+    def compute_shares(self, cur, uid, ids, context=None):
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
         hr_loan_line_obj = self.pool.get('hr.loan.line')
-        for hr_loan in self.browse(cr, uid, ids, context=context):
+        for hr_loan in self.browse(cur, uid, ids, context=context):
             old_loanline_ids = hr_loan_line_obj.search(
-                cr, uid, [('hr_loan_id', '=', hr_loan.id)], context=context)
+                cur, uid, [('hr_loan_id', '=', hr_loan.id)], context=context)
             if old_loanline_ids:
                 hr_loan_line_obj.unlink(
-                    cr, uid, old_loanline_ids, context=context)
+                    cur, uid, old_loanline_ids, context=context)
 
             if hr_loan.amount_approved <= 0 or hr_loan.share_quantity <= 0:
                 raise osv.except_osv(_("Values not allowed"),
@@ -126,40 +126,40 @@ class hr_loan(osv.Model):
 
             share = hr_loan.amount_approved / hr_loan.share_quantity
 
-            ds = datetime.strptime(hr_loan.date_start, '%Y-%m-%d')
-            for i in xrange(0, hr_loan.share_quantity):
+            current_date = datetime.strptime(hr_loan.date_start, '%Y-%m-%d')
+            for ind in xrange(0, hr_loan.share_quantity):
 
                 if hr_loan.payment_type == 'fortnightly':
-                    if ds.day < 15:
-                        ds = ds.replace(day=15)
-                    elif ds == self.last_day_of_month(ds):
-                        ds = ds + relativedelta(days=15)
+                    if current_date.day < 15:
+                        current_date = current_date.replace(day=15)
+                    elif current_date == self.last_day_of_month(current_date):
+                        current_date = current_date + relativedelta(days=15)
                     else:
-                        ds = self.last_day_of_month(ds)
+                        current_date = self.last_day_of_month(current_date)
 
                 if hr_loan.payment_type == 'weekly':
-                    ds = ds + relativedelta(days=7)
+                    current_date = current_date + relativedelta(days=7)
                 if hr_loan.payment_type == 'monthly':
-                    ds = ds + relativedelta(days=1)
-                    ds = self.last_day_of_month(ds)
+                    current_date = current_date + relativedelta(days=1)
+                    current_date = self.last_day_of_month(current_date)
                 if hr_loan.payment_type == 'bimonthly':
-                    if i == 0:
-                        ds = ds + relativedelta(days=1)
-                        ds = self.last_day_of_month(ds)
+                    if ind == 0:
+                        current_date = current_date + relativedelta(days=1)
+                        current_date = self.last_day_of_month(current_date)
                     else:
-                        ds = ds + relativedelta(months=2)
-                        ds = self.last_day_of_month(ds)
+                        current_date = current_date + relativedelta(months=2)
+                        current_date = self.last_day_of_month(current_date)
 
-                hr_loan_line_obj.create(cr, uid, {
-                    'name': "%s %s %s (%s)" % (hr_loan.name, _('Share'), i + 1, ds.strftime('%Y-%m-%d')),
-                    'payment_date': ds,
+                hr_loan_line_obj.create(cur, uid, {
+                    'name': "%s %s %s (%s)" % (hr_loan.name, _('Share'), ind + 1, current_date.strftime('%Y-%m-%d')),
+                    'payment_date': current_date,
                     'state': 'unpaid',
                     'hr_loan_id': hr_loan.id,
                     'share': share,
                 }, context=context)
 
-            self.write(cr, uid, [hr_loan.id],
-                       {'date_stop': ds + relativedelta(days=1)}, context=context)
+            self.write(cur, uid, [hr_loan.id],
+                       {'date_stop': current_date + relativedelta(days=1)}, context=context)
         return True
 
 
@@ -188,95 +188,95 @@ class hr_loan_line(osv.Model):
 
 
 class hr_payslip(osv.Model):
-
     _inherit = 'hr.payslip'
 
-    def get_payslip_lines(self, cr, uid, contract_ids, payslip_id, context):
+    def get_payslip_lines(self, cur, uid, contract_ids, payslip_id, context):
         if context is None:
             context = {}
         contract_ids = isinstance(contract_ids, (int, long)) and [contract_ids] or contract_ids
         result = super(hr_payslip, self).get_payslip_lines(
-            cr, uid, contract_ids, payslip_id, context=context)
+            cur, uid, contract_ids, payslip_id, context=context)
 
         payslip_obj = self.pool.get('hr.payslip')
-        payslip = payslip_obj.browse(cr, uid, payslip_id, context=context)
+        payslip = payslip_obj.browse(cur, uid, payslip_id, context=context)
 
-        for i in result:
-            if i['code'] == 'LOAN':
-                loan_brw = i
-                result.remove(i)
+        for ind in result:
+            if ind['code'] == 'LOAN':
+                loan_brw = ind
+                result.remove(ind)
 
         if payslip.share_line_ids:
             amount_list = {}
             amount_num = 0
-            for m in payslip.share_line_ids:
+            for share_brw in payslip.share_line_ids:
                 key = 'loan_' + \
-                    str(m.id) + ' ' + loan_brw['code'] + \
+                    str(share_brw.id) + ' ' + loan_brw['code'] + \
                     '-' + str(loan_brw['contract_id'])
-                amount = m.share
+                amount = share_brw.share
                 line = deepcopy(loan_brw)
-                line['name'] = m.name
+                line['name'] = share_brw.name
                 line['amount'] = amount
+                line['loan_line_id'] = share_brw.id
                 result.append(line)
 
         return result
 
-    def compute_sheet(self, cr, uid, ids, context=None):
+    def compute_sheet(self, cur, uid, ids, context=None):
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
         hr_loan_line_obj = self.pool.get('hr.loan.line')
 
-        for payslip in self.browse(cr, uid, ids, context=context):
+        for payslip in self.browse(cur, uid, ids, context=context):
             hr_loan_line_ids = hr_loan_line_obj.search(
-                cr, uid, [('employee_id', '=',
+                cur, uid, [('employee_id', '=',
                            payslip.contract_id.id)], context=context)
 
             payslip_loan_ids = hr_loan_line_obj.search(
-                cr, uid, [('hr_payslip_id', '=', payslip.id)], context=context)
+                cur, uid, [('hr_payslip_id', '=', payslip.id)], context=context)
             if payslip_loan_ids:
-                #~hr_loan_line_obj.unlink(cr, uid, payslip_loan_ids, context=context)
-                hr_loan_line_obj.write(cr, uid, payslip_loan_ids,
+                #~hr_loan_line_obj.unlink(cur, uid, payslip_loan_ids, context=context)
+                hr_loan_line_obj.write(cur, uid, payslip_loan_ids,
                                        {'hr_payslip_id': None}, context=context)
 
             total_loan = 0.0
 
-            for loan_line_brw in hr_loan_line_obj.browse(cr, uid,
+            for loan_line_brw in hr_loan_line_obj.browse(cur, uid,
                                                          hr_loan_line_ids, context=context):
                 if payslip.date_from <= loan_line_brw.payment_date and \
                         loan_line_brw.payment_date <= payslip.date_to and \
                         loan_line_brw.state == 'unpaid' and \
                         loan_line_brw.hr_loan_id.state == 'active':
-                    hr_loan_line_obj.write(cr, uid, [loan_line_brw.id],
+                    hr_loan_line_obj.write(cur, uid, [loan_line_brw.id],
                                            {'hr_payslip_id': payslip.id}, context=context)
                     total_loan += loan_line_brw.share
-            self.write(cr, uid, [payslip.id], {'total_loan': total_loan},
+            self.write(cur, uid, [payslip.id], {'total_loan': total_loan},
                        context=context)
         res = super(hr_payslip, self).compute_sheet(
-            cr, uid, ids, context=context)
+            cur, uid, ids, context=context)
         return res
 
 
-    def process_sheet(self, cr, uid, ids, context=None):
+    def process_sheet(self, cur, uid, ids, context=None):
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
-        result = super(hr_payslip, self).process_sheet(cr, uid, ids, context=context)
+        result = super(hr_payslip, self).process_sheet(cur, uid, ids, context=context)
 
         hr_loan_line_pool = self.pool.get('hr.loan.line')
-        for i in self.browse(cr, uid, ids, context=context):
-            if i.share_line_ids:
-                for slip in i.share_line_ids:
-                    hr_loan_line_pool.write(cr, uid, [slip.id],
+        for ind in self.browse(cur, uid, ids, context=context):
+            if ind.share_line_ids:
+                for slip in ind.share_line_ids:
+                    hr_loan_line_pool.write(cur, uid, [slip.id],
                             {'state':'paid'}, context=context)
         return result
 
-    def _total_loan(self, cr, uid, ids, name, args, context=None):
+    def _total_loan(self, cur, uid, ids, name, args, context=None):
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
         res = {}
-        for payslip in self.browse(cr, uid, ids, context=context):
+        for payslip in self.browse(cur, uid, ids, context=context):
             res[payslip.id] = {
                 'total_loan': 0.0
             }
@@ -290,3 +290,10 @@ class hr_payslip(osv.Model):
         'total_loan': fields.float('Total Loan', help='Total Loan'),
     }
 
+class hr_payslip_line(osv.Model):
+
+    _inherit = 'hr.payslip.line'
+
+    _columns = {
+        'loan_line_id':fields.many2one('hr.loan.line', 'Loan Line'),
+    }

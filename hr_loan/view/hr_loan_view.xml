@@ -40,7 +40,7 @@
                 <sheet>
                     <group>
                         <group colspan="2">
-                            <field name="name"
+                            <field name="name" required="1"
                                 attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
                         </group>
                         <group>
