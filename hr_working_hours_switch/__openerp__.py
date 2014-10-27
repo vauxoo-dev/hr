@@ -36,6 +36,7 @@ HR Working Hours Switch
 ''',
     'depends': [
         'hr',
+        'hr_contract',
     ],
     'data': [],
     'demo': [],
