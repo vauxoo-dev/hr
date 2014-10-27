@@ -9,7 +9,7 @@
             <field name='arch' type='xml'>
                 <xpath expr="//page[@string='Personal Information']/group" position="after">
                     <group string="Accessories">
-                        <field name="product_accessory_ids">
+                        <field name="product_accessory_ids" nolabel="1">
                             <tree string='Accessories'>
                                 <field name="name"/>
                                 <field name="type"/>
