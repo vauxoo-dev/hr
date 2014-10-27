@@ -1,5 +1,11 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
+
+"""
+Definition of new model hr.working.hours.switch in the hr_working_hours_switch
+module.
+"""
+
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -24,4 +30,28 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-from . import hr_working_hours_switch
+from openerp.osv import fields, osv
+
+
+class hr_working_hours_switch(osv.Model):
+    """
+    HR Working Hours Switch new model.
+    """
+
+    _name = 'hr.working.hours.switch'
+    _description = 'HR Working Hours Switch'
+    _columns = {
+        'name': fields.char(
+            string='Name',
+            required=True,
+            size=128,
+            help='Name'),
+        'contract_ids': fields.one2many(
+            'hr.contract',
+            string='Contracts',
+            help='HR Contracts'),
+        # 'line_ids': fields.one2many(
+        #    '...',
+        #    string='Lines',
+        #    help='Lines'),
+    }
