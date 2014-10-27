@@ -1,5 +1,10 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
+
+"""
+Extend the hr.contract model.
+"""
+
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -24,5 +29,18 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-from . import hr_working_hours_switch
-from . import hr_contract
+from openerp.osv import fields, osv
+
+
+class hr_contract(osv.Model):
+    """
+    Extend the hr.contract model.
+    """
+
+    _inherit = 'hr.contract'
+    _columns = {
+        'working_hour_switch_id': fields.many2one(
+            'hr.working.hours.switch',
+            string='Working Hour Switch',
+            help='Working Hour Switch'),
+    }
