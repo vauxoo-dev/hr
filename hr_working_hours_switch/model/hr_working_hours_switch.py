@@ -48,6 +48,7 @@ class hr_working_hours_switch(osv.Model):
             help='Name'),
         'contract_ids': fields.one2many(
             'hr.contract',
+            'working_hour_switch_id',
             string='Contracts',
             help='HR Contracts'),
         # 'line_ids': fields.one2many(
