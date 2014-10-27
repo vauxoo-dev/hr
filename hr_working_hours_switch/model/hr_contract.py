@@ -43,4 +43,8 @@ class hr_contract(osv.Model):
             'hr.working.hours.switch',
             string='Working Hour Switch',
             help='Working Hour Switch'),
+        'working_tmpl_id': fields.many2one(
+            'hr.working.template',
+            string='Working Template',
+            help='Working Template'),
     }
