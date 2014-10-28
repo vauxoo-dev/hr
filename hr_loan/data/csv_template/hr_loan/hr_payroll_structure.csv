@@ -1,0 +1,3 @@
+id,model,parent_id,name,code,rule_ids,reference
+str,str,ref,str,str,m2m,str
+hr_payroll_structure_loan,hr.payroll.structure,hr_payroll.structure_base,Salary with loan,Salary loan,hr_salary_rule_loan_001;hr_salary_rule_loan_002,Salary Loan

@@ -1,0 +1,4 @@
+id,model,name,code,active,sequence,amount_python_compute,amount_select,appears_on_payslip,condition_select,category_id
+str,str,str,str,str,str,str,str,str,str,ref
+hr_salary_rule_loan_001,hr.salary.rule,Loan,LOAN,1,5,result = payslip.total_loan,code,1,none,hr_salary_rule_category_loan
+hr_salary_rule_loan_002,hr.salary.rule,Net Minus Loan,NETLOAN,1,300,result = categories.NET - payslip.total_loan,code,1,none,hr_salary_rule_category_netloan

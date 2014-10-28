@@ -1,21 +1,18 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <openerp>
   <data noupdate="1">
-
     <record id="hr_salary_rule_category_loan" model="hr.salary.rule.category">
-      <field name="name">Loan</field>
       <field name="code">LOAN</field>
-    </record>
-
-    <record id="hr_salary_rule_category_netloan" model="hr.salary.rule.category">
-      <field name="name">Net Minus Loan</field>
-      <field name="code">NETLOAN</field>
-    </record>
-
-    <record id="hr_salary_rule_loan_001" model="hr.salary.rule">
       <field name="name">Loan</field>
+    </record>
+    <record id="hr_salary_rule_category_netloan" model="hr.salary.rule.category">
+      <field name="code">NETLOAN</field>
+      <field name="name">Net Minus Loan</field>
+    </record>
+    <record id="hr_salary_rule_loan_001" model="hr.salary.rule">
       <field name="condition_select">none</field>
       <field name="code">LOAN</field>
+      <field name="name">Loan</field>
       <field name="sequence">5</field>
       <field name="amount_python_compute">result = payslip.total_loan</field>
       <field name="appears_on_payslip">1</field>
@@ -23,11 +20,10 @@
       <field name="active">1</field>
       <field name="category_id" ref="hr_salary_rule_category_loan"/>
     </record>
-
     <record id="hr_salary_rule_loan_002" model="hr.salary.rule">
-      <field name="name">Net Minus Loan</field>
       <field name="condition_select">none</field>
       <field name="code">NETLOAN</field>
+      <field name="name">Net Minus Loan</field>
       <field name="sequence">300</field>
       <field name="amount_python_compute">result = categories.NET - payslip.total_loan</field>
       <field name="appears_on_payslip">1</field>
@@ -35,7 +31,6 @@
       <field name="active">1</field>
       <field name="category_id" ref="hr_salary_rule_category_netloan"/>
     </record>
-
     <record id="hr_payroll_structure_loan" model="hr.payroll.structure">
       <field name="code">Salary loan</field>
       <field name="name">Salary with loan</field>
@@ -43,6 +38,5 @@
       <field name="parent_id" ref="hr_payroll.structure_base"/>
       <field name="rule_ids" eval="[(6, 0, [ref('hr_salary_rule_loan_001'),ref('hr_salary_rule_loan_002')])]"/>
     </record>
-
   </data>
 </openerp>

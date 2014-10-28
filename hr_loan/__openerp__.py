@@ -35,13 +35,16 @@ Odoo HR Loan
 
 This module will manage the loans to employees of the company in OpenERP.
 ''',
-    'depends': ['hr', 'hr_payroll'],
+    'depends': [
+        'hr',
+        'hr_payroll',
+        'hr_payroll_account'],
     'data': [
-        'view/hr_loan_view.xml',
         'data/hr_loan.xml',
+        'data/hr.xml',
+        'view/hr_loan_view.xml',
         'security/hr_loan_security.xml',
-        'security/ir.model.access.csv',
-    ],
+        'security/ir.model.access.csv'],
     'demo': [],
     'test': [],
     'qweb': [],
