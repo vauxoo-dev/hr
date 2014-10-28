@@ -39,7 +39,9 @@ HR Working Hours Switch
         'hr_contract',
         'hr_attendance',
     ],
-    'data': [],
+    'data': [
+        'view/hr_working_hours_switch_view.xml',
+    ],
     'demo': [],
     'test': [],
     'qweb': [],

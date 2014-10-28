@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="hr_working_hours_switch_form_view">
+            <field name="name">hr.working.hours.switch.form.view</field>
+            <field name="model">hr.working.hours.switch</field>
+            <field name="arch" type="xml">
+                <form string="Working Hour Switch" version="7.0">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="contract_ids"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>
