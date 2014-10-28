@@ -22,34 +22,32 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
-
 {
-    'name': 'HR Loan',
-    'version': '1.0',
-    'author': 'Vauxoo',
-    'website': 'http://www.vauxoo.com/',
-    'category': '',
-    'description': '''
+    "name": "HR Loan",
+    "version": "1.0",
+    "summary": "Loan",
+    "depends": [
+        "hr",
+        "hr_payroll",
+        "hr_payroll_account"],
+    "author": "Vauxoo",
+    "description": """
 Odoo HR Loan
 ============
 
 This module will manage the loans to employees of the company in OpenERP.
-''',
-    'depends': [
-        'hr',
-        'hr_payroll',
-        'hr_payroll_account'],
-    'data': [
-        'data/hr_loan.xml',
-        'data/hr.xml',
-        'view/hr_loan_view.xml',
-        'security/hr_loan_security.xml',
-        'security/ir.model.access.csv'],
-    'demo': [],
-    'test': [],
-    'qweb': [],
-    'js': [],
-    'css': [],
-    'active': False,
-    'installable': True,
+    """,
+    "website": "http://www.vauxoo.com/",
+    "category": "Human Resources",
+    "data": [
+        "data/hr_loan.xml",
+        "view/hr_loan_view.xml",
+        "security/hr_loan_security.xml",
+        "security/ir.model.access.csv"],
+    "demo": [],
+    "test": [],
+    "active": False,
+    "images": [],
+    "installable": True,
+    "application": True,
 }
