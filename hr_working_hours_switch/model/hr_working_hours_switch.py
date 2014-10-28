@@ -56,3 +56,12 @@ class hr_working_hours_switch(osv.Model):
         #    string='Lines',
         #    help='Lines'),
     }
+
+    def switch(self, cr, uid, ids, context=None):
+        """
+        Dummy method that will call to make the schedule change of working
+        hours.
+        @return True
+        """
+        context = context or {}
+        return True
