@@ -40,6 +40,7 @@ HR Working Hours Switch
         'hr_attendance',
     ],
     'data': [
+        'security/ir.model.access.csv',
         'view/hr_working_hours_switch_view.xml',
         'view/hr_contract_view.xml',
         'view/hr_attendance_view.xml',
