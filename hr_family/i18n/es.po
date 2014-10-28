@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* hr_passport_employee
+#	* hr_family
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-22 22:17+0000\n"
-"PO-Revision-Date: 2014-10-22 22:17+0000\n"
+"POT-Creation-Date: 2014-10-28 00:35+0000\n"
+"PO-Revision-Date: 2014-10-28 00:35+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,33 +15,122 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: hr_passport_employee
-#: model:ir.model,name:hr_passport_employee.model_hr_employee
+#. module: hr_family
+#: field:hr.family,date_of_birth:0
+msgid "Birth date"
+msgstr "Fecha de nacimiento"
+
+#. module: hr_family
+#: model:hr.family.type,name:hr_family.brother
+msgid "Brother or Sister"
+msgstr "Hermano(a)"
+
+#. module: hr_family
+#: model:hr.family.type,name:hr_family.child
+msgid "Child"
+msgstr "Hijo(a)"
+
+#. module: hr_family
+#: field:hr.family,create_uid:0
+#: field:hr.family.type,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: hr_family
+#: field:hr.family,create_date:0
+#: field:hr.family.type,create_date:0
+msgid "Created on"
+msgstr "Creafo en"
+
+#. module: hr_family
+#: view:hr.family.type:hr_family.view_family_type_form
+#: field:hr.family.type,description:0
+msgid "Description"
+msgstr "Descripción"
+
+#. module: hr_family
+#: field:hr.family,employee_id:0
+#: model:ir.model,name:hr_family.model_hr_employee
 msgid "Employee"
 msgstr "Empleado"
 
-#. module: hr_passport_employee
-#: field:hr.employee,expedition_date_psport:0
-msgid "Expedition Date"
-msgstr "Fecha expedición"
+#. module: hr_family
+#: help:hr.family,upkeep_ok:0
+msgid "Employee is financial aid of this person."
+msgstr "Empleado es la ayuda financiera de esta persona."
 
-#. module: hr_passport_employee
-#: help:hr.employee,expedition_date_psport:0
-msgid "Expedition date of passport of employee"
-msgstr "Fecha de expedición del pasaporte del empleado"
+#. module: hr_family
+#: view:hr.employee:hr_family.view_hr_family_employee_form
+msgid "Family"
+msgstr "Familia"
 
-#. module: hr_passport_employee
-#: field:hr.employee,expiration_date_psport:0
-msgid "Expiration Date"
-msgstr "Fecha de expiración"
+#. module: hr_family
+#: view:hr.family.type:hr_family.view_family_type_form
+msgid "Family Type"
+msgstr "Tipo de familiar"
 
-#. module: hr_passport_employee
-#: help:hr.employee,expiration_date_psport:0
-msgid "Expiration date of passport of employee"
-msgstr "Fecha de expiración del pasaporte del empleado"
+#. module: hr_family
+#: field:hr.employee,family_ids:0
+msgid "Family ids"
+msgstr "Familiares"
 
-#. module: hr_passport_employee
-#: view:hr.employee:hr_passport_employee.view_dates_psport_employee_form
-msgid "Passport"
-msgstr "Pasaporte"
+#. module: hr_family
+#: help:hr.employee,family_ids:0
+msgid "Family of employee"
+msgstr "Familiares del empleado"
+
+#. module: hr_family
+#: model:res.groups,name:hr_family.group_hr_manager
+msgid "HR Manager"
+msgstr "HR Manager"
+
+#. module: hr_family
+#: field:hr.family,id:0
+#: field:hr.family.type,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: hr_family
+#: field:hr.family,family_type:0
+msgid "Kinship"
+msgstr "Parentesco"
+
+#. module: hr_family
+#: field:hr.family,last_name:0
+msgid "Last Name"
+msgstr "Apellido"
+
+#. module: hr_family
+#: field:hr.family,write_uid:0
+#: field:hr.family.type,write_uid:0
+msgid "Last Updated by"
+msgstr "Última actualización realizada por"
+
+#. module: hr_family
+#: field:hr.family,write_date:0
+#: field:hr.family.type,write_date:0
+msgid "Last Updated on"
+msgstr "Última actualización realizada en"
+
+#. module: hr_family
+#: field:hr.family,name:0
+#: view:hr.family.type:hr_family.view_family_type_form
+#: field:hr.family.type,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: hr_family
+#: model:hr.family.type,name:hr_family.parent
+msgid "Parent"
+msgstr "Padre o Madre"
+
+#. module: hr_family
+#: model:hr.family.type,name:hr_family.spouse
+msgid "Spouse"
+msgstr "Esposo(a)"
+
+#. module: hr_family
+#: field:hr.family,upkeep_ok:0
+msgid "Upkeep"
+msgstr "Dependiente"
 

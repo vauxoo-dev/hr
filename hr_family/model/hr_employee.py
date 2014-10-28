@@ -35,7 +35,7 @@ class hr_family_type(models.Model):
     '''
     _name = 'hr.family.type'
 
-    name = fields.Char('Name', translate=True)
+    name = fields.Char('Name', translate=True, required=True)
     description = fields.Text('Description')
 
 
@@ -45,11 +45,11 @@ class hr_family(models.Model):
     '''
     _name = 'hr.family'
 
-    name = fields.Char('Name')
+    name = fields.Char('Name', required=True)
     last_name = fields.Char('Last Name')
     date_of_birth = fields.Date('Birth date')
     employee_id = fields.Many2one('hr.employee', 'Employee')
-    family_type = fields.Many2one('hr.parent.type', 'Kinship')
+    family_type = fields.Many2one('hr.family.type', 'Kinship')
     upkeep_ok = fields.Boolean(
         'Upkeep', help="Employee is financial aid of this person.")
 
