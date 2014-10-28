@@ -23,22 +23,29 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #
-{"name": "HR employee licence",
+{
+    "name": "HR employee licence",
     "version": "1.0",
-    "depends": ["hr",
-                ],
     "author": "Vauxoo",
+    "category": "HR",
     "description": """
 This module adds licence number and expiration of it
-    """,
+
+""",
     "website": "http://www.vauxoo.com",
-    "category": "HR",
+    "license": "",
+    "depends": [
+        "hr"
+    ],
     "demo": [],
     "data": [
         "view/hr_employee_view.xml"
     ],
     "test": [],
-    "images": [],
-    "auto_install": False,
-    "application": True,
-    "installable": True, }
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": True,
+    "auto_install": False
+}
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
