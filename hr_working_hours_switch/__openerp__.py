@@ -41,6 +41,7 @@ HR Working Hours Switch
     ],
     'data': [
         'view/hr_working_hours_switch_view.xml',
+        'view/hr_contract_view.xml',
     ],
     'demo': [],
     'test': [],
