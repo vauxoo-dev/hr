@@ -51,7 +51,7 @@ This module add new models:
         'hr_attendance',
     ],
     'data': [
-        'data/hr_working_hours_switch.xml',
+        'demo/hr_working_hours_switch.xml',
         'security/ir.model.access.csv',
         'view/hr_working_hours_switch_view.xml',
         'view/hr_contract_view.xml',
