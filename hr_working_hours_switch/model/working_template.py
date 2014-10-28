@@ -70,7 +70,7 @@ class hr_working_template(osv.Model):
     }
 
 
-class hr_working_template_line(osv.model):
+class hr_working_template_line(osv.Model):
     """
     Definition of the model Working Template Line.
     """
@@ -88,7 +88,7 @@ class hr_working_template_line(osv.model):
     }
 
 
-class hr_working_template_exception(osv.model):
+class hr_working_template_exception(osv.Model):
     """
     Definition of the model Working Template Exception.
     """
