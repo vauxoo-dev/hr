@@ -33,6 +33,17 @@
     'description': '''
 HR Working Hours Switch
 =======================
+
+There is a need to change and employee or contract turn periodically in an
+automatic way. How ever the schedule working hours can be manually change
+for a particulary turn, that's the working hour exceptions.
+
+This module add new models:
+
+- Working Template (hr.working.template)
+- Working Template Line (hr.working.template.line)
+- Working Template Exception (hr.working.template.exception)
+- Working Hours Switch (hr.working.hours.switch)
 ''',
     'depends': [
         'hr',
