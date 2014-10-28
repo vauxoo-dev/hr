@@ -17,5 +17,24 @@
             </field>
         </record>
 
+        <record id="hr_working_template_form" model="ir.actions.act_window">
+            <field name="name">Working Switch</field>
+            <field name="res_model">hr.working.hours.switch</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="menu_hr_working_template"
+            sequence="10"
+            parent="hr.menu_hr_root"
+            name="Working Template"/>
+
+        <menuitem
+            id="menu_hr_working_template_1"
+            sequence="10"
+            parent="menu_hr_working_template"
+            action="hr_working_template_form"/>
+
     </data>
 </openerp>
