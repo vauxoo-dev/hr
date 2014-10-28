@@ -25,14 +25,14 @@
 ###############################################################################
 
 {
-    'name': 'HR Working Hours Switch',
+    'name': 'Working Hours Switch',
     'version': '1.0',
     'author': 'Vauxoo',
     'website': 'http://www.vauxoo.com/',
     'category': '',
     'description': '''
-HR Working Hours Switch
-=======================
+Working Hours Switch
+====================
 
 There is a need to change and employee or contract turn periodically in an
 automatic way. How ever the schedule working hours can be manually change
