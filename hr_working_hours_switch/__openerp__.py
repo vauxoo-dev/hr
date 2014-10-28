@@ -57,7 +57,7 @@ This module add new models:
         'view/hr_attendance_view.xml',
     ],
     'demo': [
-        'demo/hr_working_hours_switch.xml',
+        'demo/data_ir_cron.xml',
     ],
     'test': [],
     'qweb': [],
