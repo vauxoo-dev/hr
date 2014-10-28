@@ -23,22 +23,29 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #
-{"name": "HR blood type employee",
+{
+    "name": "HR blood type employee",
     "version": "1.0",
-    "depends": ["hr",
-                ],
     "author": "Vauxoo",
+    "category": "HR",
     "description": """
 This module adds field to assign blood type of employee
-    """,
+
+""",
     "website": "http://www.vauxoo.com",
-    "category": "HR",
+    "license": "",
+    "depends": [
+        "hr"
+    ],
     "demo": [],
     "data": [
         "view/hr_employee_view.xml"
     ],
     "test": [],
-    "images": [],
-    "auto_install": False,
-    "application": True,
-    "installable": True, }
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": True,
+    "auto_install": False
+}
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
