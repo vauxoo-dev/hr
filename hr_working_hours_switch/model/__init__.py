@@ -1,5 +1,10 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
+
+"""
+Init file for the models in the hr_working_hours_switch module.
+"""
+
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
