@@ -60,7 +60,7 @@ class hr_working_template(osv.Model):
             string='Working Template Exception',
             help="Working Template Exception"),
         'period': fields.selection(
-            [('weekly', 'Weekly'), ('monthly', 'Montly')]
+            [('weekly', 'Weekly'), ('monthly', 'Montly')],
             string='Period',
             help='Period'),
         'current_working_id': fields.many2one(
