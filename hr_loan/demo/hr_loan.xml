@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<openerp>
+  <data noupdate="1">
+    <record id="hr_loan_001" model="hr.loan">
+      <field name="employee_id" ref="hr_payroll.hr_contract_gilles_gravie"/>
+      <field name="share_quantity">8</field>
+      <field name="date_start" eval="time.strftime('%Y-%m-%d')"/>
+      <field name="name">Loan 1</field>
+      <field name="payment_type">monthly</field>
+      <field name="partner_id" ref="base.res_partner_8"/>
+      <field name="amount_approved">6000</field>
+    </record>
+    <record id="hr_loan_002" model="hr.loan">
+      <field name="employee_id" ref="hr_payroll.hr_contract_gilles_gravie"/>
+      <field name="share_quantity">4</field>
+      <field name="date_start" eval="time.strftime('%Y-%m-%d')"/>
+      <field name="name">Loan 2</field>
+      <field name="payment_type">fortnightly</field>
+      <field name="partner_id" ref="base.res_partner_7"/>
+      <field name="amount_approved">3000</field>
+    </record>
+    <record id="hr_loan_003" model="hr.loan">
+      <field name="employee_id" ref="hr_payroll.hr_contract_firstcontract1"/>
+      <field name="share_quantity">6</field>
+      <field name="date_start" eval="time.strftime('%Y-%m-%d')"/>
+      <field name="name">Loan 3</field>
+      <field name="payment_type">weekly</field>
+      <field name="partner_id" ref="base.res_partner_7"/>
+      <field name="amount_approved">2500</field>
+    </record>
+    <record id="hr_loan_004" model="hr.loan">
+      <field name="employee_id" ref="hr_payroll.hr_contract_firstcontract1"/>
+      <field name="share_quantity">2</field>
+      <field name="date_start" eval="time.strftime('%Y-%m-%d')"/>
+      <field name="name">Loan 4</field>
+      <field name="payment_type">bimonthly</field>
+      <field name="partner_id" ref="base.res_partner_8"/>
+      <field name="amount_approved">1000</field>
+    </record>
+  </data>
+</openerp>

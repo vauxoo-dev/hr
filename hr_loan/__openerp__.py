@@ -27,9 +27,9 @@
     "version": "1.0",
     "summary": "Loan",
     "depends": [
-        "hr",
-        "hr_payroll",
-        "hr_payroll_account"],
+        'hr',
+        'hr_payroll',
+        'hr_payroll_account'],
     "author": "Vauxoo",
     "description": """
 Odoo HR Loan
@@ -40,11 +40,13 @@ This module will manage the loans to employees of the company in OpenERP.
     "website": "http://www.vauxoo.com/",
     "category": "Human Resources",
     "data": [
-        "data/hr_loan.xml",
-        "view/hr_loan_view.xml",
-        "security/hr_loan_security.xml",
-        "security/ir.model.access.csv"],
-    "demo": [],
+        'data/hr_loan.xml',
+        'view/hr_loan_view.xml',
+        'security/hr_loan_security.xml',
+        'security/ir.model.access.csv'],
+    "demo": [
+        "demo/hr_loan.xml",
+        ],
     "test": [],
     "active": False,
     "images": [],
