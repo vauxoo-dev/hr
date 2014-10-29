@@ -126,6 +126,37 @@ class TestLoanCompute(TransactionCase):
 
         return True
 
+    def loan_test_3(self):
+        if self.loan_list_brw:
+            loan_brw = self.loan_list_brw[0]
+
+            self.share_test(loan_brw, 156.25)
+            self.date_test_end(loan_brw, '2016-01-01')
+            self.date_test(loan_brw, 0, '2014-10-31')
+            self.date_test(loan_brw, 1, '2014-12-31')
+            self.date_test(loan_brw, 2, '2015-02-28')
+            self.date_test(loan_brw, 3, '2015-04-30')
+            self.date_test(loan_brw, 4, '2015-06-30')
+            self.date_test(loan_brw, 5, '2015-08-31')
+            self.date_test(loan_brw, 6, '2015-10-31')
+            self.date_test(loan_brw, 7, '2015-12-31')
+
+        return True
+
+    def loan_test_4(self):
+        if self.loan_list_brw:
+            loan_brw = self.loan_list_brw[1]
+
+            self.share_test(loan_brw, 104)
+            self.date_test_end(loan_brw, '2015-02-20')
+            self.date_test(loan_brw, 0, '2015-01-22')
+            self.date_test(loan_brw, 1, '2015-01-29')
+            self.date_test(loan_brw, 2, '2015-02-05')
+            self.date_test(loan_brw, 3, '2015-02-12')
+            self.date_test(loan_brw, 4, '2015-02-19')
+
+        return True
+
     def test_compute_shares(self):
         cr, uid = self.cr, self.uid
 
@@ -143,7 +174,28 @@ class TestLoanCompute(TransactionCase):
             if loan_brw.share_quantity != len(loan_brw.share_ids):
                 self.assertEquals('Error! in shares quantity')
 
-        test1_ok = self.loan_test_1()
-        test1_ok = self.loan_test_2()
 
+        self.loan_test_1()
+        self.loan_test_2()
+
+        loan_1 = self.loan_list[0]
+        self.hr_loan_obj.write(cr, uid, loan_1, {
+            'payment_type' : 'bimonthly',
+            'amount_approved' : '1250',
+                                    })
+        self.hr_loan_obj.compute_shares(cr, uid, loan_1)
+
+        loan_2 = self.loan_list[1]
+        self.hr_loan_obj.write(cr, uid, loan_2, {
+            'payment_type' : 'weekly',
+            'amount_approved' : '520',
+                                    })
+        self.hr_loan_obj.compute_shares(cr, uid, loan_2)
+
+        self.loan_test_3()
+        self.loan_test_4()
+
+
+        #loan_brw = self.hr_loan_obj.browse(cr, uid, self.loan_list[0])
+        #self.loan_list_brw[0] = loan_brw
 
