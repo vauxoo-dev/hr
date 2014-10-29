@@ -24,3 +24,4 @@
 ###############################################################################
 
 from . import test_hr_loan_data_integrity
+from . import test_hr_loan_compute
