@@ -40,7 +40,7 @@ msgstr "Creado por"
 #: field:hr.family,create_date:0
 #: field:hr.family.type,create_date:0
 msgid "Created on"
-msgstr "Creafo en"
+msgstr "Creado en"
 
 #. module: hr_family
 #: view:hr.family.type:hr_family.view_family_type_form
