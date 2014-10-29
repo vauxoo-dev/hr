@@ -257,17 +257,17 @@ class hr_payslip(osv.Model):
         return res
 
 
-    def process_sheet(self, cur, uid, ids, context=None):
+    def process_sheet(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
-        result = super(hr_payslip, self).process_sheet(cur, uid, ids, context=context)
+        result = super(hr_payslip, self).process_sheet(cr, uid, ids, context=context)
 
         hr_loan_line_pool = self.pool.get('hr.loan.line')
-        for ind in self.browse(cur, uid, ids, context=context):
+        for ind in self.browse(cr, uid, ids, context=context):
             if ind.share_line_ids:
                 for slip in ind.share_line_ids:
-                    hr_loan_line_pool.write(cur, uid, [slip.id],
+                    hr_loan_line_pool.write(cr, uid, [slip.id],
                             {'state':'paid'}, context=context)
         return result
 
