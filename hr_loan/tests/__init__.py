@@ -23,6 +23,4 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-from . import model
-from . import wizard
-from . import tests
+from . import test_hr_loan_data_integrity
