@@ -8,7 +8,7 @@
             <field name="name">hr.working.hours.switch.form.view</field>
             <field name="model">hr.working.hours.switch</field>
             <field name="arch" type="xml">
-                <form string="Working Hour Switch" version="7.0">
+                <form string="Working Hour Switch">
                     <sheet>
                         <group>
                             <field name="name"/>
@@ -23,7 +23,7 @@
             <field name="name">hr.working.hours.switch.tree.view</field>
             <field name="model">hr.working.hours.switch</field>
             <field name="arch" type="xml">
-                <tree string="Working Hour Switch" version="7.0">
+                <tree string="Working Hour Switch">
                     <field name="name"/>
                     <field name="contract_ids"/>
                 </tree>
@@ -43,7 +43,7 @@
             <field name="name">hr.working.template.form.view</field>
             <field name="model">hr.working.template</field>
             <field name="arch" type="xml">
-                <form string="Working Template" version="7.0">
+                <form string="Working Template">
                     <sheet>
                         <group>
                             <field name="name"/>
@@ -62,7 +62,7 @@
             <field name="name">hr.working.template.tree.view</field>
             <field name="model">hr.working.template</field>
             <field name="arch" type="xml">
-                <tree string="Working Template" version="7.0">
+                <tree string="Working Template">
                     <field name="name"/>
                     <field name="contract_ids"/>
                     <field name="wking_tmpl_line_ids"/>
@@ -86,7 +86,7 @@
             <field name="name">hr.working.template.line.form.view</field>
             <field name="model">hr.working.template.line</field>
             <field name="arch" type="xml">
-                <form string="Working Template Line" version="7.0">
+                <form string="Working Template Line">
                     <sheet>
                         <group>
                             <field name="seq"/>
@@ -101,7 +101,7 @@
             <field name="name">hr.working.template.line.tree.view</field>
             <field name="model">hr.working.template.line</field>
             <field name="arch" type="xml">
-                <tree string="Working Template Line" version="7.0">
+                <tree string="Working Template Line">
                     <field name="seq"/>
                     <field name="working_id"/>
                 </tree>
@@ -114,7 +114,7 @@
             <field name="name">hr.working.template.exception.form.view</field>
             <field name="model">hr.working.template.exception</field>
             <field name="arch" type="xml">
-                <form string="Working Template Exceptio" version="7.0">
+                <form string="Working Template Exceptio">
                     <sheet>
                         <group>
                             <field name="date_start"/>
@@ -131,7 +131,7 @@
             <field name="name">hr.working.template.exception.tree.view</field>
             <field name="model">hr.working.template.exception</field>
             <field name="arch" type="xml">
-                <tree string="Working Template Exception" version="7.0">
+                <tree string="Working Template Exception">
                     <field name="date_start"/>
                     <field name="date_stop"/>
                     <field name="working_id"/>
