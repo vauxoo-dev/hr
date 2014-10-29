@@ -62,9 +62,9 @@ class TestLoanCompute(TransactionCase):
                  {
                 'name' : 'Test Loan 2',
                 'amount_approved' : 3000,
-                'share_quantity' : 4,
+                'share_quantity' : 5,
                 'payment_type' : 'fortnightly',
-                'date_start' : '2014-10-24',
+                'date_start' : '2015-01-15',
                 'employee_id' : contract_id,
                 'partner_id' : 13,
                 }
@@ -78,14 +78,52 @@ class TestLoanCompute(TransactionCase):
 
         return True
 
-    def test1(self):
-        cr, uid = self.cr, self.uid
-        #loan_brw = self.loan_list_brw[0]
+    def share_test(self, loan_brw, amount):
+        error_msg_share_test = 'Error! in share amount'
+        for share in loan_brw.share_ids:
+            if share.share != amount or share.state != 'unpaid':
+                self.assertEquals(error_msg_share_test)
 
-        #share_1 = loan_brw.share_ids[0]
+    def date_test(self, loan_brw, ind, date):
+        error_msg_date_test = 'Error! in shares payment_date'
+        share = loan_brw.share_ids[ind]
+        if share.payment_date != date:
+            self.assertEquals(error_msg_date_test)
 
-        #if share_1.payment_date != '2014-10-31':
-        #    self.assertEquals('Error! in shares payment_date')
+    def date_test_end(self, loan_brw, date):
+        error_msg_date_end = 'Error! in loan end date'
+        if loan_brw.date_stop != date:
+            self.assertEquals(error_msg_date_end)
+
+    def loan_test_1(self):
+        if self.loan_list_brw:
+            loan_brw = self.loan_list_brw[0]
+
+            self.share_test(loan_brw, 750)
+            self.date_test_end(loan_brw, '2015-06-01')
+            self.date_test(loan_brw, 0, '2014-10-31')
+            self.date_test(loan_brw, 1, '2014-11-30')
+            self.date_test(loan_brw, 2, '2014-12-31')
+            self.date_test(loan_brw, 3, '2015-01-31')
+            self.date_test(loan_brw, 4, '2015-02-28')
+            self.date_test(loan_brw, 5, '2015-03-31')
+            self.date_test(loan_brw, 6, '2015-04-30')
+            self.date_test(loan_brw, 7, '2015-05-31')
+
+        return True
+
+    def loan_test_2(self):
+        if self.loan_list_brw:
+            loan_brw = self.loan_list_brw[1]
+
+            self.share_test(loan_brw, 600)
+            self.date_test_end(loan_brw, '2015-04-01')
+            self.date_test(loan_brw, 0, '2015-01-31')
+            self.date_test(loan_brw, 1, '2015-02-15')
+            self.date_test(loan_brw, 2, '2015-02-28')
+            self.date_test(loan_brw, 3, '2015-03-15')
+            self.date_test(loan_brw, 4, '2015-03-31')
+
         return True
 
     def test_compute_shares(self):
@@ -105,6 +143,7 @@ class TestLoanCompute(TransactionCase):
             if loan_brw.share_quantity != len(loan_brw.share_ids):
                 self.assertEquals('Error! in shares quantity')
 
-        test1_ok = self.test1()
+        test1_ok = self.loan_test_1()
+        test1_ok = self.loan_test_2()
 
 
