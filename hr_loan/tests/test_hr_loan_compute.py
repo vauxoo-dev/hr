@@ -23,82 +23,88 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from openerp.tests.common import TransactionCase
 import csv
 import os
 
 class TestLoanCompute(TransactionCase):
 
-    payment_type = {
-            'fortnightly': 2,
-            'monthly': 1,
-            'bimonthly': 0.5,
-            'weekly': 7,
-            }
-
     def setUp(self):
         super(TestLoanCompute, self).setUp()
         self.imd_obj = self.registry('ir.model.data')
         self.hr_loan_obj = self.registry('hr.loan')
         self.hr_contract_obj = self.registry('hr.contract')
+        self.loan_list_brw = list()
 
-    def test_create_loan(self):
+    def dataloan(self):
         cr, uid = self.cr, self.uid
 
-        self.contract = self.hr_loan_obj.create(cr, uid, {
+        contract_id = self.hr_contract_obj.create(cr, uid, {
                 'name' : 'Ashley Presley Contract',
-                'employee_id' : 13,
-                'type_id' : 1,
+                'employee_id' : 13, #Ashley Presley
+                'type_id' : 1, #Employee
                 'wage' : 10000,
-                'struct_id' : 4,
+                'struct_id' : 4, #Salary with loan
             })
+
+        data_loan = [
+                {
+                'name' : 'Test Loan 1',
+                'amount_approved' : 6000,
+                'share_quantity' : 8,
+                'payment_type' : 'monthly',
+                'date_start' : '2014-10-29',
+                'employee_id' : contract_id,
+                'partner_id' : 13,
+                },
+                 {
+                'name' : 'Test Loan 2',
+                'amount_approved' : 3000,
+                'share_quantity' : 4,
+                'payment_type' : 'fortnightly',
+                'date_start' : '2014-10-24',
+                'employee_id' : contract_id,
+                'partner_id' : 13,
+                }
+            ]
+
+        self.loan_list = list()
+
+        for loan_data in data_loan:
+            loan_id = self.hr_loan_obj.create(cr, uid, loan_data)
+            self.loan_list.append(loan_id)
+
+        return True
+
+    def test1(self):
+        cr, uid = self.cr, self.uid
+        #loan_brw = self.loan_list_brw[0]
+
+        #share_1 = loan_brw.share_ids[0]
+
+        #if share_1.payment_date != '2014-10-31':
+        #    self.assertEquals('Error! in shares payment_date')
         return True
 
     def test_compute_shares(self):
         cr, uid = self.cr, self.uid
 
+        data_ok = self.dataloan()
 
-        loan_xml_id_list = ['hr_loan_00' + str(i) for i in xrange(1,5)]
-        for loan_xml_id in loan_xml_id_list:
-            imd_id = self.imd_obj.search(
-                cr, uid,
-                [('model', '=', 'hr.loan'), ('name', '=', loan_xml_id)])
-            if imd_id:
-                imd_brw = self.imd_obj.browse(cr, uid, imd_id)
+        for loan_id in self.loan_list:
 
-                self.hr_loan_obj.compute_shares(cr, uid, imd_brw[0].res_id)
-                loan_brw = self.hr_loan_obj.browse(cr, uid, imd_brw[0].res_id)
-                ####
+            self.hr_loan_obj.compute_shares(cr, uid, loan_id)
+            loan_brw = self.hr_loan_obj.browse(cr, uid, loan_id)
 
+            self.loan_list_brw.append(loan_brw)
 
-                current_date = datetime.strptime(hr_loan.date_start, '%Y-%m-%d')
-                for ind in xrange(0, loan_brw.share_quantity):
+            current_date = datetime.strptime(loan_brw.date_start, '%Y-%m-%d')
 
-                    if loan_brw.payment_type == 'fortnightly':
-                        if current_date.day < 15:
-                            current_date = current_date.replace(day=15)
-                        elif current_date == self.last_day_of_month(current_date):
-                            current_date = current_date + relativedelta(days=15)
-                        else:
-                            current_date = self.last_day_of_month(current_date)
+            if loan_brw.share_quantity != len(loan_brw.share_ids):
+                self.assertEquals('Error! in shares quantity')
 
-                    if loan_brw.payment_type == 'weekly':
-                        current_date = current_date + relativedelta(days=7)
-                    if loan_brw.payment_type == 'monthly':
-                        current_date = current_date + relativedelta(days=1)
-                        current_date = self.last_day_of_month(current_date)
-                    if loan_brw.payment_type == 'bimonthly':
-                        if ind == 0:
-                            current_date = current_date + relativedelta(days=1)
-                            current_date = self.last_day_of_month(current_date)
-                        else:
-                            current_date = current_date + relativedelta(months=2)
-                            current_date = self.last_day_of_month(current_date)
+        test1_ok = self.test1()
 
 
-
-class clase_1(object):
-
-    def __init__(self):
-        self.name = ''
-        return None
