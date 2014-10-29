@@ -77,8 +77,6 @@ class hr_working_template_line(osv.Model):
 
     _name = 'hr.working.template.line'
     _description = 'Working Template Line'
-    _order = 'seq'
-    _rec_name = 'working_id'
     _columns = {
         'seq': fields.integer('Sequence', help="Sequence"),
         'working_id': fields.many2one(
@@ -86,6 +84,8 @@ class hr_working_template_line(osv.Model):
             'Working Template',
             help='Working Template'),
     }
+    _order = 'seq'
+    _rec_name = 'working_id'
 
 
 class hr_working_template_exception(osv.Model):
