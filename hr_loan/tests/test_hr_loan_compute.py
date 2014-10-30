@@ -52,19 +52,19 @@ class TestLoanCompute(TransactionCase):
         data_loan = [
                 {
                 'name' : 'Test Loan 1',
-                'amount_approved' : 6000,
                 'share_quantity' : 8,
-                'payment_type' : 'monthly',
                 'date_start' : '2014-10-29',
+                'payment_type' : 'bimonthly',
+                'amount_approved' : '1250',
                 'employee_id' : contract_id,
                 'partner_id' : 13,
                 },
                  {
                 'name' : 'Test Loan 2',
-                'amount_approved' : 3000,
                 'share_quantity' : 5,
-                'payment_type' : 'fortnightly',
                 'date_start' : '2015-01-15',
+                'payment_type' : 'weekly',
+                'amount_approved' : '520',
                 'employee_id' : contract_id,
                 'partner_id' : 13,
                 }
@@ -95,7 +95,7 @@ class TestLoanCompute(TransactionCase):
         if loan_brw.date_stop != date:
             self.assertEquals(error_msg_date_end)
 
-    def loan_test_1(self):
+    def loan_test_fortnightly(self):
         if self.loan_list_brw:
             loan_brw = self.loan_list_brw[0]
 
@@ -112,7 +112,7 @@ class TestLoanCompute(TransactionCase):
 
         return True
 
-    def loan_test_2(self):
+    def loan_test_monthly(self):
         if self.loan_list_brw:
             loan_brw = self.loan_list_brw[1]
 
@@ -126,7 +126,7 @@ class TestLoanCompute(TransactionCase):
 
         return True
 
-    def loan_test_3(self):
+    def loan_test_bimonthly(self):
         if self.loan_list_brw:
             loan_brw = self.loan_list_brw[0]
 
@@ -143,7 +143,7 @@ class TestLoanCompute(TransactionCase):
 
         return True
 
-    def loan_test_4(self):
+    def loan_test_weekly(self):
         if self.loan_list_brw:
             loan_brw = self.loan_list_brw[1]
 
@@ -174,26 +174,25 @@ class TestLoanCompute(TransactionCase):
             if loan_brw.share_quantity != len(loan_brw.share_ids):
                 self.assertEquals('Error! in shares quantity')
 
-
-        self.loan_test_1()
-        self.loan_test_2()
+        self.loan_test_bimonthly()
+        self.loan_test_weekly()
 
         loan_1 = self.loan_list[0]
         self.hr_loan_obj.write(cr, uid, loan_1, {
-            'payment_type' : 'bimonthly',
-            'amount_approved' : '1250',
+                'payment_type' : 'monthly',
+                'amount_approved' : 6000,
                                     })
         self.hr_loan_obj.compute_shares(cr, uid, loan_1)
 
         loan_2 = self.loan_list[1]
         self.hr_loan_obj.write(cr, uid, loan_2, {
-            'payment_type' : 'weekly',
-            'amount_approved' : '520',
+                'payment_type' : 'fortnightly',
+                'amount_approved' : 3000,
                                     })
         self.hr_loan_obj.compute_shares(cr, uid, loan_2)
 
-        self.loan_test_3()
-        self.loan_test_4()
+        self.loan_test_monthly()
+        self.loan_test_fortnightly()
 
 
         #loan_brw = self.hr_loan_obj.browse(cr, uid, self.loan_list[0])
