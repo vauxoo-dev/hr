@@ -90,7 +90,7 @@
                     <sheet>
                         <group>
                             <field name="seq"/>
-                            <field name="working_id"/>
+                            <field name="working_scheduler_id"/>
                         </group>
                     </sheet>
                 </form>
@@ -103,7 +103,7 @@
             <field name="arch" type="xml">
                 <tree string="Working Template Line">
                     <field name="seq"/>
-                    <field name="working_id"/>
+                    <field name="working_scheduler_id"/>
                 </tree>
             </field>
         </record>
