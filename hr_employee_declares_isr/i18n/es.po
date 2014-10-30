@@ -1,0 +1,32 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* hr_employee_declares_isr
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-10-24 00:04+0000\n"
+"PO-Revision-Date: 2014-10-24 00:04+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_employee_declares_isr
+#: help:hr.employee,declares_isr:0
+msgid "Active this field if the employee declares ISR"
+msgstr "Active este campo si el empleado declara ISR"
+
+#. module: hr_employee_declares_isr
+#: field:hr.employee,declares_isr:0
+msgid "Declares ISR?"
+msgstr "Declara ISR?"
+
+#. module: hr_employee_declares_isr
+#: model:ir.model,name:hr_employee_declares_isr.model_hr_employee
+msgid "Employee"
+msgstr "Empleado"
+
