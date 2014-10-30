@@ -30,6 +30,7 @@ from openerp import netsvc
 import csv
 import os
 
+
 class TestLoanCompute(TransactionCase):
 
     def setUp(self):
@@ -47,36 +48,37 @@ class TestLoanCompute(TransactionCase):
     def dataloan(self):
         cr, uid = self.cr, self.uid
 
-        struct_id = self.hr_payroll_structure_obj.search(cr, uid, [('code','=','Salary loan')])
+        struct_id = self.hr_payroll_structure_obj.search(
+            cr, uid, [('code', '=', 'Salary loan')])
 
         contract_id = self.hr_contract_obj.create(cr, uid, {
-                'name' : 'Ashley Presley Contract',
-                'employee_id' : 13, #Ashley Presley
-                'type_id' : 1, #Employee
-                'wage' : 10000,
-                'struct_id' : struct_id[0], #Salary with loan
-            })
+            'name': 'Ashley Presley Contract',
+            'employee_id': 13,  # Ashley Presley
+            'type_id': 1,  # Employee
+            'wage': 10000,
+            'struct_id': struct_id[0],  # Salary with loan
+        })
 
         data_loan = [
-                {
-                'name' : 'Test Loan 1',
-                'share_quantity' : 8,
-                'date_start' : '2014-10-29',
-                'payment_type' : 'bimonthly',
-                'amount_approved' : '1250',
-                'employee_id' : contract_id,
-                'partner_id' : 13,
-                },
-                 {
-                'name' : 'Test Loan 2',
-                'share_quantity' : 5,
-                'date_start' : '2015-01-15',
-                'payment_type' : 'weekly',
-                'amount_approved' : '520',
-                'employee_id' : contract_id,
-                'partner_id' : 12,
-                }
-            ]
+            {
+                'name': 'Test Loan 1',
+                'share_quantity': 8,
+                'date_start': '2014-10-29',
+                'payment_type': 'bimonthly',
+                'amount_approved': '1250',
+                'employee_id': contract_id,
+                'partner_id': 13,
+            },
+            {
+                'name': 'Test Loan 2',
+                'share_quantity': 5,
+                'date_start': '2015-01-15',
+                'payment_type': 'weekly',
+                'amount_approved': '520',
+                'employee_id': contract_id,
+                'partner_id': 12,
+            }
+        ]
 
         self.loan_list = list()
 
@@ -85,23 +87,23 @@ class TestLoanCompute(TransactionCase):
             self.loan_list.append(loan_id)
 
         payslip_id = self.hr_payslip_obj.create(cr, uid, {
-                'name' : 'Salary Slip of Ashley Presley for octubre-2014',
-                'employee_id' : 13, #Ashley Presley
-                'contract_id' : contract_id,
-                'struct_id' : struct_id[0],
-                'journal_id' : 5,
-                'date_from' : '2015-02-01',
-                'date_to' : '2015-02-28',
-            })
+            'name': 'Salary Slip of Ashley Presley for octubre-2014',
+            'employee_id': 13,  # Ashley Presley
+            'contract_id': contract_id,
+            'struct_id': struct_id[0],
+            'journal_id': 5,
+            'date_from': '2015-02-01',
+            'date_to': '2015-02-28',
+        })
         self.payslip_brw = self.hr_payslip_obj.browse(cr, uid, payslip_id)
 
         salary_rule_id = self.hr_salary_rule_obj.search(cr, uid,
-                                                        [('name','=','Loan')])
+                                                        [('name', '=', 'Loan')])
 
         self.hr_salary_rule_obj.write(cr, uid, salary_rule_id, {
-                                        'account_credit': 9,
-                                        'account_debit' : 9,
-                                      })
+            'account_credit': 9,
+            'account_debit': 9,
+        })
 
         return True
 
@@ -191,7 +193,7 @@ class TestLoanCompute(TransactionCase):
             if loan_brw.state != 'draft':
                 self.assertEquals(error_msg_state)
 
-            #Activate loan
+            # Activate loan
             self.hr_loan_obj.activate_loan(cr, uid, loan_brw.id)
 
             if loan_brw.state != 'active':
@@ -205,7 +207,7 @@ class TestLoanCompute(TransactionCase):
         self.hr_payslip_obj.compute_sheet(cr, uid, self.payslip_brw.id)
         for payslip in self.payslip_brw.line_ids:
             if payslip.category_id.code == 'LOAN':
-                num_loan.append( (payslip.id, payslip.total) )
+                num_loan.append((payslip.id, payslip.total))
             elif payslip.category_id.code == 'NET':
                 if payslip.total != 10000:
                     self.assertEquals(error_msg_payslip)
@@ -238,13 +240,15 @@ class TestLoanCompute(TransactionCase):
         #self.hr_payslip_obj.hr_verify_sheet(cr, uid, [self.payslip_brw.id])
         #self.hr_payslip_obj.process_sheet(cr, uid, [self.payslip_brw.id])
 
-        #self.wf_service.trg_validate(
+        # self.wf_service.trg_validate(
         #       uid , 'hr.payslip', [self.payslip_brw.id], 'hr_verify_sheet', cr)
-        #self.wf_service.trg_validate(
+        # self.wf_service.trg_validate(
         #       uid , 'hr.payslip', [self.payslip_brw.id], 'process_sheet', cr)
 
-        self.hr_payslip_obj.signal_workflow(cr, uid, [self.payslip_brw.id], 'hr_verify_sheet')
-        self.hr_payslip_obj.signal_workflow(cr, uid, [self.payslip_brw.id], 'process_sheet')
+        self.hr_payslip_obj.signal_workflow(
+            cr, uid, [self.payslip_brw.id], 'hr_verify_sheet')
+        self.hr_payslip_obj.signal_workflow(
+            cr, uid, [self.payslip_brw.id], 'process_sheet')
 
         if self.payslip_brw.state != 'done':
             self.assertEquals(error_msg_payslip)
@@ -254,7 +258,6 @@ class TestLoanCompute(TransactionCase):
 
         if not self.payslip_brw.move_id:
             self.assertEquals(error_msg_account)
-
 
         for aml in self.payslip_brw.move_id.line_id:
             if aml.state != 'valid':
@@ -278,7 +281,6 @@ class TestLoanCompute(TransactionCase):
            self.payslip_brw.move_id.line_id[5].partner_id.id != 13:
             self.assertEquals(error_msg_account)
 
-
     def test_compute_shares(self):
         cr, uid = self.cr, self.uid
 
@@ -301,16 +303,16 @@ class TestLoanCompute(TransactionCase):
 
         loan_1 = self.loan_list[0]
         self.hr_loan_obj.write(cr, uid, loan_1, {
-                'payment_type' : 'monthly',
-                'amount_approved' : 6000,
-                                    })
+            'payment_type': 'monthly',
+            'amount_approved': 6000,
+        })
         self.hr_loan_obj.compute_shares(cr, uid, loan_1)
 
         loan_2 = self.loan_list[1]
         self.hr_loan_obj.write(cr, uid, loan_2, {
-                'payment_type' : 'fortnightly',
-                'amount_approved' : 3000,
-                                    })
+            'payment_type': 'fortnightly',
+            'amount_approved': 3000,
+        })
         self.hr_loan_obj.compute_shares(cr, uid, loan_2)
 
         self.loan_test_fortnightly()

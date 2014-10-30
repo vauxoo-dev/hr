@@ -80,7 +80,8 @@ class hr_loan(osv.Model):
         ids = isinstance(ids, (int, long)) and [ids] or ids
         for brw in self.browse(cur, uid, ids, context=context):
             self.compute_shares(cur, uid, [brw.id], context=context)
-            self.write(cur, uid, [brw.id], {'state': 'active'}, context=context)
+            self.write(cur, uid, [brw.id],
+                       {'state': 'active'}, context=context)
         return True
 
     def draft_loan(self, cur, uid, ids, context=None):
@@ -91,7 +92,7 @@ class hr_loan(osv.Model):
             for loan_share in brw.share_ids:
                 if loan_share.state == 'paid':
                     raise osv.except_osv(_("Set to Draft is not allowed"),
-                                     _('There are paid lines.'))
+                                         _('There are paid lines.'))
             self.write(cur, uid, [brw.id], {'state': 'draft'}, context=context)
         return True
 
@@ -100,7 +101,8 @@ class hr_loan(osv.Model):
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
         for brw in self.browse(cur, uid, ids, context=context):
-            self.write(cur, uid, [brw.id], {'state': 'cancel'}, context=context)
+            self.write(cur, uid, [brw.id],
+                       {'state': 'cancel'}, context=context)
         return True
 
     def last_day_of_month(self, date):
@@ -193,7 +195,8 @@ class hr_payslip(osv.Model):
     def get_payslip_lines(self, cur, uid, contract_ids, payslip_id, context):
         if context is None:
             context = {}
-        contract_ids = isinstance(contract_ids, (int, long)) and [contract_ids] or contract_ids
+        contract_ids = isinstance(
+            contract_ids, (int, long)) and [contract_ids] or contract_ids
         result = super(hr_payslip, self).get_payslip_lines(
             cur, uid, contract_ids, payslip_id, context=context)
 
@@ -256,19 +259,19 @@ class hr_payslip(osv.Model):
             cur, uid, ids, context=context)
         return res
 
-
     def process_sheet(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
-        result = super(hr_payslip, self).process_sheet(cr, uid, ids, context=context)
+        result = super(hr_payslip, self).process_sheet(
+            cr, uid, ids, context=context)
 
         hr_loan_line_pool = self.pool.get('hr.loan.line')
         for ind in self.browse(cr, uid, ids, context=context):
             if ind.share_line_ids:
                 for slip in ind.share_line_ids:
                     hr_loan_line_pool.write(cr, uid, [slip.id],
-                            {'state':'paid'}, context=context)
+                                            {'state': 'paid'}, context=context)
         return result
 
     def _total_loan(self, cur, uid, ids, name, args, context=None):
@@ -290,10 +293,11 @@ class hr_payslip(osv.Model):
         'total_loan': fields.float('Total Loan', help='Total Loan'),
     }
 
+
 class hr_payslip_line(osv.Model):
 
     _inherit = 'hr.payslip.line'
 
     _columns = {
-        'loan_line_id':fields.many2one('hr.loan.line', 'Loan Line'),
+        'loan_line_id': fields.many2one('hr.loan.line', 'Loan Line'),
     }

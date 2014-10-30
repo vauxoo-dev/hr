@@ -27,7 +27,9 @@ from openerp.tests.common import TransactionCase
 import csv
 import os
 
+
 class TestInitData(TransactionCase):
+
     """
     Tests the init data of the module.
     """
@@ -87,7 +89,7 @@ class data_integrity(object):
         for root, dirs, files in os.walk(csv_path):
             for f in files:
                 if f.endswith(".csv"):
-                     csv_files.append(os.path.join(root, f))
+                    csv_files.append(os.path.join(root, f))
         self.csv_list = csv_files
         return None
 
