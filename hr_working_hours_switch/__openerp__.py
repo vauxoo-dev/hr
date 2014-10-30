@@ -25,13 +25,13 @@
 ###############################################################################
 
 {
-    'name': 'Working Hours Switch',
+    'name': 'Working Hours Shifts',
     'version': '1.0',
     'author': 'Vauxoo',
     'website': 'http://www.vauxoo.com/',
     'category': '',
     'description': '''
-Working Hours Switch
+Working Hours Shifts
 ====================
 
 There is a need to change and employee or contract turn periodically in an
@@ -43,7 +43,6 @@ This module add new models:
 - Working Template (hr.working.template)
 - Working Template Line (hr.working.template.line)
 - Working Template Exception (hr.working.template.exception)
-- Working Hours Switch (hr.working.hours.switch)
 ''',
     'depends': [
         'hr',
@@ -52,12 +51,12 @@ This module add new models:
     ],
     'data': [
         'security/ir.model.access.csv',
-        'view/hr_working_hours_switch_view.xml',
+        'view/hr_working_hours_view.xml',
         'view/hr_contract_view.xml',
         'view/hr_attendance_view.xml',
     ],
     'demo': [
-        'demo/data_ir_cron.xml',
+        #~ 'demo/data_ir_cron.xml',
     ],
     'test': [],
     'qweb': [],

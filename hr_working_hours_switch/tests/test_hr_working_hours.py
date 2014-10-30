@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 """
-Definition of the unit tests of the Odoo hr_working_hours_switch module.
+Definition of the unit tests of the Odoo hr_working_hours module.
 """
 
 ###############################################################################
@@ -32,10 +32,10 @@ Definition of the unit tests of the Odoo hr_working_hours_switch module.
 from openerp.tests.common import TransactionCase
 
 
-class test_working_hours_switch(TransactionCase):
+class test_working_hours(TransactionCase):
 
     """
-    This test object test the correct functionality of the hours switch module.
+    This test object test the correct functionality of the hr working hours module.
     This test depends of the data demo of the module, so if the data demo
     changes then the test need to be change too.
     """
@@ -45,19 +45,18 @@ class test_working_hours_switch(TransactionCase):
         Inicializate method with the resources to be use in the test.
         @return True
         """
-        super(test_working_hours_switch, self).setUp()
+        super(test_working_hours, self).setUp()
         cur, uid = self.cr, self.uid
 
         # get the model object needed.
-        self.whs_obj = self.registry('hr.working.hour.switch')
         self.wt_obj = self.registry('hr.working.template')
         self.wtl_obj = self.registry('hr.working.template.line')
         self.wte_obj = self.registry('hr.working.template.exception')
         return True
 
-    def test_switch(self):
+    def test_shift(self):
         """
-        This method will make the switch test.
+        This method will make the hr working hours test.
         @return True
         """
         return True

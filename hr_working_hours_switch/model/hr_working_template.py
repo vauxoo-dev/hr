@@ -47,7 +47,7 @@ class hr_working_template(osv.Model):
             help='help string'),
         'contract_ids': fields.one2many(
             'hr.contract',
-            'working_hour_switch_id',
+            'working_tmpl_id',
             string='Contracts',
             help='Contracts'),
         'wking_tmpl_line_ids': fields.one2many(

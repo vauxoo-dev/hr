@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 """
-Init file for the unit tests in the hr_working_hours_switch module.
+Init file for the unit tests in the hr_working_hours module.
 """
 
 ###############################################################################
@@ -29,8 +29,8 @@ Init file for the unit tests in the hr_working_hours_switch module.
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-from . import test_hr_working_hours_switch
+from . import test_hr_working_hours
 
 fast_suite = [
-    test_hr_working_hours_switch,
+    test_hr_working_hours,
 ]

@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 """
-Init file for the models in the hr_working_hours_switch module.
+Init file for the models in the hr_working_hours_shifts module.
 """
 
 ###############################################################################
@@ -29,7 +29,6 @@ Init file for the models in the hr_working_hours_switch module.
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-from . import hr_working_hours_switch
 from . import hr_contract
-from . import working_template
+from . import hr_working_template
 from . import hr_attendance
