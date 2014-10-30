@@ -66,7 +66,10 @@ class hr_working_template(osv.Model):
         'current_working_id': fields.many2one(
             'hr.working.template.line',
             string='Current Working Template',
-            help='Current Working Template'),
+            help='Current Working Template',
+            required=True,
+            domain="[('current_working_id', 'in', (5, 0, wking_tmpl_line_ids))]",
+            ),
     }
 
 
@@ -83,6 +86,10 @@ class hr_working_template_line(osv.Model):
             'hr.working.template',
             'Working Template',
             help='Working Template'),
+        'working_scheduler_id': fields.many2one(
+            'resource.calendar',
+            'Working Scheduler',
+            help='Working Scheduler'),
     }
     _order = 'seq'
     _rec_name = 'working_id'
