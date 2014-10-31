@@ -30,6 +30,7 @@ working.template.exception.
 ###############################################################################
 
 from openerp.osv import fields, osv
+from datetime import datetime
 
 
 class hr_working_template(osv.Model):
@@ -77,6 +78,7 @@ class hr_working_template(osv.Model):
         if context is None:
             context = {}
         wk_tmpl_line_obj = self.pool.get('hr.working.template.line')
+        wk_tmpl_excep_obj = self.pool.get('hr.working.template.exception')
         contract_obj = self.pool.get('hr.contract')
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
             wk_tmpl_line_ids = wk_tmpl_line_obj.search(cr, uid, \
@@ -100,13 +102,38 @@ class hr_working_template(osv.Model):
                            {'current_working_id':\
                             wk_tmpl_line_ids[next_index]},
                            context=context)
+
                 if contract_ids:
                     for contract in contract_ids:
-                        contract_obj.write(cr, uid, contract,
-                                   {'working_hours':\
-                                    wk_tmpl_line_brw[next_index].\
-                                    working_scheduler_id.id},
-                                    context=context)
+                        wk_tmpl_excep_ids = wk_tmpl_excep_obj.search(cr, uid,
+                                           [('working_id', '=', wk_tmpl.id),
+                                           ('contract_id', '=', contract)],)
+                        if wk_tmpl_excep_ids:
+                            wk_tmpl_excep_brw = wk_tmpl_excep_obj.browse(cr,
+                                            uid, wk_tmpl_excep_ids,
+                                            context=context)
+                            for exception in wk_tmpl_excep_brw:
+                                if datetime.now().strftime('%Y-%m-%d') >=\
+                                    exception.date_start and\
+                                    datetime.now().strftime('%Y-%m-%d') <=\
+                                    exception.date_stop:
+                                    contract_obj.write(cr, uid, contract,
+                                               {'working_hours':\
+                                                exception.\
+                                                working_scheduler_id.id},
+                                                context=context)
+                                else:
+                                    contract_obj.write(cr, uid, contract,
+                                       {'working_hours':\
+                                        wk_tmpl_line_brw[next_index].\
+                                        working_scheduler_id.id},
+                                        context=context)
+                        else:
+                            contract_obj.write(cr, uid, contract,
+                                       {'working_hours':\
+                                        wk_tmpl_line_brw[next_index].\
+                                        working_scheduler_id.id},
+                                        context=context)
         return True
 
 
