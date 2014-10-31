@@ -65,10 +65,10 @@ class hr_working_template(osv.Model):
             help='Period'),
         'current_working_id': fields.many2one(
             'hr.working.template.line',
-            string='Current Working Template',
-            help='Current Working Template',
-            required=True,
-            domain="[('current_working_id', 'in', (5, 0, wking_tmpl_line_ids))]",
+            string='Current Working Template Line',
+            help='Current Working Template Line',
+            #~ required=True,
+            domain="[('working_id', '=', id)]",
             ),
     }
 
@@ -80,8 +80,9 @@ class hr_working_template_line(osv.Model):
 
     _name = 'hr.working.template.line'
     _description = 'Working Template Line'
+
     _columns = {
-        'seq': fields.integer('Sequence', help="Sequence"),
+        'sequence': fields.integer('Sequence', help="Sequence"),
         'working_id': fields.many2one(
             'hr.working.template',
             'Working Template',
@@ -91,8 +92,9 @@ class hr_working_template_line(osv.Model):
             'Working Scheduler',
             help='Working Scheduler'),
     }
-    _order = 'seq'
-    _rec_name = 'working_id'
+
+    _order = 'sequence'
+    _rec_name = 'sequence'
 
 
 class hr_working_template_exception(osv.Model):

@@ -9,6 +9,9 @@
             <field name="model">hr.working.template</field>
             <field name="arch" type="xml">
                 <form string="Working Template">
+                <header>
+                    <button name="switch_shift" string="Switch Shift" type="object" class="oe_highlight"/>
+                </header>
                     <sheet>
                         <group>
                             <field name="name"/>
@@ -54,7 +57,7 @@
                 <form string="Working Template Line">
                     <sheet>
                         <group>
-                            <field name="seq"/>
+                            <field name="sequence"/>
                             <field name="working_scheduler_id"/>
                         </group>
                     </sheet>
@@ -67,7 +70,7 @@
             <field name="model">hr.working.template.line</field>
             <field name="arch" type="xml">
                 <tree string="Working Template Line">
-                    <field name="seq"/>
+                    <field name="sequence"/>
                     <field name="working_scheduler_id"/>
                 </tree>
             </field>
