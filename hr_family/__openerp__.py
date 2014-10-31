@@ -35,7 +35,6 @@ This module adds functionality to set data family of employee.
     "category": "HR",
     "demo": [],
     "data": [
-        "security/hr_family_type_security.xml",
         'security/ir.model.access.csv',
         "data/hr_family_type.xml",
         "view/hr_employee_view.xml"
