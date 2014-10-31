@@ -3,14 +3,14 @@
     <data>
 
        <record id="ir_cron_hr_working_template_action" model="ir.cron">
-            <field name="name">Working Hour</field>
+            <field name="name">Working Shifts Switch</field>
             <field name="active" eval="False"/>
-            <field name="interval_number">6</field>
+            <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
             <field name="doall" eval="True"/>
             <field name="model">hr.working.template</field>
-            <field name="function">swtich</field>
+            <field name="function">_switch_shift</field>
             <field name="args">()</field>
         </record>
 
