@@ -55,8 +55,9 @@ class hr_working_template(osv.Model):
             'working_id',
             string='Working Template Lines',
             help="Working Template Lines"),
-        'wking_tmpl_excpt_id': fields.many2one(
+        'wking_tmpl_excpt_id': fields.one2many(
             'hr.working.template.exception',
+            'working_id',
             string='Working Template Exception',
             help="Working Template Exception"),
         'period': fields.selection(
@@ -71,6 +72,42 @@ class hr_working_template(osv.Model):
             domain="[('working_id', '=', id)]",
             ),
     }
+    
+    def switch_shift(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        wk_tmpl_line_obj = self.pool.get('hr.working.template.line')
+        contract_obj = self.pool.get('hr.contract')
+        for wk_tmpl in self.browse(cr, uid, ids, context=context):
+            wk_tmpl_line_ids = wk_tmpl_line_obj.search(cr, uid, \
+                                                       [('working_id', '=',\
+                                                        wk_tmpl.id)],)
+            wk_tmpl_line_brw = wk_tmpl_line_obj.browse(cr, uid,
+                                                       wk_tmpl_line_ids,
+                                                       context=context)
+            contract_ids = contract_obj.search(cr, uid, \
+                                                       [('working_tmpl_id', \
+                                                       '=', wk_tmpl.id)],)
+            if wk_tmpl_line_ids and wk_tmpl.current_working_id:
+                if wk_tmpl_line_ids.index(wk_tmpl.current_working_id.id) == \
+                    len(wk_tmpl_line_ids) - 1:
+                    next_index = 0
+                else:
+                    next_index = wk_tmpl_line_ids.index(wk_tmpl.\
+                                                        current_working_id.\
+                                                        id) + 1
+                self.write(cr, uid, wk_tmpl.id,
+                           {'current_working_id':\
+                            wk_tmpl_line_ids[next_index]},
+                           context=context)
+                if contract_ids:
+                    for contract in contract_ids:
+                        contract_obj.write(cr, uid, contract,
+                                   {'working_hours':\
+                                    wk_tmpl_line_brw[next_index].\
+                                    working_scheduler_id.id},
+                                    context=context)
+        return True
 
 
 class hr_working_template_line(osv.Model):
@@ -115,4 +152,8 @@ class hr_working_template_exception(osv.Model):
             'hr.contract',
             string='Contract',
             help='Contract'),
+        'working_scheduler_id': fields.many2one(
+            'resource.calendar',
+            'Working Scheduler',
+            help='Working Scheduler'),
     }
