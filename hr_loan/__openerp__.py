@@ -42,6 +42,7 @@ This module will manage the loans to employees of the company in OpenERP.
     "data": [
         'data/hr_loan.xml',
         'view/hr_loan_view.xml',
+        'view/hr_payroll_account_view.xml',
         'security/hr_loan_security.xml',
         'security/ir.model.access.csv'],
     "demo": [
