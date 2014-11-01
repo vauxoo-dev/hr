@@ -329,7 +329,9 @@ class TestLoanCompute(TransactionCase):
                 self.payslip_brw.move_id.line_id[num].partner_id.id != 12:
             self.assertEquals(error_msg_account)
         num += 1
-
+        print self.payslip_brw.move_id.line_id[num].credit,"self.payslip_brw.move_id.line_id[num].credit"
+        print type(self.payslip_brw.move_id.line_id[num].credit),"type"
+        print self.payslip_brw.move_id.line_id[num].partner_id.id,"self.payslip_brw.move_id.line_id[num].partner_id.id"
         if self.payslip_brw.move_id.line_id[num].credit != 600 or \
                 self.payslip_brw.move_id.line_id[num].partner_id.id != 12:
             self.assertEquals(error_msg_account)
