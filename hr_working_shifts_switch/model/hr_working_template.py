@@ -46,7 +46,6 @@ class hr_working_template(osv.Model):
         ('done', 'Active'),
         ('cancel', 'Cancelled')
     ]
-
     _columns = {
         'name': fields.char(
             'Name',
@@ -103,8 +102,7 @@ class hr_working_template(osv.Model):
         if context is None:
             context = {}
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            self.write(cr, uid, wk_tmpl.id, {'state': 'draft'},
-                       context=context)
+            self.write(cr, uid, wk_tmpl.id, {'state': 'draft'})
         return True
 
     def _switch_shift(self, cr, uid, ids=False, context=None):
@@ -141,8 +139,7 @@ class hr_working_template(osv.Model):
                                                         id) + 1
                 self.write(cr, uid, wk_tmpl.id,
                            {'current_working_id':
-                            wk_tmpl_line_ids[next_index]},
-                           context=context)
+                            wk_tmpl_line_ids[next_index]})
                 if contract_ids:
                     for contract in contract_ids:
                         wk_tmpl_excep_ids = wk_tmpl_excep_obj.search(cr, uid,
@@ -160,8 +157,7 @@ class hr_working_template(osv.Model):
                                     contract_obj.write(cr, uid, contract,
                                                {'working_hours':
                                                 exception.
-                                                working_scheduler_id.id},
-                                                context=context)
+                                                working_scheduler_id.id})
                                     dict_vals = {'working_id': wk_tmpl.id,
                                                  'working_scheduler_id':
                                                  exception.
@@ -177,8 +173,7 @@ class hr_working_template(osv.Model):
                                     contract_obj.write(cr, uid, contract,
                                        {'working_hours':\
                                         wk_tmpl_line_brw[next_index].\
-                                        working_scheduler_id.id},
-                                        context=context)
+                                        working_scheduler_id.id})
                                     dict_vals = {'working_id': wk_tmpl.id,
                                                  'working_scheduler_id':
                                                  wk_tmpl_line_brw[next_index].
@@ -194,8 +189,7 @@ class hr_working_template(osv.Model):
                             contract_obj.write(cr, uid, contract,
                                        {'working_hours':\
                                         wk_tmpl_line_brw[next_index].\
-                                        working_scheduler_id.id},
-                                        context=context)
+                                        working_scheduler_id.id})
                             dict_vals = {'working_id': wk_tmpl.id,
                                          'working_scheduler_id':
                                          wk_tmpl_line_brw[next_index].
