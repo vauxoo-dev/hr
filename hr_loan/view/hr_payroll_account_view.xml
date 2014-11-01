@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <!-- Adding Account fields to the Salary Rules -->
+
+        <record id="hr_salary_rule_form_inherit_partner" model="ir.ui.view">
+            <field name="name">hr.salary.rule.form.inherit.partner</field>
+            <field name="model">hr.salary.rule</field>
+            <field name="inherit_id" ref="hr_payroll_account.hr_salary_rule_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='account_tax_id']" position="after">
+                    <field name="partner_aml"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

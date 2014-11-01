@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="0">
+
+    <record model="ir.ui.view" id="view_loan_tree">
+        <field name="name">hr.loan.tree</field>
+        <field name="model">hr.loan</field>
+        <field name="arch" type="xml">
+            <tree string="Loan">
+                <field name="name"/>
+                <field name="amount_approved" />
+                <field name="share_quantity" />
+                <field name="payment_type" />
+                <field name="employee_id" />
+                <field name="partner_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_loan_form">
+        <field name="name">hr.loan.form</field>
+        <field name="model">hr.loan</field>
+        <field name="arch" type="xml">
+            <form string="Loan" version="7.0">
+                <header>
+                    <field name="state" widget="statusbar" nolabel="1" />
+                    <button name="compute_shares" string="Compute Shares" 
+                        groups="hr_loan.group_hr_loan_manager"
+                        states="draft" class="oe_highlight" type="object"/>
+                    <button name="activate_loan" string="Activate Loan" 
+                        groups="hr_loan.group_hr_loan_manager"
+                        states="draft" type="object"/>
+                    <button name="cancel_loan" string="Cancel Loan" 
+                        groups="hr_loan.group_hr_loan_manager"
+                        states="active" type="object"/>
+                    <button name="draft_loan" string="Set to Draft" 
+                        groups="hr_loan.group_hr_loan_manager"
+                        states="active" type="object"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group colspan="2">
+                            <field name="name" required="1"
+                                attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                        </group>
+                        <group>
+                            <field name="amount_approved" required="1"
+                                attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                            <field name="share_quantity" required="1"
+                                attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                            <field name="payment_type" required="1"
+                                attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                            <field name="date_start" required="1"
+                                attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                            <field name="date_stop" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="employee_id" required="1"
+                                attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                            <field name="partner_id" required="1"
+                                attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                            <field name="currency_id" groups="base.group_multi_currency"
+                                attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                            <field name="company_id" groups="base.group_multi_company"
+                                attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Shares">
+                            <field name="share_ids"
+                                attrs="{'readonly': [('state', 'not in', ('draft'))]}">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="payment_date"/>
+                                    <field name="share"/>
+                                    <field name="hr_payslip_id" readonly="1"/>
+                                    <field name="state" readonly="1"/>
+                                </tree>
+                                <form>
+                                    <field name="name"/>
+                                    <field name="payment_date"/>
+                                    <field name="share"/>
+                                    <field name="hr_payslip_id" readonly="1"/>
+                                    <field name="partner_id" readonly="1"/>
+                                    <field name="employee_id" readonly="1"/>
+                                    <field name="state" readonly="1"/>
+                                    <field name="company_id" readonly="1"/>
+                                    <field name="currency_id" readonly="1"/>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_loan_loan_form">
+        <field name="name">Loan</field>
+        <field name="res_model">hr.loan</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_loan_loan" name="Loan" parent="hr.menu_hr_root"/>
+
+    <!-- SUB-MENU -->
+
+    <menuitem id="sub_menu_loan_loan" name="Loan" parent="menu_loan_loan"
+    action="action_loan_loan_form"/>
+
+
+    <record id="payroll_loan_form" model="ir.ui.view">
+        <field name="name">payroll.loan.form</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//notebook" position="inside">
+                        <page string="Loan Shares">
+                            <field name="share_line_ids" readonly="1">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="payment_date"/>
+                                    <field name="share"/>
+                                    <field name="partner_id"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="total_loan"
+                                    class="oe_subtotal_footer_separator"
+                                    widget="monetary"
+                                    options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                        </page>
+                </xpath>
+            </data>
+        </field>
+    </record>
+    </data>
+</openerp>

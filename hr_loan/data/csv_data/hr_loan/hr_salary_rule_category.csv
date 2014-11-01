@@ -1,0 +1,4 @@
+id,model,name,code
+str,str,str,str
+hr_salary_rule_category_loan,hr.salary.rule.category,Loan,LOAN
+hr_salary_rule_category_netloan,hr.salary.rule.category,Net Minus Loan,NETLOAN

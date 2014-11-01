@@ -1,0 +1,6 @@
+id,model,name,amount_approved,share_quantity,payment_type,date_start,employee_id,partner_id
+str,str,str,str,str,str,date,ref,ref
+hr_loan_001,hr.loan,Loan 1,6000,8,monthly,%Y-%m-%d,hr_payroll.hr_contract_gilles_gravie,base.res_partner_8
+hr_loan_002,hr.loan,Loan 2,3000,4,fortnightly,%Y-%m-%d,hr_payroll.hr_contract_gilles_gravie,base.res_partner_7
+hr_loan_003,hr.loan,Loan 3,2500,6,weekly,%Y-%m-%d,hr_payroll.hr_contract_firstcontract1,base.res_partner_7
+hr_loan_004,hr.loan,Loan 4,1000,2,bimonthly,%Y-%m-%d,hr_payroll.hr_contract_firstcontract1,base.res_partner_8
