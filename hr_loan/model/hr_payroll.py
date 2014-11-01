@@ -29,11 +29,10 @@ class hr_salary_rule(osv.osv):
 
     _inherit = 'hr.salary.rule'
 
-
     def _get_selection_partner_aml(self, cr, uid, context=None):
         # res = super(hr_salary_rule, self)._get_selection_partner(cr, uid, context=context) TODO actived when exist function in origin module
         res = []
-        res.append(('default', 'By default')) # TODO deprecated append by origin module
+        res.append(('default', 'By default'))  # TODO deprecated append by origin module
         res.append(('loan', 'Use the Partner Loan'))
         return res
 
@@ -52,6 +51,7 @@ class hr_salary_rule(osv.osv):
 
 
 class hr_payslip_line(osv.osv):
+
     '''
     Payslip Line
     '''
