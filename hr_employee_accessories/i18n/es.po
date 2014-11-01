@@ -1,0 +1,52 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* hr_employee_accessories
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-10-23 23:29+0000\n"
+"PO-Revision-Date: 2014-10-23 23:29+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_employee_accessories
+#: view:hr.employee:hr_employee_accessories.view_accessories_employee_form
+msgid "Accessories"
+msgstr "Accesorios"
+
+#. module: hr_employee_accessories
+#: field:product.template,hr_employee_accessory_ok:0
+msgid "Accessory Employee?"
+msgstr "Accesorio Empleado?"
+
+#. module: hr_employee_accessories
+#: model:ir.model,name:hr_employee_accessories.model_hr_employee
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: hr_employee_accessories
+#: help:product.template,hr_employee_accessory_ok:0
+msgid "Indicate if this is an accessory to the         employees as shirt, shoes, etc."
+msgstr "Indica si este es un accesorio de empleado, como playera, zapatos, etc."
+
+#. module: hr_employee_accessories
+#: help:hr.employee,product_accessory_ids:0
+msgid "Indicate the products that         provide to the employee, example, shirt XL, etc. Only         can see products that have active the field \"Accessory Employee\""
+msgstr "Indica los productos que se proporcionan al empleado, ejemplo Playera XL, etc. Unicamente se pueden ver productos que tienen activo el campo \"Accesorio Empleado\""
+
+#. module: hr_employee_accessories
+#: field:hr.employee,product_accessory_ids:0
+msgid "Product Accessory"
+msgstr "Accesorios"
+
+#. module: hr_employee_accessories
+#: model:ir.model,name:hr_employee_accessories.model_product_template
+msgid "Product Template"
+msgstr "Plantilla de producto"
+
