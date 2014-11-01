@@ -48,6 +48,7 @@ This module add new models:
         'hr',
         'hr_contract',
         'hr_attendance',
+        'resource',
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -56,7 +57,9 @@ This module add new models:
         'view/hr_attendance_view.xml',
         'data/data_ir_cron.xml',
     ],
-    'demo': [],
+    'demo': [
+        'demo/hr_working_template_demo.xml',
+    ],
     'test': [],
     'qweb': [],
     'js': [],
