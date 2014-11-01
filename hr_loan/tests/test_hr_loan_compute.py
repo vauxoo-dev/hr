@@ -51,9 +51,9 @@ class TestLoanCompute(TransactionCase):
         cr, uid = self.cr, self.uid
 
         fy_id = self.account_fiscalyear_obj.search(cr, uid, [
-            ('date_start','=', fiscalyear_data['date_start'] ),
-            ('date_stop','=', fiscalyear_data['date_stop'])
-            ])
+            ('date_start', '=', fiscalyear_data['date_start']),
+            ('date_stop', '=', fiscalyear_data['date_stop'])
+        ])
 
         if fy_id:
             fy_brw = self.account_fiscalyear_obj.browse(cr, uid, fy_id[0])
@@ -61,23 +61,22 @@ class TestLoanCompute(TransactionCase):
             for period_brw in fy_brw.period_ids:
                 for key in month:
                     if period_brw.date_start == month[key][1] and \
-                        period_brw.date_stop == month[key][2]:
+                            period_brw.date_stop == month[key][2]:
                         month[key][0] = True
 
             for key in month:
                 if not month[key][0]:
                     period_id = self.account_period_obj.create(cr, uid, {
-                        'name' : str(key) + ' ' + fy_brw.code,
-                        'code' : str(key) + ' ' + fy_brw.code,
+                        'name': str(key) + ' ' + fy_brw.code,
+                        'code': str(key) + ' ' + fy_brw.code,
                         'fiscalyear_id': fy_brw.id,
                         'date_start': month[key][1],
-                        'date_stop' : month[key][2],
+                        'date_stop': month[key][2],
                     })
                     month[key][0] = True
         else:
             fiscalyear_id = self.account_fiscalyear_obj.create(cr, uid, fiscalyear_data)
             self.account_fiscalyear_obj.create_period(cr, uid, fiscalyear_id)
-
 
     def dataloan(self):
         cr, uid = self.cr, self.uid
@@ -149,12 +148,12 @@ class TestLoanCompute(TransactionCase):
             'account_debit': 9,
         })
 
-        fiscalyear_data =  {
-                'name' : '2014',
-                'code' : '2014',
-                'date_start': '2014-01-01',
-                'date_stop' : '2014-12-31',
-            }
+        fiscalyear_data = {
+            'name': '2014',
+            'code': '2014',
+            'date_start': '2014-01-01',
+            'date_stop': '2014-12-31',
+        }
         month = {
             10: [False, '2014-10-01', '2014-10-31'],
             11: [False, '2014-11-01', '2014-11-30'],
@@ -163,12 +162,12 @@ class TestLoanCompute(TransactionCase):
 
         self.create_period(fiscalyear_data, month)
 
-        fiscalyear_data =  {
-                'name' : '2015',
-                'code' : '2015',
-                'date_start': '2015-01-01',
-                'date_stop' : '2015-12-31',
-            }
+        fiscalyear_data = {
+            'name': '2015',
+            'code': '2015',
+            'date_start': '2015-01-01',
+            'date_stop': '2015-12-31',
+        }
         month = {
             1: [False, '2015-01-01', '2015-01-31'],
             2: [False, '2015-02-01', '2015-02-28'],
