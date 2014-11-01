@@ -46,6 +46,7 @@ class hr_working_template(osv.Model):
         ('done', 'Active'),
         ('cancel', 'Cancelled')
     ]
+
     _columns = {
         'name': fields.char(
             'Name',

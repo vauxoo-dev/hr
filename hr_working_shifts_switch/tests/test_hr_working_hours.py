@@ -46,7 +46,7 @@ class test_working_hours(TransactionCase):
         @return True
         """
         super(test_working_hours, self).setUp()
-        # cur, uid = self.cr, self.uid # commented line to avoid unused 
+        # cur, uid = self.cr, self.uid # commented line to avoid unused
         # variable warning until tests are activated.
 
         # get the model object needed.
