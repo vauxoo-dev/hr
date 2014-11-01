@@ -25,6 +25,9 @@
 
 from openerp.tests.common import TransactionCase
 from openerp import netsvc
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class TestLoanCompute(TransactionCase):
@@ -314,34 +317,42 @@ class TestLoanCompute(TransactionCase):
         if not self.payslip_brw.move_id:
             self.assertEquals(error_msg_account)
 
+
         for aml in self.payslip_brw.move_id.line_id:
+            _logger.log(25, "aml.state %s", aml.state)
             if aml.state != 'valid':
                 self.assertEquals(error_msg_account)
         num = 0
         if self.payslip_brw.move_id.line_id[num].name == 'Adjustment Entry':
             num += 1
-
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 8050 %s", self.payslip_brw.move_id.line_id[num].credit)
         if self.payslip_brw.move_id.line_id[num].credit != 8050:
             self.assertEquals(error_msg_account)
         num += 1
-
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 600 %s", self.payslip_brw.move_id.line_id[num].credit)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.id 12 %s", self.payslip_brw.move_id.line_id[num].partner_id.id)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.name %s", self.payslip_brw.move_id.line_id[num].partner_id.name)
         if self.payslip_brw.move_id.line_id[num].credit != 600 or \
                 self.payslip_brw.move_id.line_id[num].partner_id.id != 12:
             self.assertEquals(error_msg_account)
         num += 1
-        print self.payslip_brw.move_id.line_id[num].credit,"self.payslip_brw.move_id.line_id[num].credit"
-        print type(self.payslip_brw.move_id.line_id[num].credit),"type"
-        print self.payslip_brw.move_id.line_id[num].partner_id.id,"self.payslip_brw.move_id.line_id[num].partner_id.id"
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 600 %s", self.payslip_brw.move_id.line_id[num].credit)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.id 12 %s", self.payslip_brw.move_id.line_id[num].partner_id.id)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.name %s", self.payslip_brw.move_id.line_id[num].partner_id.name)
         if self.payslip_brw.move_id.line_id[num].credit != 600 or \
                 self.payslip_brw.move_id.line_id[num].partner_id.id != 12:
             self.assertEquals(error_msg_account)
         num += 1
 
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 750 %s", self.payslip_brw.move_id.line_id[num].credit)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.id 13 %s", self.payslip_brw.move_id.line_id[num].partner_id.id)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.name %s", self.payslip_brw.move_id.line_id[num].partner_id.name)
         if self.payslip_brw.move_id.line_id[num].credit != 750 or \
            self.payslip_brw.move_id.line_id[num].partner_id.id != 13:
             self.assertEquals(error_msg_account)
         num += 1
 
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 10000 %s", self.payslip_brw.move_id.line_id[num].credit)
         if self.payslip_brw.move_id.line_id[num].debit != 10000:
             self.assertEquals(error_msg_account)
 
