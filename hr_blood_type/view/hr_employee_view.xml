@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record model='ir.ui.view' id='view_blood_type_employee_form'>
+            <field name='name'>view.blood.type.employee.form</field>
+            <field name='model'>hr.employee</field>
+            <field name='inherit_id' ref='hr.view_employee_form'/>
+            <field name='arch' type='xml'>
+                <xpath expr="//field[@name='otherid']" position="after">
+                    <field name="blood_type" widget="selection"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
