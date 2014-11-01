@@ -89,21 +89,21 @@ class hr_working_template(osv.Model):
         if context is None:
             context = {}
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            self.write(cr, uid, wk_tmpl.id, {'state': 'done'})
+            self._write(cr, uid, wk_tmpl.id, {'state': 'done'})
         return True
 
     def action_cancel(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            self.write(cr, uid, wk_tmpl.id, {'state': 'cancel'})
+            self._write(cr, uid, wk_tmpl.id, {'state': 'cancel'})
         return True
 
     def action_draft(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            self.write(cr, uid, wk_tmpl.id, {'state': 'draft'})
+            self._write(cr, uid, wk_tmpl.id, {'state': 'draft'})
         return True
 
     def _switch_shift(self, cr, uid, ids=False, context=None):
@@ -138,7 +138,7 @@ class hr_working_template(osv.Model):
                     next_index = wk_tmpl_line_ids.index(wk_tmpl.
                                                         current_working_id.
                                                         id) + 1
-                self.write(cr, uid, wk_tmpl.id,
+                self._write(cr, uid, wk_tmpl.id,
                            {'current_working_id':
                             wk_tmpl_line_ids[next_index]})
                 if contract_ids:
@@ -288,4 +288,4 @@ class hr_working_template_history(osv.Model):
     def create_record_history(self, cr, uid, dict_vals, context=None):
         if context is None:
             context = {}
-        return self.create(cr, uid, dict_vals, context=context)
+        return self._create(cr, uid, dict_vals, context=context)
