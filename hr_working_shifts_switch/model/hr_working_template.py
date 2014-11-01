@@ -31,6 +31,7 @@ working.template.exception.
 
 from openerp.osv import fields, osv
 from datetime import datetime
+from openerp import api
 
 
 class hr_working_template(osv.Model):
@@ -113,6 +114,7 @@ class hr_working_template(osv.Model):
             ids = self.search(cr, uid, [('state','=','done')])
         return self.switch_shift(cr, uid, ids, context=context)
 
+    @api.v7
     def switch_shift(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
@@ -138,7 +140,7 @@ class hr_working_template(osv.Model):
                     next_index = wk_tmpl_line_ids.index(wk_tmpl.
                                                         current_working_id.
                                                         id) + 1
-                self._write(cr, uid, wk_tmpl.id,
+                self._write(cr, uid, [wk_tmpl.id],
                            {'current_working_id':
                             wk_tmpl_line_ids[next_index]})
                 if contract_ids:
@@ -155,7 +157,7 @@ class hr_working_template(osv.Model):
                                     exception.date_start and\
                                     datetime.now().strftime('%Y-%m-%d') <=\
                                     exception.date_stop:
-                                    contract_obj.write(cr, uid, contract,
+                                    contract_obj._write(cr, uid, [contract],
                                                {'working_hours':
                                                 exception.
                                                 working_scheduler_id.id})
@@ -171,7 +173,7 @@ class hr_working_template(osv.Model):
                                                     uid, dict_vals,
                                                     context=context)
                                 else:
-                                    contract_obj.write(cr, uid, contract,
+                                    contract_obj._write(cr, uid, [contract],
                                        {'working_hours':\
                                         wk_tmpl_line_brw[next_index].\
                                         working_scheduler_id.id})
@@ -187,7 +189,7 @@ class hr_working_template(osv.Model):
                                                     uid, dict_vals,
                                                     context=context)
                         else:
-                            contract_obj.write(cr, uid, contract,
+                            contract_obj._write(cr, uid, [contract],
                                        {'working_hours':\
                                         wk_tmpl_line_brw[next_index].\
                                         working_scheduler_id.id})
