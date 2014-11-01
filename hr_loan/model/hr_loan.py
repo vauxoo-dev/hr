@@ -203,24 +203,27 @@ class hr_payslip(osv.Model):
         payslip_obj = self.pool.get('hr.payslip')
         payslip = payslip_obj.browse(cur, uid, payslip_id, context=context)
 
+        loan_brw = False
+
         for ind in result:
             if ind['code'] == 'LOAN':
                 loan_brw = ind
                 result.remove(ind)
 
-        if payslip.share_line_ids:
-            amount_list = {}
-            amount_num = 0
-            for share_brw in payslip.share_line_ids:
-                key = 'loan_' + \
-                    str(share_brw.id) + ' ' + loan_brw['code'] + \
-                    '-' + str(loan_brw['contract_id'])
-                amount = share_brw.share
-                line = deepcopy(loan_brw)
-                line['name'] = share_brw.name
-                line['amount'] = amount
-                line['loan_line_id'] = share_brw.id
-                result.append(line)
+        if loan_brw:
+            if payslip.share_line_ids:
+                amount_list = {}
+                amount_num = 0
+                for share_brw in payslip.share_line_ids:
+                    key = 'loan_' + \
+                        str(share_brw.id) + ' ' + loan_brw['code'] + \
+                        '-' + str(loan_brw['contract_id'])
+                    amount = share_brw.share
+                    line = deepcopy(loan_brw)
+                    line['name'] = share_brw.name
+                    line['amount'] = amount
+                    line['loan_line_id'] = share_brw.id
+                    result.append(line)
 
         return result
 
