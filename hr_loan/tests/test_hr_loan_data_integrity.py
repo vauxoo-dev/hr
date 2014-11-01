@@ -4,7 +4,7 @@
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
 #    All Rights Reserved
-############# Credits #########################################################
+# ############ Credits ########################################################
 #    Coded by: Yanina Aular <yani@vauxoo.com>
 #    Planified by: Moises Lopez <moises@vauxoo.com>
 #    Audited by: Humberto Arocha <hbto@vauxoo.com>
@@ -37,7 +37,7 @@ class TestInitData(TransactionCase):
     def setUp(self):
         super(TestInitData, self).setUp()
         self.imd_obj = self.registry('ir.model.data')
-            #'ir.model.data' model: (id, name, module, model, res_id)
+        # 'ir.model.data' model: (id, name, module, model, res_id)
 
     def test_init_data(self):
         """

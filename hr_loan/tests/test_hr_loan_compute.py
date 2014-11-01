@@ -4,7 +4,7 @@
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
 #    All Rights Reserved
-############# Credits #########################################################
+# ############ Credits ########################################################
 #    Coded by: Yanina Aular <yani@vauxoo.com>
 #    Planified by: Moises Lopez <moises@vauxoo.com>
 #    Audited by: Humberto Arocha <hbto@vauxoo.com>
@@ -23,12 +23,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
 from openerp.tests.common import TransactionCase
 from openerp import netsvc
-import csv
-import os
 
 
 class TestLoanCompute(TransactionCase):
@@ -66,16 +62,10 @@ class TestLoanCompute(TransactionCase):
 
             for key in month:
                 if not month[key][0]:
-                    period_id = self.account_period_obj.create(cr, uid, {
-                        'name': str(key) + ' ' + fy_brw.code,
-                        'code': str(key) + ' ' + fy_brw.code,
-                        'fiscalyear_id': fy_brw.id,
-                        'date_start': month[key][1],
-                        'date_stop': month[key][2],
-                    })
                     month[key][0] = True
         else:
-            fiscalyear_id = self.account_fiscalyear_obj.create(cr, uid, fiscalyear_data)
+            fiscalyear_id = self.account_fiscalyear_obj.create(
+                cr, uid, fiscalyear_data)
             self.account_fiscalyear_obj.create_period(cr, uid, fiscalyear_id)
 
     def dataloan(self):
@@ -130,8 +120,8 @@ class TestLoanCompute(TransactionCase):
         })
         self.payslip_brw = self.hr_payslip_obj.browse(cr, uid, payslip_id)
 
-        salary_rule_id = self.hr_salary_rule_obj.search(cr, uid,
-                                                        [('name', '=', 'Loan')])
+        salary_rule_id = self.hr_salary_rule_obj.search(
+            cr, uid, [('name', '=', 'Loan')])
         self.hr_salary_rule_obj.write(cr, uid, salary_rule_id, {
             'account_credit': 9,
         })
@@ -310,14 +300,6 @@ class TestLoanCompute(TransactionCase):
             if share_line.state != 'unpaid':
                 self.assertEquals(error_msg_payslip)
 
-        #self.hr_payslip_obj.hr_verify_sheet(cr, uid, [self.payslip_brw.id])
-        #self.hr_payslip_obj.process_sheet(cr, uid, [self.payslip_brw.id])
-
-        # self.wf_service.trg_validate(
-        #       uid , 'hr.payslip', [self.payslip_brw.id], 'hr_verify_sheet', cr)
-        # self.wf_service.trg_validate(
-        #       uid , 'hr.payslip', [self.payslip_brw.id], 'process_sheet', cr)
-
         self.hr_payslip_obj.signal_workflow(
             cr, uid, [self.payslip_brw.id], 'hr_verify_sheet')
         self.hr_payslip_obj.signal_workflow(
@@ -336,7 +318,7 @@ class TestLoanCompute(TransactionCase):
             if aml.state != 'valid':
                 self.assertEquals(error_msg_account)
         num = 0
-        if self.payslip_brw.move_id.line_id[num] == 'Adjustment Entry':
+        if self.payslip_brw.move_id.line_id[num].name == 'Adjustment Entry':
             num += 1
 
         if self.payslip_brw.move_id.line_id[num].credit != 8050:
@@ -364,7 +346,7 @@ class TestLoanCompute(TransactionCase):
     def test_compute_shares(self):
         cr, uid = self.cr, self.uid
 
-        data_ok = self.dataloan()
+        self.dataloan()
 
         for loan_id in self.loan_list:
 
@@ -372,8 +354,6 @@ class TestLoanCompute(TransactionCase):
             loan_brw = self.hr_loan_obj.browse(cr, uid, loan_id)
 
             self.loan_list_brw.append(loan_brw)
-
-            current_date = datetime.strptime(loan_brw.date_start, '%Y-%m-%d')
 
             if loan_brw.share_quantity != len(loan_brw.share_ids):
                 self.assertEquals('Error! in shares quantity')
