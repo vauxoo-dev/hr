@@ -41,9 +41,43 @@ class TestLoanCompute(TransactionCase):
         self.hr_payslip_obj = self.registry('hr.payslip')
         self.hr_salary_rule_obj = self.registry('hr.salary.rule')
         self.hr_payroll_structure_obj = self.registry('hr.payroll.structure')
+        self.account_fiscalyear_obj = self.registry('account.fiscalyear')
+        self.account_period_obj = self.registry('account.period')
         self.wf_service = netsvc.LocalService('workflow')
         self.loan_list_brw = list()
         self.payslip_brw = None
+
+    def create_period(self, fiscalyear_data, month):
+        cr, uid = self.cr, self.uid
+
+        fy_id = self.account_fiscalyear_obj.search(cr, uid, [
+            ('date_start','=', fiscalyear_data['date_start'] ),
+            ('date_stop','=', fiscalyear_data['date_stop'])
+            ])
+
+        if fy_id:
+            fy_brw = self.account_fiscalyear_obj.browse(cr, uid, fy_id[0])
+
+            for period_brw in fy_brw.period_ids:
+                for key in month:
+                    if period_brw.date_start == month[key][1] and \
+                        period_brw.date_stop == month[key][2]:
+                        month[key][0] = True
+
+            for key in month:
+                if not month[key][0]:
+                    period_id = self.account_period_obj.create(cr, uid, {
+                        'name' : str(key) + ' ' + fy_brw.code,
+                        'code' : str(key) + ' ' + fy_brw.code,
+                        'fiscalyear_id': fy_brw.id,
+                        'date_start': month[key][1],
+                        'date_stop' : month[key][2],
+                    })
+                    month[key][0] = True
+        else:
+            fiscalyear_id = self.account_fiscalyear_obj.create(cr, uid, fiscalyear_data)
+            self.account_fiscalyear_obj.create_period(cr, uid, fiscalyear_id)
+
 
     def dataloan(self):
         cr, uid = self.cr, self.uid
@@ -99,11 +133,51 @@ class TestLoanCompute(TransactionCase):
 
         salary_rule_id = self.hr_salary_rule_obj.search(cr, uid,
                                                         [('name', '=', 'Loan')])
-
         self.hr_salary_rule_obj.write(cr, uid, salary_rule_id, {
             'account_credit': 9,
+        })
+        salary_rule_id = self.hr_salary_rule_obj.search(cr, uid,
+                                                        [('name', '=',
+                                                            'Net Minus Loan')])
+        self.hr_salary_rule_obj.write(cr, uid, salary_rule_id, {
+            'account_credit': 9,
+        })
+        salary_rule_id = self.hr_salary_rule_obj.search(cr, uid,
+                                                        [('name', '=',
+                                                            'Basic')])
+        self.hr_salary_rule_obj.write(cr, uid, salary_rule_id, {
             'account_debit': 9,
         })
+
+        fiscalyear_data =  {
+                'name' : '2014',
+                'code' : '2014',
+                'date_start': '2014-01-01',
+                'date_stop' : '2014-12-31',
+            }
+        month = {
+            10: [False, '2014-10-01', '2014-10-31'],
+            11: [False, '2014-11-01', '2014-11-30'],
+            12: [False, '2014-12-01', '2014-12-31'],
+        }
+
+        self.create_period(fiscalyear_data, month)
+
+        fiscalyear_data =  {
+                'name' : '2015',
+                'code' : '2015',
+                'date_start': '2015-01-01',
+                'date_stop' : '2015-12-31',
+            }
+        month = {
+            1: [False, '2015-01-01', '2015-01-31'],
+            2: [False, '2015-02-01', '2015-02-28'],
+            3: [False, '2015-03-01', '2015-03-31'],
+            4: [False, '2015-04-01', '2015-04-30'],
+            5: [False, '2015-05-01', '2015-05-31'],
+        }
+
+        self.create_period(fiscalyear_data, month)
 
         return True
 
@@ -262,23 +336,30 @@ class TestLoanCompute(TransactionCase):
         for aml in self.payslip_brw.move_id.line_id:
             if aml.state != 'valid':
                 self.assertEquals(error_msg_account)
+        num = 0
+        if self.payslip_brw.move_id.line_id[num] == 'Adjustment Entry':
+            num += 1
 
-        if self.payslip_brw.move_id.line_id[0].credit != 600 or \
-           self.payslip_brw.move_id.line_id[1].debit != 600 or \
-           self.payslip_brw.move_id.line_id[0].partner_id.id != 12 or \
-           self.payslip_brw.move_id.line_id[1].partner_id.id != 12:
+        if self.payslip_brw.move_id.line_id[num].credit != 8050:
             self.assertEquals(error_msg_account)
+        num += 1
 
-        if self.payslip_brw.move_id.line_id[2].credit != 600 or \
-           self.payslip_brw.move_id.line_id[3].debit != 600 or \
-           self.payslip_brw.move_id.line_id[2].partner_id.id != 12 or \
-           self.payslip_brw.move_id.line_id[3].partner_id.id != 12:
+        if self.payslip_brw.move_id.line_id[num].credit != 600 or \
+                self.payslip_brw.move_id.line_id[num].partner_id.id != 12:
             self.assertEquals(error_msg_account)
+        num += 1
 
-        if self.payslip_brw.move_id.line_id[4].credit != 750 or \
-           self.payslip_brw.move_id.line_id[5].debit != 750 or \
-           self.payslip_brw.move_id.line_id[4].partner_id.id != 13 or \
-           self.payslip_brw.move_id.line_id[5].partner_id.id != 13:
+        if self.payslip_brw.move_id.line_id[num].credit != 600 or \
+                self.payslip_brw.move_id.line_id[num].partner_id.id != 12:
+            self.assertEquals(error_msg_account)
+        num += 1
+
+        if self.payslip_brw.move_id.line_id[num].credit != 750 or \
+           self.payslip_brw.move_id.line_id[num].partner_id.id != 13:
+            self.assertEquals(error_msg_account)
+        num += 1
+
+        if self.payslip_brw.move_id.line_id[num].debit != 10000:
             self.assertEquals(error_msg_account)
 
     def test_compute_shares(self):
