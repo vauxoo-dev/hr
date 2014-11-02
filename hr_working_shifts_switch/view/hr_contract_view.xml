@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="hr_contract_hwhs_form_view">
+            <field name="name">hr.contract.hwhs.form.view</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='working_hours']" position="replace">
+                    <field name="working_hours" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='working_hours']" position="after">
+                    <field name="working_tmpl_id"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
