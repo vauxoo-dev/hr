@@ -4,7 +4,7 @@
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
 #    All Rights Reserved
-############# Credits #########################################################
+# ############ Credits ########################################################
 #    Coded by: Yanina Aular <yani@vauxoo.com>
 #    Planified by: Moises Lopez <moises@vauxoo.com>
 #    Audited by: Humberto Arocha <hbto@vauxoo.com>
@@ -123,8 +123,10 @@ class hr_loan(osv.Model):
                     cur, uid, old_loanline_ids, context=context)
 
             if hr_loan.amount_approved <= 0 or hr_loan.share_quantity <= 0:
-                raise osv.except_osv(_("Values not allowed"),
-                                     _('Amount Approved and Share Quantity must be greater than zero'))
+                raise osv.except_osv(
+                    _("Values not allowed"),
+                    _('Amount Approved and Share Quantity\
+                        must be greater than zero'))
 
             share = hr_loan.amount_approved / hr_loan.share_quantity
 
@@ -153,15 +155,20 @@ class hr_loan(osv.Model):
                         current_date = self.last_day_of_month(current_date)
 
                 hr_loan_line_obj.create(cur, uid, {
-                    'name': "%s %s %s (%s)" % (hr_loan.name, _('Share'), ind + 1, current_date.strftime('%Y-%m-%d')),
+                    'name': "%s %s %s (%s)" % (
+                        hr_loan.name,
+                        _('Share'),
+                        ind + 1,
+                        current_date.strftime('%Y-%m-%d')),
                     'payment_date': current_date,
                     'state': 'unpaid',
                     'hr_loan_id': hr_loan.id,
                     'share': share,
                 }, context=context)
 
-            self.write(cur, uid, [hr_loan.id],
-                       {'date_stop': current_date + relativedelta(days=1)}, context=context)
+            self.write(cur, uid, [hr_loan.id], {
+                'date_stop': current_date + relativedelta(days=1)},
+                context=context)
         return True
 
 
@@ -176,16 +183,19 @@ class hr_loan_line(osv.Model):
         'partner_id': fields.related('hr_loan_id', 'partner_id',
                                      type='many2one', string='Bank',
                                      relation="res.partner"),
-        'employee_id': fields.related('hr_loan_id', 'employee_id',
-                                      type='many2one', string='Employee Contract',
-                                      relation="hr.contract"),
+        'employee_id': fields.related(
+            'hr_loan_id', 'employee_id',
+            type='many2one',
+            string='Employee Contract',
+            relation="hr.contract"),
         'company_id': fields.related('hr_loan_id', 'company_id',
                                      type='many2one', string='Company',
                                      relation="res.company"),
         'currency_id': fields.related('hr_loan_id', 'currency_id',
                                       type='many2one', string='Currency',
                                       relation="hr.contract"),
-        'state': fields.selection([('unpaid', 'Unpaid'), ('paid', 'Paid')], 'State'),
+        'state': fields.selection(
+            [('unpaid', 'Unpaid'), ('paid', 'Paid')], 'State'),
     }
 
 
@@ -203,24 +213,22 @@ class hr_payslip(osv.Model):
         payslip_obj = self.pool.get('hr.payslip')
         payslip = payslip_obj.browse(cur, uid, payslip_id, context=context)
 
+        loan_brw = False
+
         for ind in result:
             if ind['code'] == 'LOAN':
                 loan_brw = ind
                 result.remove(ind)
 
-        if payslip.share_line_ids:
-            amount_list = {}
-            amount_num = 0
-            for share_brw in payslip.share_line_ids:
-                key = 'loan_' + \
-                    str(share_brw.id) + ' ' + loan_brw['code'] + \
-                    '-' + str(loan_brw['contract_id'])
-                amount = share_brw.share
-                line = deepcopy(loan_brw)
-                line['name'] = share_brw.name
-                line['amount'] = amount
-                line['loan_line_id'] = share_brw.id
-                result.append(line)
+        if loan_brw:
+            if payslip.share_line_ids:
+                for share_brw in payslip.share_line_ids:
+                    amount = share_brw.share
+                    line = deepcopy(loan_brw)
+                    line['name'] = share_brw.name
+                    line['amount'] = amount
+                    line['loan_line_id'] = share_brw.id
+                    result.append(line)
 
         return result
 
@@ -236,22 +244,24 @@ class hr_payslip(osv.Model):
                            payslip.contract_id.id)], context=context)
 
             payslip_loan_ids = hr_loan_line_obj.search(
-                cur, uid, [('hr_payslip_id', '=', payslip.id)], context=context)
+                cur, uid,
+                [('hr_payslip_id', '=', payslip.id)], context=context)
             if payslip_loan_ids:
-                #~hr_loan_line_obj.unlink(cur, uid, payslip_loan_ids, context=context)
-                hr_loan_line_obj.write(cur, uid, payslip_loan_ids,
-                                       {'hr_payslip_id': None}, context=context)
+                hr_loan_line_obj.write(
+                    cur, uid,
+                    payslip_loan_ids, {'hr_payslip_id': None}, context=context)
 
             total_loan = 0.0
 
-            for loan_line_brw in hr_loan_line_obj.browse(cur, uid,
-                                                         hr_loan_line_ids, context=context):
+            for loan_line_brw in hr_loan_line_obj.browse(
+                    cur, uid, hr_loan_line_ids, context=context):
                 if payslip.date_from <= loan_line_brw.payment_date and \
                         loan_line_brw.payment_date <= payslip.date_to and \
                         loan_line_brw.state == 'unpaid' and \
                         loan_line_brw.hr_loan_id.state == 'active':
-                    hr_loan_line_obj.write(cur, uid, [loan_line_brw.id],
-                                           {'hr_payslip_id': payslip.id}, context=context)
+                    hr_loan_line_obj.write(
+                        cur, uid, [loan_line_brw.id],
+                        {'hr_payslip_id': payslip.id}, context=context)
                     total_loan += loan_line_brw.share
             self.write(cur, uid, [payslip.id], {'total_loan': total_loan},
                        context=context)

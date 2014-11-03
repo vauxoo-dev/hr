@@ -1,14 +1,14 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
-###############################################################################
+# ##############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
 #    All Rights Reserved
-############# Credits #########################################################
+# ############ Credits ########################################################
 #    Coded by: Yanina Aular <yani@vauxoo.com>
 #    Planified by: Moises Lopez <moises@vauxoo.com>
 #    Audited by: Humberto Arocha <hbto@vauxoo.com>
-###############################################################################
+# ##############################################################################
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as published
 #    by the Free Software Foundation, either version 3 of the License, or
@@ -21,7 +21,7 @@
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-###############################################################################
+# ##############################################################################
 from openerp.osv import fields, osv
 
 
@@ -29,11 +29,13 @@ class hr_salary_rule(osv.osv):
 
     _inherit = 'hr.salary.rule'
 
-
     def _get_selection_partner_aml(self, cr, uid, context=None):
-        # res = super(hr_salary_rule, self)._get_selection_partner(cr, uid, context=context) TODO actived when exist function in origin module
+        # res = super(hr_salary_rule,
+        #    self)._get_selection_partner(cr, uid, context=context)
+        # TODO actived when exist function in origin module
         res = []
-        res.append(('default', 'By default')) # TODO deprecated append by origin module
+        # TODO deprecated append by origin module
+        res.append(('default', 'By default'))
         res.append(('loan', 'Use the Partner Loan'))
         return res
 
@@ -52,6 +54,7 @@ class hr_salary_rule(osv.osv):
 
 
 class hr_payslip_line(osv.osv):
+
     '''
     Payslip Line
     '''
