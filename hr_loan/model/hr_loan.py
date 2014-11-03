@@ -23,12 +23,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
+from copy import deepcopy
+from datetime import datetime, timedelta
+
+from dateutil.relativedelta import relativedelta
+
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
-from datetime import timedelta
-from copy import deepcopy
 
 PAYMENT_TYPE = [
     ('fortnightly', 'Fortnightly'),
@@ -80,7 +81,7 @@ class hr_loan(osv.Model):
         ids = isinstance(ids, (int, long)) and [ids] or ids
         for brw in self.browse(cur, uid, ids, context=context):
             self.compute_shares(cur, uid, [brw.id], context=context)
-            self.write(cur, uid, [brw.id],
+            self._write(cur, uid, [brw.id],
                        {'state': 'active'}, context=context)
         return True
 
@@ -93,7 +94,7 @@ class hr_loan(osv.Model):
                 if loan_share.state == 'paid':
                     raise osv.except_osv(_("Set to Draft is not allowed"),
                                          _('There are paid lines.'))
-            self.write(cur, uid, [brw.id], {'state': 'draft'}, context=context)
+            self._write(cur, uid, [brw.id], {'state': 'draft'}, context=context)
         return True
 
     def cancel_loan(self, cur, uid, ids, context=None):
@@ -101,7 +102,7 @@ class hr_loan(osv.Model):
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
         for brw in self.browse(cur, uid, ids, context=context):
-            self.write(cur, uid, [brw.id],
+            self._write(cur, uid, [brw.id],
                        {'state': 'cancel'}, context=context)
         return True
 
@@ -115,25 +116,25 @@ class hr_loan(osv.Model):
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
         hr_loan_line_obj = self.pool.get('hr.loan.line')
-        for hr_loan in self.browse(cur, uid, ids, context=context):
+        for hr_loan_brw in self.browse(cur, uid, ids, context=context):
             old_loanline_ids = hr_loan_line_obj.search(
-                cur, uid, [('hr_loan_id', '=', hr_loan.id)], context=context)
+                cur, uid, [('hr_loan_id', '=', hr_loan_brw.id)], context=context)
             if old_loanline_ids:
                 hr_loan_line_obj.unlink(
                     cur, uid, old_loanline_ids, context=context)
 
-            if hr_loan.amount_approved <= 0 or hr_loan.share_quantity <= 0:
+            if hr_loan_brw.amount_approved <= 0 or hr_loan_brw.share_quantity <= 0:
                 raise osv.except_osv(
                     _("Values not allowed"),
                     _('Amount Approved and Share Quantity\
                         must be greater than zero'))
 
-            share = hr_loan.amount_approved / hr_loan.share_quantity
+            share = hr_loan_brw.amount_approved / hr_loan_brw.share_quantity
 
-            current_date = datetime.strptime(hr_loan.date_start, '%Y-%m-%d')
-            for ind in xrange(0, hr_loan.share_quantity):
+            current_date = datetime.strptime(hr_loan_brw.date_start, '%Y-%m-%d')
+            for ind in xrange(0, hr_loan_brw.share_quantity):
 
-                if hr_loan.payment_type == 'fortnightly':
+                if hr_loan_brw.payment_type == 'fortnightly':
                     if current_date.day < 15:
                         current_date = current_date.replace(day=15)
                     elif current_date == self.last_day_of_month(current_date):
@@ -141,12 +142,12 @@ class hr_loan(osv.Model):
                     else:
                         current_date = self.last_day_of_month(current_date)
 
-                if hr_loan.payment_type == 'weekly':
+                if hr_loan_brw.payment_type == 'weekly':
                     current_date = current_date + relativedelta(days=7)
-                if hr_loan.payment_type == 'monthly':
+                if hr_loan_brw.payment_type == 'monthly':
                     current_date = current_date + relativedelta(days=1)
                     current_date = self.last_day_of_month(current_date)
-                if hr_loan.payment_type == 'bimonthly':
+                if hr_loan_brw.payment_type == 'bimonthly':
                     if ind == 0:
                         current_date = current_date + relativedelta(days=1)
                         current_date = self.last_day_of_month(current_date)
@@ -156,17 +157,17 @@ class hr_loan(osv.Model):
 
                 hr_loan_line_obj.create(cur, uid, {
                     'name': "%s %s %s (%s)" % (
-                        hr_loan.name,
+                        hr_loan_brw.name,
                         _('Share'),
                         ind + 1,
                         current_date.strftime('%Y-%m-%d')),
                     'payment_date': current_date,
                     'state': 'unpaid',
-                    'hr_loan_id': hr_loan.id,
+                    'hr_loan_id': hr_loan_brw.id,
                     'share': share,
                 }, context=context)
 
-            self.write(cur, uid, [hr_loan.id], {
+            self._write(cur, uid, [hr_loan_brw.id], {
                 'date_stop': current_date + relativedelta(days=1)},
                 context=context)
         return True
@@ -263,7 +264,7 @@ class hr_payslip(osv.Model):
                         cur, uid, [loan_line_brw.id],
                         {'hr_payslip_id': payslip.id}, context=context)
                     total_loan += loan_line_brw.share
-            self.write(cur, uid, [payslip.id], {'total_loan': total_loan},
+            self._write(cur, uid, [payslip.id], {'total_loan': total_loan},
                        context=context)
         res = super(hr_payslip, self).compute_sheet(
             cur, uid, ids, context=context)

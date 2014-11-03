@@ -27,10 +27,11 @@
 This file add a field to assign products to employee, this products are
 accessories to employee.
 '''
-from openerp import models, fields
+from openerp import fields, models
 
 
 class hr_employee(models.Model):
+
     '''
     Inherit hr.employee to added m2m to select accessories to employee
     '''
@@ -45,6 +46,7 @@ class hr_employee(models.Model):
 
 
 class product_template(models.Model):
+
     '''
     Inherit product.template to add field to indicate if is an accessory to
     employee

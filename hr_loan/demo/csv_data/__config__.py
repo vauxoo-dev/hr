@@ -1,6 +1,6 @@
-{ 'xml_files': [
+{'xml_files': [
     {'name': 'hr_loan',
      'depends': ['hr'],
      'csv':
-     ['hr_loan.csv',]},
+     ['hr_loan.csv', ]},
 ]}
