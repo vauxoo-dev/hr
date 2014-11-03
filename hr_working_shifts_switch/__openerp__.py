@@ -25,14 +25,14 @@
 ###############################################################################
 
 {
-    'name': 'Working Hours Shifts',
+    'name': 'Working Hours Shifts Switch',
     'version': '1.0',
     'author': 'Vauxoo',
     'website': 'http://www.vauxoo.com/',
     'category': '',
     'description': '''
-Working Hours Shifts
-====================
+Working Hours Shifts Switch
+===========================
 
 There is a need to change and employee or contract turn periodically in an
 automatic way. How ever the schedule working hours can be manually change
@@ -43,6 +43,7 @@ This module add new models:
 - Working Template (hr.working.template)
 - Working Template Line (hr.working.template.line)
 - Working Template Exception (hr.working.template.exception)
+- Working Template History (hr.working.template.history)
 ''',
     'depends': [
         'hr',

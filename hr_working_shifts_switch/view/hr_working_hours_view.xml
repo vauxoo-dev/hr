@@ -11,21 +11,21 @@
                 <form string="Working Template">
                 <header>
                     <button name="switch_shift" states="done" string="Switch Shift" type="object" class="oe_highlight"/>
-                    <button name="action_done" states="draft" string="Active" type="object" />
-                    <button name="action_cancel" states="draft,done" string="Cancel" type="object" />
-                    <button name="action_draft" states="cancel" string="Draft" type="object" />
+                    <button name="action_done" states="draft" string="Active" type="object"/>
+                    <button name="action_cancel" states="draft,done" string="Cancel" type="object"/>
+                    <button name="action_draft" states="cancel" string="Draft" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done,cancel"/>
                 </header>
-                    <sheet>
-                        <group>
-                            <field name="name"/>
-                            <field name="state"/>
-                            <field name="contract_ids"/>
-                            <field name="wking_tmpl_line_ids"/>
-                            <field name="wking_tmpl_excpt_id"/>
-                            <field name="period"/>
-                            <field name="current_working_id"/>
-                        </group>
-                    </sheet>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="contract_ids"/>
+                        <field name="wking_tmpl_line_ids"/>
+                        <field name="wking_tmpl_excpt_id"/>
+                        <field name="period"/>
+                        <field name="current_working_id"/>
+                    </group>
+                </sheet>
                 </form>
             </field>
         </record>

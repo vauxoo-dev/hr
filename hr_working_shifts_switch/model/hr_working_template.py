@@ -88,25 +88,29 @@ class hr_working_template(osv.Model):
         ),
     }
 
+    _defaults = {
+        'state': 'draft',
+    }
+
     def action_done(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            self._write(cr, uid, wk_tmpl.id, {'state': 'done'})
+            self._write(cr, uid, [wk_tmpl.id], {'state': 'done'})
         return True
 
     def action_cancel(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            self._write(cr, uid, wk_tmpl.id, {'state': 'cancel'})
+            self._write(cr, uid, [wk_tmpl.id], {'state': 'cancel'})
         return True
 
     def action_draft(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            self._write(cr, uid, wk_tmpl.id, {'state': 'draft'})
+            self._write(cr, uid, [wk_tmpl.id], {'state': 'draft'})
         return True
 
     def _switch_shift(self, cr, uid, ids=False, context=None):
