@@ -43,7 +43,6 @@ class TestLoanCompute(TransactionCase):
         self.hr_payroll_structure_obj = self.registry('hr.payroll.structure')
         self.account_fiscalyear_obj = self.registry('account.fiscalyear')
         self.account_period_obj = self.registry('account.period')
-        self.wf_service = netsvc.LocalService('workflow')
         self.loan_list_brw = list()
         self.payslip_brw = None
         self.loan_list = list()
