@@ -131,13 +131,13 @@ class TestLoanCompute(TransactionCase):
         })
         salary_rule_id = self.hr_salary_rule_obj.search(cr, uid,
                                                         [('name', '=',
-                                                            'Net Minus Loan')])
+                                                          'Net Minus Loan')])
         self.hr_salary_rule_obj.write(cr, uid, salary_rule_id, {
             'account_credit': 9,
         })
         salary_rule_id = self.hr_salary_rule_obj.search(cr, uid,
                                                         [('name', '=',
-                                                            'Basic')])
+                                                          'Basic')])
         self.hr_salary_rule_obj.write(cr, uid, salary_rule_id, {
             'account_debit': 9,
         })
@@ -325,34 +325,54 @@ class TestLoanCompute(TransactionCase):
         num = 0
         if self.payslip_brw.move_id.line_id[num].name == 'Adjustment Entry':
             num += 1
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 8050 %s", self.payslip_brw.move_id.line_id[num].credit)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 8050 %s",
+                    self.payslip_brw.move_id.line_id[num].credit)
         if self.payslip_brw.move_id.line_id[num].credit != 8050:
             self.assertEquals(error_msg_account)
         num += 1
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 600 %s", self.payslip_brw.move_id.line_id[num].credit)
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.id 12 %s", self.payslip_brw.move_id.line_id[num].partner_id.id)
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.name %s", self.payslip_brw.move_id.line_id[num].partner_id.name)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 600 %s",
+                    self.payslip_brw.move_id.line_id[num].credit)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]"
+                    ".partner_id.id 12 %s",
+                    self.payslip_brw.move_id.line_id[num].partner_id.id)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]"
+                    ".partner_id.name %s",
+                    self.payslip_brw.move_id.line_id[num].partner_id.name)
         if self.payslip_brw.move_id.line_id[num].credit != 600 or \
                 self.payslip_brw.move_id.line_id[num].partner_id.id != 12:
             self.assertEquals(error_msg_account)
         num += 1
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 600 %s", self.payslip_brw.move_id.line_id[num].credit)
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.id 12 %s", self.payslip_brw.move_id.line_id[num].partner_id.id)
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.name %s", self.payslip_brw.move_id.line_id[num].partner_id.name)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]"
+                    ".credit 600 %s",
+                    self.payslip_brw.move_id.line_id[num].credit)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]."
+                    "partner_id.id 12 %s",
+                    self.payslip_brw.move_id.line_id[num].partner_id.id)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]."
+                    "partner_id.name %s",
+                    self.payslip_brw.move_id.line_id[num].partner_id.name)
         if self.payslip_brw.move_id.line_id[num].credit != 600 or \
                 self.payslip_brw.move_id.line_id[num].partner_id.id != 12:
             self.assertEquals(error_msg_account)
         num += 1
 
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 750 %s", self.payslip_brw.move_id.line_id[num].credit)
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.id 13 %s", self.payslip_brw.move_id.line_id[num].partner_id.id)
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.name %s", self.payslip_brw.move_id.line_id[num].partner_id.name)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]."
+                    "credit 750 %s",
+                    self.payslip_brw.move_id.line_id[num].credit)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]."
+                    "partner_id.id 13 %s",
+                    self.payslip_brw.move_id.line_id[num].partner_id.id)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]."
+                    "partner_id.name %s",
+                    self.payslip_brw.move_id.line_id[num].partner_id.name)
         if self.payslip_brw.move_id.line_id[num].credit != 750 or \
            self.payslip_brw.move_id.line_id[num].partner_id.id != 13:
             self.assertEquals(error_msg_account)
         num += 1
 
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 10000 %s", self.payslip_brw.move_id.line_id[num].credit)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]"
+                    ".credit 10000 %s",
+                    self.payslip_brw.move_id.line_id[num].credit)
         if self.payslip_brw.move_id.line_id[num].debit != 10000:
             self.assertEquals(error_msg_account)
 
