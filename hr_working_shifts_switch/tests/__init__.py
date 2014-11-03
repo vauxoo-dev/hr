@@ -30,7 +30,3 @@ Init file for the unit tests in the hr_working_hours module.
 ###############################################################################
 
 from . import test_hr_working_hours
-
-#~ fast_suite = [
-    #~ test_hr_working_hours,
-#~ ]

@@ -83,7 +83,6 @@ class hr_working_template(osv.Model):
             'hr.working.template.line',
             string='Current Working Template Line',
             help='Current Working Template Line',
-            #~ required=True,
             domain="[('working_id', '=', id)]",
         ),
     }
@@ -131,13 +130,13 @@ class hr_working_template(osv.Model):
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
             wk_tmpl_line_ids = wk_tmpl_line_obj.search(cr, uid,
                                                        [('working_id', '=',
-                                                       wk_tmpl.id)],)
+                                                         wk_tmpl.id)],)
             wk_tmpl_line_brw = wk_tmpl_line_obj.browse(cr, uid,
                                                        wk_tmpl_line_ids,
                                                        context=context)
             contract_ids = contract_obj.search(cr, uid,
                                                [('working_tmpl_id',
-                                               '=', wk_tmpl.id)],)
+                                                 '=', wk_tmpl.id)],)
             if wk_tmpl_line_ids and wk_tmpl.current_working_id:
                 if wk_tmpl_line_ids.index(wk_tmpl.current_working_id.id) == \
                         len(wk_tmpl_line_ids) - 1:
@@ -147,26 +146,32 @@ class hr_working_template(osv.Model):
                                                         current_working_id.
                                                         id) + 1
                 self._write(cr, uid, [wk_tmpl.id],
-                           {'current_working_id':
+                            {'current_working_id':
                             wk_tmpl_line_ids[next_index]})
                 if contract_ids:
                     for contract in contract_ids:
-                        wk_tmpl_excep_ids = wk_tmpl_excep_obj.search(cr, uid,
-                                           [('working_id', '=', wk_tmpl.id),
-                                           ('contract_id', '=', contract)],)
+                        wk_tmpl_excep_ids = \
+                            wk_tmpl_excep_obj.search(cr, uid, [('working_id',
+                                                               '=',
+                                                                wk_tmpl.id),
+                                                               ('contract_id',
+                                                                '=',
+                                                                contract)],)
                         if wk_tmpl_excep_ids:
-                            wk_tmpl_excep_brw = wk_tmpl_excep_obj.browse(cr,
-                                            uid, wk_tmpl_excep_ids,
-                                            context=context)
+                            wk_tmpl_excep_brw = \
+                                wk_tmpl_excep_obj.browse(cr, uid,
+                                                         wk_tmpl_excep_ids,
+                                                         context=context)
                             for exception in wk_tmpl_excep_brw:
                                 if datetime.now().strftime('%Y-%m-%d') >=\
                                         exception.date_start and\
                                         datetime.now().strftime('%Y-%m-%d') <=\
                                         exception.date_stop:
                                     contract_obj._write(cr, uid, [contract],
-                                               {'working_hours':
-                                                exception.
-                                                working_scheduler_id.id})
+                                                        {'working_hours':
+                                                         exception.
+                                                         working_scheduler_id
+                                                         .id})
                                     dict_vals = {'working_id': wk_tmpl.id,
                                                  'working_scheduler_id':
                                                  exception.
@@ -175,14 +180,16 @@ class hr_working_template(osv.Model):
                                                  'date': datetime.now().
                                                  strftime('%Y-%m-%d')}
                                     wk_tmpl_hsty_obj.\
-                                        create_record_history(cr,
-                                                    uid, dict_vals,
-                                                    context=context)
+                                        create_record_history(cr, uid,
+                                                              dict_vals,
+                                                              context=context)
                                 else:
                                     contract_obj._write(cr, uid, [contract],
-                                       {'working_hours':
-                                        wk_tmpl_line_brw[next_index].
-                                        working_scheduler_id.id})
+                                                        {'working_hours':
+                                                         wk_tmpl_line_brw
+                                                         [next_index].
+                                                         working_scheduler_id
+                                                         .id})
                                     dict_vals = {'working_id': wk_tmpl.id,
                                                  'working_scheduler_id':
                                                  wk_tmpl_line_brw[next_index].
@@ -191,14 +198,14 @@ class hr_working_template(osv.Model):
                                                  'date': datetime.now().
                                                  strftime('%Y-%m-%d')}
                                     wk_tmpl_hsty_obj.\
-                                        create_record_history(cr,
-                                                    uid, dict_vals,
-                                                    context=context)
+                                        create_record_history(cr, uid,
+                                                              dict_vals,
+                                                              context=context)
                         else:
                             contract_obj._write(cr, uid, [contract],
-                                       {'working_hours':
-                                        wk_tmpl_line_brw[next_index].
-                                        working_scheduler_id.id})
+                                                {'working_hours':
+                                                 wk_tmpl_line_brw[next_index].
+                                                 working_scheduler_id.id})
                             dict_vals = {'working_id': wk_tmpl.id,
                                          'working_scheduler_id':
                                          wk_tmpl_line_brw[next_index].
@@ -207,9 +214,8 @@ class hr_working_template(osv.Model):
                                          'date': datetime.now().
                                          strftime('%Y-%m-%d')}
                             wk_tmpl_hsty_obj.\
-                                create_record_history(cr,
-                                            uid, dict_vals,
-                                            context=context)
+                                create_record_history(cr, uid, dict_vals,
+                                                      context=context)
         return True
 
 
@@ -286,15 +292,12 @@ class hr_working_template_history(osv.Model):
             string='Contract',
             help='Contract'),
         'date': fields.date('Date'),
-        'description': fields.char(
-            'Description',
-            size=64,
-            help='help string'),
-        'related_employee_id': fields.related('contract_id',
-            'employee_id',
-            type='many2one',
-            relation='hr.employee',
-            string='Employee'),
+        'description': fields.char('Description', size=64,
+                                   help='help string'),
+        'related_employee_id': fields.related('contract_id', 'employee_id',
+                                              type='many2one',
+                                              relation='hr.employee',
+                                              string='Employee'),
     }
 
     def create_record_history(self, cr, uid, dict_vals, context=None):
