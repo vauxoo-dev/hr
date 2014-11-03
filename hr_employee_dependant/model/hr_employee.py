@@ -26,10 +26,11 @@
 '''
 This file add a field to set person number dependents of the employee
 '''
-from openerp import models, fields
+from openerp import fields, models
 
 
 class hr_employee(models.Model):
+
     '''
     Inherit hr.employee to add field employee_dependents to set the persons
     that dependant of the employee

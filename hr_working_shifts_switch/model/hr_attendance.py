@@ -33,6 +33,7 @@ from openerp.osv import fields, osv
 
 
 class hr_attendance(osv.Model):
+
     """
     Inherit the hr.attendance model.
     """

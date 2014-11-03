@@ -23,12 +23,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
+from copy import deepcopy
+from datetime import datetime, timedelta
+
+from dateutil.relativedelta import relativedelta
+
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
-from datetime import timedelta
-from copy import deepcopy
 
 PAYMENT_TYPE = [
     ('fortnightly', 'Fortnightly'),

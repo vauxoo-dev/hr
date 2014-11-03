@@ -23,9 +23,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-from openerp.tests.common import TransactionCase
-from openerp import netsvc
 import logging
+
+from openerp import netsvc
+from openerp.tests.common import TransactionCase
 
 _logger = logging.getLogger(__name__)
 
@@ -316,7 +317,6 @@ class TestLoanCompute(TransactionCase):
 
         if not self.payslip_brw.move_id:
             self.assertEquals(error_msg_account)
-
 
         for aml in self.payslip_brw.move_id.line_id:
             _logger.log(25, "aml.state %s", aml.state)

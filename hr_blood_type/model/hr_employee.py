@@ -26,10 +26,11 @@
 '''
 This file add a field to assign blood type to employee.
 '''
-from openerp import models, fields, api
+from openerp import api, fields, models
 
 
 class hr_employee(models.Model):
+
     '''
     Inherit hr.employee to added field blood type
     '''
@@ -46,7 +47,7 @@ class hr_employee(models.Model):
             ('o_neg', 'O-'),
             ('ab_pos', 'AB+'),
             ('ab_neg', 'AB-'),
-            ]
+        ]
         return types
 
     blood_type = fields.Selection(

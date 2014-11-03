@@ -33,6 +33,7 @@ from openerp.osv import fields, osv
 
 
 class hr_contract(osv.Model):
+
     """
     Extend the hr.contract model.
     """

@@ -26,10 +26,11 @@
 '''
 This file add a fields to set expedition date and expiration of passport
 '''
-from openerp import models, fields
+from openerp import fields, models
 
 
 class hr_employee(models.Model):
+
     '''
     Inherit hr.employee to added fields expedition_date & expiration_date to
     passport

@@ -26,10 +26,11 @@
 '''
 This file add a boolean to indicate if the employee declares ISR
 '''
-from openerp import models, fields
+from openerp import fields, models
 
 
 class hr_employee(models.Model):
+
     '''
     Inherit hr.employee to added field boolean to indicate if the employee
     declares ISR

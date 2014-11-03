@@ -23,9 +23,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-from openerp.tests.common import TransactionCase
 import csv
 import os
+
+from openerp.tests.common import TransactionCase
 
 
 class TestInitData(TransactionCase):
