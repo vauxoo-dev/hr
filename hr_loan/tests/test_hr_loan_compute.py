@@ -46,6 +46,7 @@ class TestLoanCompute(TransactionCase):
         self.wf_service = netsvc.LocalService('workflow')
         self.loan_list_brw = list()
         self.payslip_brw = None
+        self.loan_list = list()
 
     def create_period(self, fiscalyear_data, month):
         cr, uid = self.cr, self.uid
@@ -106,8 +107,6 @@ class TestLoanCompute(TransactionCase):
                 'partner_id': 12,
             }
         ]
-
-        self.loan_list = list()
 
         for loan_data in data_loan:
             loan_id = self.hr_loan_obj.create(cr, uid, loan_data)
