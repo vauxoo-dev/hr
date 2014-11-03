@@ -42,6 +42,7 @@ class TestLoanCompute(TransactionCase):
         self.account_fiscalyear_obj = self.registry('account.fiscalyear')
         self.account_period_obj = self.registry('account.period')
         self.wf_service = netsvc.LocalService('workflow')
+        self.imd_obj = self.registry('ir.model.data')
         self.loan_list_brw = list()
         self.payslip_brw = None
 
@@ -70,18 +71,35 @@ class TestLoanCompute(TransactionCase):
                 cr, uid, fiscalyear_data)
             self.account_fiscalyear_obj.create_period(cr, uid, fiscalyear_id)
 
+    def search_xml_id(self, model, record_xml_id):
+        cr, uid = self.cr, self.uid
+
+        res_id = False
+        imd_id = self.imd_obj.search(
+            cr, uid,
+            [('module', '=', model), ('name', '=', record_xml_id)])
+
+        if imd_id:
+            res_id = self.imd_obj.browse(cr, uid, imd_id)[0].res_id
+        return res_id
+
     def dataloan(self):
         cr, uid = self.cr, self.uid
 
-        struct_id = self.hr_payroll_structure_obj.search(
-            cr, uid, [('code', '=', 'Salary loan')])
+        struct_id = self.search_xml_id('hr_loan', 'hr_payroll_structure_loan')
+        employee_id = self.search_xml_id('hr', 'employee_vad')
+        bank_id = self.search_xml_id('base', 'res_partner_8')
+        bank_id_2 = self.search_xml_id('base', 'res_partner_7')
+        type_contract = self.search_xml_id('hr_contract', 'hr_contract_type_emp')
+        journal_id = self.search_xml_id('account', 'bank_journal')
+        account_id = self.search_xml_id('account', 'a_recv')
 
         contract_id = self.hr_contract_obj.create(cr, uid, {
             'name': 'Ashley Presley Contract',
-            'employee_id': 13,  # Ashley Presley
-            'type_id': 1,  # Employee
+            'employee_id': employee_id,  # Ashley Presley
+            'type_id': type_contract,  # Employee
             'wage': 10000,
-            'struct_id': struct_id[0],  # Salary with loan
+            'struct_id': struct_id,  # Salary with loan
         })
 
         data_loan = [
@@ -92,7 +110,7 @@ class TestLoanCompute(TransactionCase):
                 'payment_type': 'bimonthly',
                 'amount_approved': '1250',
                 'employee_id': contract_id,
-                'partner_id': 13,
+                'partner_id': bank_id,
             },
             {
                 'name': 'Test Loan 2',
@@ -101,7 +119,7 @@ class TestLoanCompute(TransactionCase):
                 'payment_type': 'weekly',
                 'amount_approved': '520',
                 'employee_id': contract_id,
-                'partner_id': 12,
+                'partner_id': bank_id_2,
             }
         ]
 
@@ -113,31 +131,28 @@ class TestLoanCompute(TransactionCase):
 
         payslip_id = self.hr_payslip_obj.create(cr, uid, {
             'name': 'Salary Slip of Ashley Presley for octubre-2014',
-            'employee_id': 13,  # Ashley Presley
+            'employee_id': employee_id,  # Ashley Presley
             'contract_id': contract_id,
-            'struct_id': struct_id[0],
-            'journal_id': 5,
+            'struct_id': struct_id,
+            'journal_id': journal_id,
             'date_from': '2015-02-01',
             'date_to': '2015-02-28',
         })
         self.payslip_brw = self.hr_payslip_obj.browse(cr, uid, payslip_id)
 
-        salary_rule_id = self.hr_salary_rule_obj.search(
-            cr, uid, [('name', '=', 'Loan')])
+        salary_rule_id = self.search_xml_id('hr_loan', 'hr_salary_rule_loan_001')
         self.hr_salary_rule_obj.write(cr, uid, salary_rule_id, {
-            'account_credit': 9,
+            'account_credit': account_id,
         })
-        salary_rule_id = self.hr_salary_rule_obj.search(cr, uid,
-                                                        [('name', '=',
-                                                            'Net Minus Loan')])
+
+        salary_rule_id = self.search_xml_id('hr_loan', 'hr_salary_rule_loan_002')
         self.hr_salary_rule_obj.write(cr, uid, salary_rule_id, {
-            'account_credit': 9,
+            'account_credit': account_id,
         })
-        salary_rule_id = self.hr_salary_rule_obj.search(cr, uid,
-                                                        [('name', '=',
-                                                            'Basic')])
+
+        salary_rule_id = self.search_xml_id('hr_payroll', 'BASIC')
         self.hr_salary_rule_obj.write(cr, uid, salary_rule_id, {
-            'account_debit': 9,
+            'account_debit': account_id,
         })
 
         fiscalyear_data = {
