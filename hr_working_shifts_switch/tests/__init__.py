@@ -1,13 +1,20 @@
+#!/usr/bin/python
 # -*- encoding: utf-8 -*-
-# ############################################################################
+
+"""
+Init file for the unit tests in the hr_working_hours module.
+"""
+
+###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
 #    All Rights Reserved
-# ############ Credits #######################################################
-#    Coded by: Yanina Aular <yani@vauxoo.com>
-#    Planified by: Moises Lopez <moises@vauxoo.com>
-#    Audited by: Humberto Arocha <hbto@vauxoo.com>
-# ############################################################################
+###############################################################################
+#    Credits:
+#    Coded by: Katherine Zaoral <kathy@vauxoo.com>
+#    Planified by: Moises Lopez <moylop260@vauxoo.com>
+#    Audited by: Moises Lopez <moylop260@vauxoo.com>
+###############################################################################
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as published
 #    by the Free Software Foundation, either version 3 of the License, or
@@ -20,4 +27,6 @@
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# ############################################################################
+###############################################################################
+
+from . import test_hr_working_hours

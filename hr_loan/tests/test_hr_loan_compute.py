@@ -22,8 +22,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-from openerp.tests.common import TransactionCase
 import logging
+
+from openerp.tests.common import TransactionCase
 
 _logger = logging.getLogger(__name__)
 
@@ -43,6 +44,7 @@ class TestLoanCompute(TransactionCase):
         self.imd_obj = self.registry('ir.model.data')
         self.loan_list_brw = list()
         self.payslip_brw = None
+        self.loan_list = list()
         self.bank_id = False
         self.bank_id_2 = False
 
@@ -123,8 +125,6 @@ class TestLoanCompute(TransactionCase):
             }
         ]
 
-        self.loan_list = list()
-
         for loan_data in data_loan:
             loan_id = self.hr_loan_obj.create(cr, uid, loan_data)
             self.loan_list.append(loan_id)
@@ -145,7 +145,8 @@ class TestLoanCompute(TransactionCase):
             'account_credit': account_id,
         })
 
-        salary_rule_id = self.search_xml_id('hr_loan', 'hr_salary_rule_loan_002')
+        salary_rule_id = self.search_xml_id('hr_loan',
+                                            'hr_salary_rule_loan_002')
         self.hr_salary_rule_obj.write(cr, uid, salary_rule_id, {
             'account_credit': account_id,
         })
@@ -326,34 +327,60 @@ class TestLoanCompute(TransactionCase):
         num = 0
         if self.payslip_brw.move_id.line_id[num].name == 'Adjustment Entry':
             num += 1
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 8050 %s", self.payslip_brw.move_id.line_id[num].credit)
-        self.assertEquals(self.payslip_brw.move_id.line_id[num].credit, 8050, error_msg_account)
+
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 8050 %s",
+                    self.payslip_brw.move_id.line_id[num].credit)
+        self.assertEquals(self.payslip_brw.move_id.line_id[num].credit,
+                          8050, error_msg_account)
         num += 1
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 600 %s", self.payslip_brw.move_id.line_id[num].credit)
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.id 12 %s", self.payslip_brw.move_id.line_id[num].partner_id.id)
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.name %s", self.payslip_brw.move_id.line_id[num].partner_id.name)
-        self.assertEquals(self.payslip_brw.move_id.line_id[num].credit, 600, error_msg_account)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 600 %s",
+                    self.payslip_brw.move_id.line_id[num].credit)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]"
+                    ".partner_id.id 12 %s",
+                    self.payslip_brw.move_id.line_id[num].partner_id.id)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]"
+                    ".partner_id.name %s",
+                    self.payslip_brw.move_id.line_id[num].partner_id.name)
+        self.assertEquals(self.payslip_brw.move_id.line_id[num].credit,
+                          600, error_msg_account)
         self.assertEquals(self.payslip_brw.move_id.line_id[num].partner_id.id,
-                self.bank_id_2, error_msg_account)
+                          self.bank_id_2, error_msg_account)
         num += 1
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 600 %s", self.payslip_brw.move_id.line_id[num].credit)
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.id 12 %s", self.payslip_brw.move_id.line_id[num].partner_id.id)
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.name %s", self.payslip_brw.move_id.line_id[num].partner_id.name)
-        self.assertEquals(self.payslip_brw.move_id.line_id[num].credit, 600, error_msg_account)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]"
+                    ".credit 600 %s",
+                    self.payslip_brw.move_id.line_id[num].credit)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]."
+                    "partner_id.id 12 %s",
+                    self.payslip_brw.move_id.line_id[num].partner_id.id)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]."
+                    "partner_id.name %s",
+                    self.payslip_brw.move_id.line_id[num].partner_id.name)
+        self.assertEquals(self.payslip_brw.move_id.line_id[num].credit,
+                          600, error_msg_account)
         self.assertEquals(self.payslip_brw.move_id.line_id[num].partner_id.id,
-                self.bank_id_2, error_msg_account)
+                          self.bank_id_2, error_msg_account)
         num += 1
 
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 750 %s", self.payslip_brw.move_id.line_id[num].credit)
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.id 13 %s", self.payslip_brw.move_id.line_id[num].partner_id.id)
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.name %s", self.payslip_brw.move_id.line_id[num].partner_id.name)
-        self.assertEquals(self.payslip_brw.move_id.line_id[num].credit, 750, error_msg_account)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]."
+                    "credit 750 %s",
+                    self.payslip_brw.move_id.line_id[num].credit)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]."
+                    "partner_id.id 13 %s",
+                    self.payslip_brw.move_id.line_id[num].partner_id.id)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]."
+                    "partner_id.name %s",
+                    self.payslip_brw.move_id.line_id[num].partner_id.name)
+        self.assertEquals(self.payslip_brw.move_id.line_id[num].credit,
+                          750, error_msg_account)
         self.assertEquals(self.payslip_brw.move_id.line_id[num].partner_id.id,
-                self.bank_id, error_msg_account)
+                          self.bank_id, error_msg_account)
         num += 1
 
-        _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 10000 %s", self.payslip_brw.move_id.line_id[num].credit)
-        self.assertEquals(self.payslip_brw.move_id.line_id[num].debit, 10000, error_msg_account)
+        _logger.log(25, "self.payslip_brw.move_id.line_id[num]"
+                    ".credit 10000 %s",
+                    self.payslip_brw.move_id.line_id[num].credit)
+        self.assertEquals(self.payslip_brw.move_id.line_id[num].debit,
+                          10000, error_msg_account)
 
     def test_compute_shares(self):
         cr, uid = self.cr, self.uid

@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <!-- views of the hr.working.template model -->
+
+        <record model="ir.ui.view" id="hr_working_template_form_view">
+            <field name="name">hr.working.template.form.view</field>
+            <field name="model">hr.working.template</field>
+            <field name="arch" type="xml">
+                <form string="Working Template">
+                <header>
+                    <button name="switch_shift" states="done" string="Switch Shift" type="object" class="oe_highlight"/>
+                    <button name="action_done" states="draft" string="Active" type="object"/>
+                    <button name="action_cancel" states="draft,done" string="Cancel" type="object"/>
+                    <button name="action_draft" states="cancel" string="Draft" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done,cancel"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="contract_ids"/>
+                        <field name="wking_tmpl_line_ids"/>
+                        <field name="wking_tmpl_excpt_id"/>
+                        <field name="period"/>
+                        <field name="current_working_id"/>
+                    </group>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_working_template_tree_view">
+            <field name="name">hr.working.template.tree.view</field>
+            <field name="model">hr.working.template</field>
+            <field name="arch" type="xml">
+                <tree string="Working Template">
+                    <field name="name"/>
+                    <field name="contract_ids"/>
+                    <field name="wking_tmpl_line_ids"/>
+                    <field name="wking_tmpl_excpt_id"/>
+                    <field name="period"/>
+                    <field name="current_working_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_working_template_action" model="ir.actions.act_window">
+            <field name="name">Working Template</field>
+            <field name="res_model">hr.working.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- views of the hr.working.template.line model -->
+
+        <record model="ir.ui.view" id="hr_working_template_line_form_view">
+            <field name="name">hr.working.template.line.form.view</field>
+            <field name="model">hr.working.template.line</field>
+            <field name="arch" type="xml">
+                <form string="Working Template Line">
+                    <sheet>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="working_scheduler_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_working_template_line_tree_view">
+            <field name="name">hr.working.template.line.tree.view</field>
+            <field name="model">hr.working.template.line</field>
+            <field name="arch" type="xml">
+                <tree string="Working Template Line">
+                    <field name="sequence"/>
+                    <field name="working_scheduler_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- views of the hr.working.template model -->
+        
+        <record model="ir.ui.view" id="hr_working_template_exception_form_view">
+            <field name="name">hr.working.template.exception.form.view</field>
+            <field name="model">hr.working.template.exception</field>
+            <field name="arch" type="xml">
+                <form string="Working Template Exception">
+                    <sheet>
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_stop"/>
+                            <field name="working_id"/>
+                            <field name="contract_id"/>
+                            <field name="working_scheduler_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_working_template_exception_tree_view">
+            <field name="name">hr.working.template.exception.tree.view</field>
+            <field name="model">hr.working.template.exception</field>
+            <field name="arch" type="xml">
+                <tree string="Working Template Exception">
+                    <field name="date_start"/>
+                    <field name="date_stop"/>
+                    <field name="working_id"/>
+                    <field name="contract_id"/>
+                    <field name="working_scheduler_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_working_template_exception_action" model="ir.actions.act_window">
+            <field name="name">Working Template Exception</field>
+            <field name="res_model">hr.working.template.exception</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- views of the hr.working.template.history model -->
+
+        <record model="ir.ui.view" id="hr_working_template_history_form_view">
+            <field name="name">hr.working.template.history.form.view</field>
+            <field name="model">hr.working.template.history</field>
+            <field name="arch" type="xml">
+                <form string="Working Template History">
+                    <sheet>
+                        <group>
+                            <field name="working_id"/>
+                            <field name="working_scheduler_id"/>
+                            <field name="contract_id"/>
+                            <field name="date"/>
+                            <field name="description"/>
+                            <field name="related_employee_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_working_template_history_tree_view">
+            <field name="name">hr.working.template.history.tree.view</field>
+            <field name="model">hr.working.template.history</field>
+            <field name="arch" type="xml">
+                <tree string="Working Template History">
+                    <field name="working_id"/>
+                    <field name="working_scheduler_id"/>
+                    <field name="contract_id"/>
+                    <field name="date"/>
+                    <field name="description"/>
+                    <field name="related_employee_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_working_template_history_action" model="ir.actions.act_window">
+            <field name="name">Working Template History</field>
+            <field name="res_model">hr.working.template.history</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- menus definitions -->
+
+        <menuitem
+            id="main_hr_working_template"
+            sequence="10"
+            parent="hr.menu_hr_root"
+            name="Working Template"/>
+
+        <menuitem
+            id="hr_working_template"
+            sequence="10"
+            parent="main_hr_working_template"
+            action="hr_working_template_action"/>
+
+        <menuitem
+            id="hr_working_template_exception"
+            sequence="10"
+            parent="main_hr_working_template"
+            action="hr_working_template_exception_action"/>
+
+        <menuitem
+            id="hr_working_template_history"
+            sequence="10"
+            parent="main_hr_working_template"
+            action="hr_working_template_history_action"/>
+
+    </data>
+</openerp>

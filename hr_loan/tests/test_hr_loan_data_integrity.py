@@ -22,9 +22,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-from openerp.tests.common import TransactionCase
 import csv
 import os
+
+from openerp.tests.common import TransactionCase
 
 
 class TestInitData(TransactionCase):
@@ -45,7 +46,7 @@ class TestInitData(TransactionCase):
         """
         cr, uid = self.cr, self.uid
         data_obj = data_integrity()
-        load_err_msg = ('The record {xml_id} ({model}) was not loaded.')
+        load_err_msg = ('The record {0[xml_id]} ({0[model]}) was not loaded.')
 
         # get a list of the record data
         record_data = dict()
@@ -67,7 +68,7 @@ class TestInitData(TransactionCase):
 
                 self.assertEquals(
                     bool(record_data['imd_id']), True,
-                    load_err_msg.format(**record_data))
+                    load_err_msg.format(record_data))
 
 
 class data_integrity(object):
@@ -85,10 +86,10 @@ class data_integrity(object):
         module_path = os.path.split(os.path.split(__file__)[0])[0]
         csv_path = os.path.join(module_path, 'data/csv_data')
         csv_files = list()
-        for root, dirs, files in os.walk(csv_path):
-            for f in files:
-                if f.endswith(".csv"):
-                    csv_files.append(os.path.join(root, f))
+        for root, dummy, files in os.walk(csv_path):
+            for fname in files:
+                if fname.endswith(".csv"):
+                    csv_files.append(os.path.join(root, fname))
         self.csv_list = csv_files
         return None
 

@@ -1,0 +1,243 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* hr_working_shifts_switch
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-10-31 23:21+0000\n"
+"PO-Revision-Date: 2014-10-31 23:21+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_working_shifts_switch
+#: view:hr.working.template:hr_working_shifts_switch.hr_working_template_form_view
+#: selection:hr.working.template,state:0
+msgid "Active"
+msgstr "Activo"
+
+#. module: hr_working_shifts_switch
+#: model:ir.model,name:hr_working_shifts_switch.model_hr_attendance
+msgid "Attendance"
+msgstr "Asistencia"
+
+#. module: hr_working_shifts_switch
+#: view:hr.working.template:hr_working_shifts_switch.hr_working_template_form_view
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: hr_working_shifts_switch
+#: selection:hr.working.template,state:0
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: hr_working_shifts_switch
+#: field:hr.attendance,contract_id:0
+#: help:hr.attendance,contract_id:0
+#: field:hr.working.template.exception,contract_id:0
+#: help:hr.working.template.exception,contract_id:0
+#: field:hr.working.template.history,contract_id:0
+#: help:hr.working.template.history,contract_id:0
+#: model:ir.model,name:hr_working_shifts_switch.model_hr_contract
+msgid "Contract"
+msgstr "Contrato"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,contract_ids:0
+#: help:hr.working.template,contract_ids:0
+msgid "Contracts"
+msgstr "Contratos"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,create_uid:0
+#: field:hr.working.template.exception,create_uid:0
+#: field:hr.working.template.history,create_uid:0
+#: field:hr.working.template.line,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,create_date:0
+#: field:hr.working.template.exception,create_date:0
+#: field:hr.working.template.history,create_date:0
+#: field:hr.working.template.line,create_date:0
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,current_working_id:0
+#: help:hr.working.template,current_working_id:0
+msgid "Current Working Template Line"
+msgstr "Línea de Plantilla de Trabajo Actual"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template.history,date:0
+msgid "Date"
+msgstr "Fecha"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template.history,description:0
+msgid "Description"
+msgstr "Descripción"
+
+#. module: hr_working_shifts_switch
+#: view:hr.working.template:hr_working_shifts_switch.hr_working_template_form_view
+#: selection:hr.working.template,state:0
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template.history,related_employee_id:0
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,id:0
+#: field:hr.working.template.exception,id:0
+#: field:hr.working.template.history,id:0
+#: field:hr.working.template.line,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,write_uid:0
+#: field:hr.working.template.exception,write_uid:0
+#: field:hr.working.template.history,write_uid:0
+#: field:hr.working.template.line,write_uid:0
+msgid "Last Updated by"
+msgstr "Última actualización realizada por"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,write_date:0
+#: field:hr.working.template.exception,write_date:0
+#: field:hr.working.template.history,write_date:0
+#: field:hr.working.template.line,write_date:0
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: hr_working_shifts_switch
+#: selection:hr.working.template,period:0
+msgid "Montly"
+msgstr "Mensual"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,period:0
+#: help:hr.working.template,period:0
+msgid "Period"
+msgstr "Período"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template.line,sequence:0
+#: help:hr.working.template.line,sequence:0
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template.exception,date_start:0
+msgid "Start Date"
+msgstr "Fecha de Inicio"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,state:0
+msgid "Status"
+msgstr "Estatus"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template.exception,date_stop:0
+msgid "Stop Date"
+msgstr "Fecha de Fin"
+
+#. module: hr_working_shifts_switch
+#: view:hr.working.template:hr_working_shifts_switch.hr_working_template_form_view
+msgid "Switch Shift"
+msgstr "Cambio de Turno"
+
+#. module: hr_working_shifts_switch
+#: help:hr.working.template,state:0
+msgid "The status of the working template."
+msgstr "El estado de la plantilla de trabajo."
+
+#. module: hr_working_shifts_switch
+#: selection:hr.working.template,period:0
+msgid "Weekly"
+msgstr "Semanal"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template.exception,working_scheduler_id:0
+#: help:hr.working.template.exception,working_scheduler_id:0
+#: field:hr.working.template.history,working_scheduler_id:0
+#: help:hr.working.template.history,working_scheduler_id:0
+#: field:hr.working.template.line,working_scheduler_id:0
+#: help:hr.working.template.line,working_scheduler_id:0
+msgid "Working Scheduler"
+msgstr "Horario de Trabajo Programado"
+
+#. module: hr_working_shifts_switch
+#: field:hr.attendance,working_id:0
+#: help:hr.attendance,working_id:0
+#: field:hr.contract,working_tmpl_id:0
+#: help:hr.contract,working_tmpl_id:0
+#: view:hr.working.template:hr_working_shifts_switch.hr_working_template_form_view
+#: view:hr.working.template:hr_working_shifts_switch.hr_working_template_tree_view
+#: field:hr.working.template.exception,working_id:0
+#: help:hr.working.template.exception,working_id:0
+#: field:hr.working.template.history,working_id:0
+#: help:hr.working.template.history,working_id:0
+#: field:hr.working.template.line,working_id:0
+#: help:hr.working.template.line,working_id:0
+#: model:ir.actions.act_window,name:hr_working_shifts_switch.hr_working_template_action
+#: model:ir.model,name:hr_working_shifts_switch.model_hr_working_template
+#: model:ir.ui.menu,name:hr_working_shifts_switch.hr_working_template
+#: model:ir.ui.menu,name:hr_working_shifts_switch.main_hr_working_template
+msgid "Working Template"
+msgstr "Plantilla de Trabajo"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,wking_tmpl_excpt_id:0
+#: help:hr.working.template,wking_tmpl_excpt_id:0
+#: view:hr.working.template.exception:hr_working_shifts_switch.hr_working_template_exception_form_view
+#: view:hr.working.template.exception:hr_working_shifts_switch.hr_working_template_exception_tree_view
+#: model:ir.actions.act_window,name:hr_working_shifts_switch.hr_working_template_exception_action
+#: model:ir.model,name:hr_working_shifts_switch.model_hr_working_template_exception
+#: model:ir.ui.menu,name:hr_working_shifts_switch.hr_working_template_exception
+msgid "Working Template Exception"
+msgstr "Excepción de Plantilla de Trabajo"
+
+#. module: hr_working_shifts_switch
+#: view:hr.working.template.history:hr_working_shifts_switch.hr_working_template_history_form_view
+#: view:hr.working.template.history:hr_working_shifts_switch.hr_working_template_history_tree_view
+#: model:ir.actions.act_window,name:hr_working_shifts_switch.hr_working_template_history_action
+#: model:ir.model,name:hr_working_shifts_switch.model_hr_working_template_history
+#: model:ir.ui.menu,name:hr_working_shifts_switch.hr_working_template_history
+msgid "Working Template History"
+msgstr "Historial de Plantilla de Trabajo"
+
+#. module: hr_working_shifts_switch
+#: view:hr.working.template.line:hr_working_shifts_switch.hr_working_template_line_form_view
+#: view:hr.working.template.line:hr_working_shifts_switch.hr_working_template_line_tree_view
+#: model:ir.model,name:hr_working_shifts_switch.model_hr_working_template_line
+msgid "Working Template Line"
+msgstr "Línea de Plantilla de trabajo"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,wking_tmpl_line_ids:0
+#: help:hr.working.template,wking_tmpl_line_ids:0
+msgid "Working Template Lines"
+msgstr "Líneas de Plantilla de Trabajo"
+
+#. module: hr_working_shifts_switch
+#: help:hr.working.template,name:0
+#: help:hr.working.template.history,description:0
+msgid "help string"
+msgstr ""
+

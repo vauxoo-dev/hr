@@ -26,10 +26,11 @@
 '''
 This file add a fields to data family of employee
 '''
-from openerp import models, fields
+from openerp import fields, models
 
 
 class hr_family_type(models.Model):
+
     '''
     Class to add model to save family type of employee
     '''
@@ -40,6 +41,7 @@ class hr_family_type(models.Model):
 
 
 class hr_family(models.Model):
+
     '''
     Class to register family of employee
     '''
@@ -55,6 +57,7 @@ class hr_family(models.Model):
 
 
 class hr_employee(models.Model):
+
     '''
     Inherit hr.employee to added family of employee
     '''
