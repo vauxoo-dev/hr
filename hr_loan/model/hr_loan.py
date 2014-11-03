@@ -81,8 +81,8 @@ class hr_loan(osv.Model):
         ids = isinstance(ids, (int, long)) and [ids] or ids
         for brw in self.browse(cur, uid, ids, context=context):
             self.compute_shares(cur, uid, [brw.id], context=context)
-            self._write(cur, uid, [brw.id],
-                       {'state': 'active'}, context=context)
+            self._write(
+                cur, uid, [brw.id], {'state': 'active'}, context=context)
         return True
 
     def draft_loan(self, cur, uid, ids, context=None):
@@ -94,7 +94,8 @@ class hr_loan(osv.Model):
                 if loan_share.state == 'paid':
                     raise osv.except_osv(_("Set to Draft is not allowed"),
                                          _('There are paid lines.'))
-            self._write(cur, uid, [brw.id], {'state': 'draft'}, context=context)
+            self._write(cur, uid, [brw.id],
+                        {'state': 'draft'}, context=context)
         return True
 
     def cancel_loan(self, cur, uid, ids, context=None):
@@ -103,7 +104,7 @@ class hr_loan(osv.Model):
         ids = isinstance(ids, (int, long)) and [ids] or ids
         for brw in self.browse(cur, uid, ids, context=context):
             self._write(cur, uid, [brw.id],
-                       {'state': 'cancel'}, context=context)
+                        {'state': 'cancel'}, context=context)
         return True
 
     def last_day_of_month(self, date):
@@ -118,12 +119,14 @@ class hr_loan(osv.Model):
         hr_loan_line_obj = self.pool.get('hr.loan.line')
         for hr_loan_brw in self.browse(cur, uid, ids, context=context):
             old_loanline_ids = hr_loan_line_obj.search(
-                cur, uid, [('hr_loan_id', '=', hr_loan_brw.id)], context=context)
+                cur, uid, [('hr_loan_id', '=', hr_loan_brw.id)],
+                context=context)
             if old_loanline_ids:
                 hr_loan_line_obj.unlink(
                     cur, uid, old_loanline_ids, context=context)
 
-            if hr_loan_brw.amount_approved <= 0 or hr_loan_brw.share_quantity <= 0:
+            if hr_loan_brw.amount_approved <= 0 or\
+               hr_loan_brw.share_quantity <= 0:
                 raise osv.except_osv(
                     _("Values not allowed"),
                     _('Amount Approved and Share Quantity\
@@ -131,7 +134,8 @@ class hr_loan(osv.Model):
 
             share = hr_loan_brw.amount_approved / hr_loan_brw.share_quantity
 
-            current_date = datetime.strptime(hr_loan_brw.date_start, '%Y-%m-%d')
+            current_date = datetime.strptime(hr_loan_brw.date_start,
+                                             '%Y-%m-%d')
             for ind in xrange(0, hr_loan_brw.share_quantity):
 
                 if hr_loan_brw.payment_type == 'fortnightly':
@@ -265,7 +269,7 @@ class hr_payslip(osv.Model):
                         {'hr_payslip_id': payslip.id}, context=context)
                     total_loan += loan_line_brw.share
             self._write(cur, uid, [payslip.id], {'total_loan': total_loan},
-                       context=context)
+                        context=context)
         res = super(hr_payslip, self).compute_sheet(
             cur, uid, ids, context=context)
         return res
