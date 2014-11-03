@@ -37,5 +37,18 @@
       <field name="partner_id" ref="base.res_partner_8"/>
       <field name="amount_approved">1000</field>
     </record>
+
+<!--
+    Salary Rule with account
+-->
+    <record id="hr_salary_rule_loan_002" model="hr.salary.rule">
+        <field name="account_credit" ref="hr_payroll_account.a_creditors"/>
+    </record>
+    <record id="hr_salary_rule_loan_001" model="hr.salary.rule">
+        <field name="account_credit" ref="account.a_pay"/>
+    </record>
+    <record id="hr_payroll.hr_rule_basic" model="hr.salary.rule">
+        <field name="account_debit" ref="hr_payroll_account.a_salary_expense"/>
+    </record>
   </data>
 </openerp>
