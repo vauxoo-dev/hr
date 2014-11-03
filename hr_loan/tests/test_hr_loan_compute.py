@@ -23,7 +23,6 @@
 ###############################################################################
 
 from openerp.tests.common import TransactionCase
-from openerp import netsvc
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -41,10 +40,11 @@ class TestLoanCompute(TransactionCase):
         self.hr_payroll_structure_obj = self.registry('hr.payroll.structure')
         self.account_fiscalyear_obj = self.registry('account.fiscalyear')
         self.account_period_obj = self.registry('account.period')
-        self.wf_service = netsvc.LocalService('workflow')
         self.imd_obj = self.registry('ir.model.data')
         self.loan_list_brw = list()
         self.payslip_brw = None
+        self.bank_id = False
+        self.bank_id_2 = False
 
     def create_period(self, fiscalyear_data, month):
         cr, uid = self.cr, self.uid
@@ -88,8 +88,8 @@ class TestLoanCompute(TransactionCase):
 
         struct_id = self.search_xml_id('hr_loan', 'hr_payroll_structure_loan')
         employee_id = self.search_xml_id('hr', 'employee_vad')
-        bank_id = self.search_xml_id('base', 'res_partner_8')
-        bank_id_2 = self.search_xml_id('base', 'res_partner_7')
+        self.bank_id = self.search_xml_id('base', 'res_partner_8')
+        self.bank_id_2 = self.search_xml_id('base', 'res_partner_7')
         type_contract = self.search_xml_id('hr_contract', 'hr_contract_type_emp')
         journal_id = self.search_xml_id('account', 'bank_journal')
         account_id = self.search_xml_id('account', 'a_recv')
@@ -110,7 +110,7 @@ class TestLoanCompute(TransactionCase):
                 'payment_type': 'bimonthly',
                 'amount_approved': '1250',
                 'employee_id': contract_id,
-                'partner_id': bank_id,
+                'partner_id': self.bank_id,
             },
             {
                 'name': 'Test Loan 2',
@@ -119,7 +119,7 @@ class TestLoanCompute(TransactionCase):
                 'payment_type': 'weekly',
                 'amount_approved': '520',
                 'employee_id': contract_id,
-                'partner_id': bank_id_2,
+                'partner_id': self.bank_id_2,
             }
         ]
 
@@ -190,19 +190,17 @@ class TestLoanCompute(TransactionCase):
     def share_test(self, loan_brw, amount):
         error_msg_share_test = 'Error! in share amount'
         for share in loan_brw.share_ids:
-            if share.share != amount or share.state != 'unpaid':
-                self.assertEquals(error_msg_share_test)
+            self.assertEqual(share.share, amount, error_msg_share_test)
+            self.assertEqual(share.state, 'unpaid', error_msg_share_test)
 
     def date_test(self, loan_brw, ind, date):
         error_msg_date_test = 'Error! in shares payment_date'
         share = loan_brw.share_ids[ind]
-        if share.payment_date != date:
-            self.assertEquals(error_msg_date_test)
+        self.assertEqual(date, share.payment_date, error_msg_date_test)
 
     def date_test_end(self, loan_brw, date):
         error_msg_date_end = 'Error! in loan end date'
-        if loan_brw.date_stop != date:
-            self.assertEquals(error_msg_date_end)
+        self.assertEqual(loan_brw.date_stop, date, error_msg_date_end)
 
     def loan_test_bimonthly(self):
         if self.loan_list_brw:
@@ -270,14 +268,12 @@ class TestLoanCompute(TransactionCase):
         cr, uid = self.cr, self.uid
         error_msg_state = 'Error! in state of loan'
         for loan_brw in self.loan_list_brw:
-            if loan_brw.state != 'draft':
-                self.assertEquals(error_msg_state)
+            self.assertEqual(loan_brw.state, 'draft', error_msg_state)
 
             # Activate loan
             self.hr_loan_obj.activate_loan(cr, uid, loan_brw.id)
 
-            if loan_brw.state != 'active':
-                self.assertEquals(error_msg_state)
+            self.assertEqual(loan_brw.state, 'active', error_msg_state)
 
     def loan_test_payslip(self):
         cr, uid = self.cr, self.uid
@@ -289,14 +285,11 @@ class TestLoanCompute(TransactionCase):
             if payslip.category_id.code == 'LOAN':
                 num_loan.append((payslip.id, payslip.total))
             elif payslip.category_id.code == 'NET':
-                if payslip.total != 10000:
-                    self.assertEquals(error_msg_payslip)
+                self.assertEqual(payslip.total, 10000, error_msg_payslip)
             elif payslip.category_id.code == 'NETLOAN':
-                if payslip.total != 8050:
-                    self.assertEquals(error_msg_payslip)
+                self.assertEqual(payslip.total, 8050, error_msg_payslip)
 
-        if len(num_loan) != 3:
-            self.assertEquals(error_msg_payslip)
+        self.assertEqual(len(num_loan), 3, error_msg_payslip)
 
         amount_600 = 0
         amount_750 = 0
@@ -307,68 +300,60 @@ class TestLoanCompute(TransactionCase):
             if payslip[1] == 750:
                 amount_750 += 1
 
-        if amount_600 != 2 and amount_750 != 1:
-            self.assertEquals(error_msg_payslip)
+        self.assertEqual(amount_600, 2, error_msg_payslip)
+        self.assertEqual(amount_750, 1, error_msg_payslip)
 
-        if self.payslip_brw.state != 'draft':
-            self.assertEquals(error_msg_payslip)
+        self.assertEqual(self.payslip_brw.state, 'draft', error_msg_payslip)
 
         for share_line in self.payslip_brw.share_line_ids:
-            if share_line.state != 'unpaid':
-                self.assertEquals(error_msg_payslip)
+            self.assertEqual(share_line.state, 'unpaid', error_msg_payslip)
 
         self.hr_payslip_obj.signal_workflow(
             cr, uid, [self.payslip_brw.id], 'hr_verify_sheet')
         self.hr_payslip_obj.signal_workflow(
             cr, uid, [self.payslip_brw.id], 'process_sheet')
 
-        if self.payslip_brw.state != 'done':
-            self.assertEquals(error_msg_payslip)
+        self.assertEqual(self.payslip_brw.state, 'done', error_msg_payslip)
 
     def loan_test_account_move(self):
         error_msg_account = 'Error! in account_move'
 
-        if not self.payslip_brw.move_id:
-            self.assertEquals(error_msg_account)
-
+        self.assertTrue(self.payslip_brw.move_id, error_msg_account)
 
         for aml in self.payslip_brw.move_id.line_id:
             _logger.log(25, "aml.state %s", aml.state)
-            if aml.state != 'valid':
-                self.assertEquals(error_msg_account)
+            self.assertEqual(aml.state, 'valid', error_msg_account)
         num = 0
         if self.payslip_brw.move_id.line_id[num].name == 'Adjustment Entry':
             num += 1
         _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 8050 %s", self.payslip_brw.move_id.line_id[num].credit)
-        if self.payslip_brw.move_id.line_id[num].credit != 8050:
-            self.assertEquals(error_msg_account)
+        self.assertEquals(self.payslip_brw.move_id.line_id[num].credit, 8050, error_msg_account)
         num += 1
         _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 600 %s", self.payslip_brw.move_id.line_id[num].credit)
         _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.id 12 %s", self.payslip_brw.move_id.line_id[num].partner_id.id)
         _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.name %s", self.payslip_brw.move_id.line_id[num].partner_id.name)
-        if self.payslip_brw.move_id.line_id[num].credit != 600 or \
-                self.payslip_brw.move_id.line_id[num].partner_id.id != 12:
-            self.assertEquals(error_msg_account)
+        self.assertEquals(self.payslip_brw.move_id.line_id[num].credit, 600, error_msg_account)
+        self.assertEquals(self.payslip_brw.move_id.line_id[num].partner_id.id,
+                self.bank_id_2, error_msg_account)
         num += 1
         _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 600 %s", self.payslip_brw.move_id.line_id[num].credit)
         _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.id 12 %s", self.payslip_brw.move_id.line_id[num].partner_id.id)
         _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.name %s", self.payslip_brw.move_id.line_id[num].partner_id.name)
-        if self.payslip_brw.move_id.line_id[num].credit != 600 or \
-                self.payslip_brw.move_id.line_id[num].partner_id.id != 12:
-            self.assertEquals(error_msg_account)
+        self.assertEquals(self.payslip_brw.move_id.line_id[num].credit, 600, error_msg_account)
+        self.assertEquals(self.payslip_brw.move_id.line_id[num].partner_id.id,
+                self.bank_id_2, error_msg_account)
         num += 1
 
         _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 750 %s", self.payslip_brw.move_id.line_id[num].credit)
         _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.id 13 %s", self.payslip_brw.move_id.line_id[num].partner_id.id)
         _logger.log(25, "self.payslip_brw.move_id.line_id[num].partner_id.name %s", self.payslip_brw.move_id.line_id[num].partner_id.name)
-        if self.payslip_brw.move_id.line_id[num].credit != 750 or \
-           self.payslip_brw.move_id.line_id[num].partner_id.id != 13:
-            self.assertEquals(error_msg_account)
+        self.assertEquals(self.payslip_brw.move_id.line_id[num].credit, 750, error_msg_account)
+        self.assertEquals(self.payslip_brw.move_id.line_id[num].partner_id.id,
+                self.bank_id, error_msg_account)
         num += 1
 
         _logger.log(25, "self.payslip_brw.move_id.line_id[num].credit 10000 %s", self.payslip_brw.move_id.line_id[num].credit)
-        if self.payslip_brw.move_id.line_id[num].debit != 10000:
-            self.assertEquals(error_msg_account)
+        self.assertEquals(self.payslip_brw.move_id.line_id[num].debit, 10000, error_msg_account)
 
     def test_compute_shares(self):
         cr, uid = self.cr, self.uid
@@ -382,8 +367,9 @@ class TestLoanCompute(TransactionCase):
 
             self.loan_list_brw.append(loan_brw)
 
-            if loan_brw.share_quantity != len(loan_brw.share_ids):
-                self.assertEquals('Error! in shares quantity')
+            self.assertEquals(loan_brw.share_quantity,
+                              len(loan_brw.share_ids),
+                              'Error! in shares quantity')
 
         self.loan_test_bimonthly()
         self.loan_test_weekly()
