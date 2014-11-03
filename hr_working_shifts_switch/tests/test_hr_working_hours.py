@@ -35,7 +35,8 @@ from openerp.tests.common import TransactionCase
 class test_working_hours(TransactionCase):
 
     """
-    This test object test the correct functionality of the hr working hours module.
+    This test object test the correct functionality of the hr working hours
+    module.
     This test depends of the data demo of the module, so if the data demo
     changes then the test need to be change too.
     """
