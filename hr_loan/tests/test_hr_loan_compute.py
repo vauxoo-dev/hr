@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -25,7 +24,6 @@
 
 import logging
 
-from openerp import netsvc
 from openerp.tests.common import TransactionCase
 
 _logger = logging.getLogger(__name__)
