@@ -21,7 +21,7 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ##############################################################################
-from openerp.osv import fields, osv
+from openerp.osv import fields, osv, _
 
 
 class hr_salary_rule(osv.osv):
@@ -34,8 +34,8 @@ class hr_salary_rule(osv.osv):
         # TODO actived when exist function in origin module
         res = []
         # TODO deprecated append by origin module
-        res.append(('default', 'By default'))
-        res.append(('loan', 'Use the Partner Loan'))
+        res.append(('default', _('By default')))
+        res.append(('loan', _('Use the Partner Loan')))
         return res
 
     _columns = {

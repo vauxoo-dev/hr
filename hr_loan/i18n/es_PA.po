@@ -192,7 +192,7 @@ msgstr "Líne de Préstamo"
 #. module: hr_loan
 #: view:hr.payslip:hr_loan.payroll_loan_form
 msgid "Loan Shares"
-msgstr "Coutas de Préstamo"
+msgstr "Cuotas de Préstamo"
 
 #. module: hr_loan
 #: selection:hr.loan,payment_type:0
@@ -261,7 +261,7 @@ msgstr "No está permitido pasar a borrador"
 #: field:hr.loan.line,share:0
 #, python-format
 msgid "Share"
-msgstr "Couta"
+msgstr "Cuota"
 
 #. module: hr_loan
 #: field:hr.payslip,share_line_ids:0
@@ -323,3 +323,14 @@ msgstr "Valores no permitidos"
 msgid "Weekly"
 msgstr "Semanal"
 
+#. module: hr_loan
+#: code:addons/hr_loan/model/hr_payroll.py:37
+#, python-format
+msgid "By default"
+msgstr "Por defecto"
+
+#. module: hr_loan
+#: code:addons/hr_loan/model/hr_payroll.py:38
+#, python-format
+msgid "Use the Partner Loan"
+msgstr "Utilice el empleado del préstamo"
