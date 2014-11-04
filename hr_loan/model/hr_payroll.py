@@ -21,7 +21,8 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ##############################################################################
-from openerp.osv import fields, osv, _
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
 
 
 class hr_salary_rule(osv.osv):
