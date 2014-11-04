@@ -92,7 +92,8 @@ class TestLoanCompute(TransactionCase):
         employee_id = self.search_xml_id('hr', 'employee_vad')
         self.bank_id = self.search_xml_id('base', 'res_partner_8')
         self.bank_id_2 = self.search_xml_id('base', 'res_partner_7')
-        type_contract = self.search_xml_id('hr_contract', 'hr_contract_type_emp')
+        type_contract = self.search_xml_id('hr_contract',
+                                           'hr_contract_type_emp')
         journal_id = self.search_xml_id('account', 'bank_journal')
         account_id = self.search_xml_id('account', 'a_recv')
 
@@ -140,7 +141,8 @@ class TestLoanCompute(TransactionCase):
         })
         self.payslip_brw = self.hr_payslip_obj.browse(cr, uid, payslip_id)
 
-        salary_rule_id = self.search_xml_id('hr_loan', 'hr_salary_rule_loan_001')
+        salary_rule_id = self.search_xml_id('hr_loan',
+                                            'hr_salary_rule_loan_001')
         self.hr_salary_rule_obj.write(cr, uid, salary_rule_id, {
             'account_credit': account_id,
         })
