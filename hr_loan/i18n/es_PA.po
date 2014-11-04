@@ -213,7 +213,7 @@ msgstr "Pagado"
 #. module: hr_loan
 #: field:hr.salary.rule,partner_aml:0
 msgid "Partner to use"
-msgstr "Cliente a usar"
+msgstr "Empresa a usar"
 
 #. module: hr_loan
 #: model:ir.model,name:hr_loan.model_hr_payslip
@@ -333,4 +333,4 @@ msgstr "Por defecto"
 #: code:addons/hr_loan/model/hr_payroll.py:38
 #, python-format
 msgid "Use the Partner Loan"
-msgstr "Utilice el empleado del préstamo"
+msgstr "Usar la empresa del préstamo"
