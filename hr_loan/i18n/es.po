@@ -271,7 +271,7 @@ msgstr "Línea de Cuota"
 #. module: hr_loan
 #: field:hr.loan,share_quantity:0
 msgid "Share Quantity"
-msgstr "Catidad de Cuota"
+msgstr "Cantidad de Cuota"
 
 #. module: hr_loan
 #: help:hr.loan.line,share:0
