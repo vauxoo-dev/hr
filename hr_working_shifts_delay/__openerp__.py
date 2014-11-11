@@ -34,14 +34,15 @@
     "license" : "AGPL-3",
     "depends" : [
             "base",
+            "resource",
             "hr",
+            "hr_contract",
             "hr_attendance",
             "hr_attendance_zk",
-            "hr_contact",
         ],
     "demo" : [],
     "data" : [
-            "hr_working_shifts_delay_view.xml",
+            "views/hr_working_shifts_delay_view.xml",
 
     ],
     "installable" : True,
