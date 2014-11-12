@@ -8,16 +8,47 @@
 			<field name="inherit_id" ref="resource.resource_calendar_form"/>
 			<field name="arch" type="xml">
                 <xpath expr='//field[@name="leave_ids"]' position="after">
-                    <notebook >
-                		<page string="Basic settings">
-						</page>
-						<page string="Calculation">
-						</page>
-						<page string="Statistic Items">
-						</page>
-						<page string="Weekend set">
-						</page>										
-					</notebook>
+                	<group string="Basic settings">
+                		<field name="least_min"/>
+                	</group>
+                	<group string="Calculation">
+                		<field name="one_workday_as"/>
+                		<field name="min_as_late"/>
+                		<field name="min_as_early"/>
+                		<group colspan="4" col="6" >
+                			<field name="noclockin_count_as"/>
+                			<field name="noclockin_count_mins" nolabel="1"/>
+                		</group>
+                		<group colspan="4" col="6" >
+                			<field name="noclockout_count_as"/>
+                			<field name="noclockout_count_mins" nolabel="1"/>
+                		</group>
+                		<group colspan="4" col="6" >
+                			<field name="as_late_exceed"/>
+                			<label string="min, count as absent"/>
+                		</group>
+                		<group colspan="4" col="6" >
+                			<field name="as_early_leave"/>
+                			<label string="min, count as absent"/>
+                		</group>
+                		<group colspan="4" col="4">
+                			<field name="inter_leaving_ot"/>
+                			<field name="checkout_interval_ot"/>
+                		</group>
+                		<group colspan="4" col="2">
+                			<field name="ot_after_checkout"/>
+                		</group>
+                		<group colspan="4" col="4">
+                			<field name="checkin_count_ot"/>
+                			<field name="checkin_interval_ot"/>
+                		</group>
+                		<group colspan="4" col="2">
+                			<field name="ot_defore_checkin"/>
+                		</group>
+                		<group colspan="4" col="2">
+                			<field name="longest_over_time"/>
+                		</group>
+                	</group>
 				</xpath>				
             </field>
 		</record>
