@@ -120,6 +120,7 @@ class hr_loan(osv.Model):
             old_loanline_ids = hr_loan_line_obj.search(
                 cur, uid, [('hr_loan_id', '=', hr_loan_brw.id)],
                 context=context)
+            # Delete previous loan lines if they exist
             if old_loanline_ids:
                 hr_loan_line_obj.unlink(
                     cur, uid, old_loanline_ids, context=context)
