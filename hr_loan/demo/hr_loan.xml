@@ -50,5 +50,13 @@
     <record id="hr_payroll.hr_rule_basic" model="hr.salary.rule">
         <field name="account_debit" ref="hr_payroll_account.a_salary_expense"/>
     </record>
+<!--
+    ir.config_parameter for the calculation of hr loan ommigin the month
+    of December
+-->
+    <record id="ir_config_december" model="ir.config_parameter">
+        <field name="key">hr_loan.month_exception</field>
+        <field name="value">12</field>
+    </record>
   </data>
 </openerp>
