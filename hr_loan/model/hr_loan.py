@@ -135,6 +135,7 @@ class hr_loan(osv.Model):
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
         hr_loan_line_obj = self.pool.get('hr.loan.line')
+        ir_cp_obj = self.pool.get('ir.config_parameter')
         for hr_loan_brw in self.browse(cur, uid, ids, context=context):
             old_loanline_ids = hr_loan_line_obj.search(
                 cur, uid, [('hr_loan_id', '=', hr_loan_brw.id)],
@@ -143,20 +144,26 @@ class hr_loan(osv.Model):
             if old_loanline_ids:
                 hr_loan_line_obj.unlink(
                     cur, uid, old_loanline_ids, context=context)
-
+            # validation if amounts on amount_approved and share quantity are
+            # greater than 0
             if hr_loan_brw.amount_approved <= 0 or\
                hr_loan_brw.share_quantity <= 0:
                 raise osv.except_osv(
                     _("Values not allowed"),
                     _('Amount Approved and Share Quantity\
                         must be greater than zero'))
-
             share = hr_loan_brw.amount_approved / hr_loan_brw.share_quantity
-
             current_date = datetime.strptime(hr_loan_brw.date_start,
                                              '%Y-%m-%d')
             for ind in xrange(0, hr_loan_brw.share_quantity):
-
+                # Obtaining the date where the calculation will start and
+                # storing it on current_date variable
+                if current_date.month == \
+                        int(ir_cp_obj.get_param(cur, uid,
+                                                'hr_loan.month_exception',
+                                                default=False,
+                                                context=context)):
+                    current_date = current_date + relativedelta(months=1)
                 if hr_loan_brw.payment_type == 'fortnightly':
                     if current_date.day < 15:
                         current_date = current_date.replace(day=15)
