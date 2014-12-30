@@ -134,6 +134,7 @@ class hr_loan(osv.Model):
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
+        str_rule = 'hr_loan.month_exception'
         hr_loan_line_obj = self.pool.get('hr.loan.line')
         ir_cp_obj = self.pool.get('ir.config_parameter')
         for hr_loan_brw in self.browse(cur, uid, ids, context=context):
@@ -160,7 +161,7 @@ class hr_loan(osv.Model):
                 # storing it on current_date variable
                 if current_date.month == \
                         int(ir_cp_obj.get_param(cur, uid,
-                                                'hr_loan.month_exception',
+                                                str_rule,
                                                 default=False,
                                                 context=context)):
                     current_date = current_date + relativedelta(months=1)
@@ -183,6 +184,13 @@ class hr_loan(osv.Model):
                         current_date = self.last_day_of_month(current_date)
                     else:
                         current_date = current_date + relativedelta(months=2)
+                        if current_date.month == \
+                                int(ir_cp_obj.get_param(cur, uid,
+                                                        str_rule,
+                                                        default=False,
+                                                        context=context)):
+                            current_date = current_date + \
+                                relativedelta(months=1)
                         current_date = self.last_day_of_month(current_date)
 
                 hr_loan_line_obj.create(cur, uid, {

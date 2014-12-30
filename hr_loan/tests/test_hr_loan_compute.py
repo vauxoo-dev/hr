@@ -212,13 +212,13 @@ class TestLoanCompute(TransactionCase):
             self.share_test(loan_brw, 156.25)
             self.date_test_end(loan_brw, '2016-02-01')
             self.date_test(loan_brw, 0, '2014-10-31')
-            self.date_test(loan_brw, 1, '2014-12-31')
-            self.date_test(loan_brw, 2, '2015-02-28')
-            self.date_test(loan_brw, 3, '2015-04-30')
-            self.date_test(loan_brw, 4, '2015-06-30')
-            self.date_test(loan_brw, 5, '2015-08-31')
-            self.date_test(loan_brw, 6, '2015-10-31')
-            self.date_test(loan_brw, 7, '2016-02-29')
+            self.date_test(loan_brw, 1, '2015-01-31')
+            self.date_test(loan_brw, 2, '2015-03-31')
+            self.date_test(loan_brw, 3, '2015-05-31')
+            self.date_test(loan_brw, 4, '2015-07-31')
+            self.date_test(loan_brw, 5, '2015-09-30')
+            self.date_test(loan_brw, 6, '2015-11-30')
+            self.date_test(loan_brw, 7, '2016-01-31')
 
         return True
 
@@ -239,17 +239,16 @@ class TestLoanCompute(TransactionCase):
     def loan_test_fortnightly(self):
         if self.loan_list_brw:
             loan_brw = self.loan_list_brw[0]
-
             self.share_test(loan_brw, 750)
-            self.date_test_end(loan_brw, '2015-06-01')
+            self.date_test_end(loan_brw, '2015-07-01')
             self.date_test(loan_brw, 0, '2014-10-31')
             self.date_test(loan_brw, 1, '2014-11-30')
-            self.date_test(loan_brw, 2, '2014-12-31')
-            self.date_test(loan_brw, 3, '2015-01-31')
-            self.date_test(loan_brw, 4, '2015-02-28')
-            self.date_test(loan_brw, 5, '2015-03-31')
-            self.date_test(loan_brw, 6, '2015-04-30')
-            self.date_test(loan_brw, 7, '2015-05-31')
+            self.date_test(loan_brw, 2, '2015-01-31')
+            self.date_test(loan_brw, 3, '2015-02-28')
+            self.date_test(loan_brw, 4, '2015-03-31')
+            self.date_test(loan_brw, 5, '2015-04-30')
+            self.date_test(loan_brw, 6, '2015-05-31')
+            self.date_test(loan_brw, 7, '2015-06-30')
 
         return True
 
