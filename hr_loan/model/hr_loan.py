@@ -112,6 +112,25 @@ class hr_loan(osv.Model):
         return date.replace(month=date.month + 1, day=1) - timedelta(days=1)
 
     def compute_shares(self, cur, uid, ids, context=None):
+        """
+        This method calculates the loan for an employee given some params on
+        the form of hr_loan, this is by dividing the amount given on the loan
+        by the share quantity, and taking in account the start and end date
+        based on payment type:
+
+        Fields usage:
+
+            :param Name: A free char field where you can freely use.
+            :param Amount Approved: The amount base to make all compute.
+            :param Share Qty: The number of parts in which will bi divided
+            ´Amount approved´.
+            :param Payment Type: The time periodicity in which the employee
+            will pay.
+            :param Start Date: The date in which the employee will start making
+            payments.
+
+
+        """
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
