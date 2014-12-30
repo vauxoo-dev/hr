@@ -45,8 +45,8 @@ class TestLoanCompute(TransactionCase):
         self.loan_list_brw = list()
         self.payslip_brw = None
         self.loan_list = list()
-        self.bank_id = False
-        self.bank_id_2 = False
+        self.bank_id = None
+        self.bank_id_2 = None
 
     def create_period(self, fiscalyear_data, month):
         cr, uid = self.cr, self.uid
