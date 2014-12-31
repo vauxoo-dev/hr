@@ -177,6 +177,13 @@ class hr_loan(osv.Model):
                     current_date = current_date + relativedelta(days=7)
                 if hr_loan_brw.payment_type == 'monthly':
                     current_date = current_date + relativedelta(days=1)
+                    if current_date.month == \
+                            int(ir_cp_obj.get_param(cur, uid,
+                                                    str_rule,
+                                                    default=False,
+                                                    context=context)):
+                        current_date = current_date + \
+                            relativedelta(months=1)
                     current_date = self.last_day_of_month(current_date)
                 if hr_loan_brw.payment_type == 'bimonthly':
                     if ind == 0:
