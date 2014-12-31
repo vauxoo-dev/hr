@@ -29,7 +29,6 @@
         'hr',
         'hr_payroll',
         'hr_payroll_account',
-        'l10n_pa_hr_loan',
     ],
     "author": "Vauxoo",
     "description": """
