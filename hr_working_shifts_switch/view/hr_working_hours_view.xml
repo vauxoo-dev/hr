@@ -25,6 +25,9 @@
                         <field name="period"/>
                         <field name="current_working_id"/>
                         <field name="cron_id" invisible="True"/>
+                        <field name="related_interval_type" attrs="{'readonly':[('cron_id','=',False)]}"/>
+                        <field name="related_interval_number" attrs="{'readonly':[('cron_id','=',False)]}"/>
+                        <field name="related_nextcall" attrs="{'readonly':[('cron_id','=',False)]}"/>
                     </group>
                 </sheet>
                 </form>

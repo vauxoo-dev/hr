@@ -87,7 +87,21 @@ class hr_working_template(osv.Model):
         'cron_id': fields.many2one(
             'ir.cron',
             string='Cron Job',
-            help='The cron job that will switch working hour',)
+            help='The cron job that will switch working hour',),
+        'related_interval_type': fields.related('cron_id', 'interval_type',
+                                                type='char',
+                                                relation='ir.cron',
+                                                string='Related Interval\
+                                                Type'),
+        'related_interval_number': fields.related('cron_id', 'interval_number',
+                                                  type='integer',
+                                                  relation='ir.cron',
+                                                  string='Related Interval\
+                                                  Number'),
+        'related_nextcall': fields.related('cron_id', 'nextcall',
+                                           type='datetime',
+                                           relation='ir.cron',
+                                           string='Related Next Execution'),
     }
 
     _defaults = {
