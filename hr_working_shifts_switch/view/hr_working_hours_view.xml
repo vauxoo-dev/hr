@@ -24,6 +24,7 @@
                         <field name="wking_tmpl_excpt_id"/>
                         <field name="period"/>
                         <field name="current_working_id"/>
+                        <field name="cron_id" invisible="True"/>
                     </group>
                 </sheet>
                 </form>
@@ -82,7 +83,7 @@
         </record>
 
         <!-- views of the hr.working.template model -->
-        
+
         <record model="ir.ui.view" id="hr_working_template_exception_form_view">
             <field name="name">hr.working.template.exception.form.view</field>
             <field name="model">hr.working.template.exception</field>

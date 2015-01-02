@@ -83,8 +83,11 @@ class hr_working_template(osv.Model):
             'hr.working.template.line',
             string='Current Working Template Line',
             help='Current Working Template Line',
-            domain="[('working_id', '=', id)]",
-        ),
+            domain="[('working_id', '=', id)]",),
+        'cron_id': fields.many2one(
+            'ir.cron',
+            string='Cron Job',
+            help='The cron job that will switch working hour',)
     }
 
     _defaults = {
