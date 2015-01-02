@@ -137,8 +137,8 @@ class hr_working_template(osv.Model):
         }
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
             self._write(cr, uid, [wk_tmpl.id], state)
-            self._update_cron(cr, uid, ids, wk_tmpl.id, wk_tmpl.period, state,
-                              context)
+            self._update_cron(cr, uid, ids, wk_tmpl.cron_id.id, wk_tmpl.period,
+                              state, context)
 
         return True
 
@@ -150,8 +150,8 @@ class hr_working_template(osv.Model):
         }
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
             self._write(cr, uid, [wk_tmpl.id], state)
-            self._update_cron(cr, uid, ids, wk_tmpl.id, wk_tmpl.period, state,
-                              context)
+            self._update_cron(cr, uid, ids, wk_tmpl.cron_id.id, wk_tmpl.period,
+                              state, context)
         return True
 
     def action_draft(self, cr, uid, ids, context=None):
@@ -161,14 +161,12 @@ class hr_working_template(osv.Model):
             'state': 'draft'
         }
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            cron_id = self._update_cron(cr, uid, ids, wk_tmpl.id,
+            cron_id = self._update_cron(cr, uid, ids, wk_tmpl.cron_id.id,
                                         wk_tmpl.period, state,
                                         context)
             if cron_id:
                 state['cron_id'] = cron_id
             self._write(cr, uid, [wk_tmpl.id], state)
-
-
         return True
 
     def _switch_shift(self, cr, uid, ids=False, context=None):
