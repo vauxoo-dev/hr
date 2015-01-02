@@ -94,25 +94,81 @@ class hr_working_template(osv.Model):
         'state': 'draft',
     }
 
+    def _create_cron(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        cron_obj = self.pool.get('ir.cron')
+        cron_data = {
+            'name': 'Working Shift Switch %s' % ids[0],
+            'active': False,
+            'interval_number': 1,
+            'numbercall': -1,
+            'doall': True,
+            'model': 'hr.working.template',
+            'function': '_switch_shift',
+            'args': ([ids]),
+            }
+        cron_id = cron_obj.create(cr, uid, cron_data, context)
+        return cron_id
+
+    def _update_cron(self, cr, uid, ids, cron_id, period, state, context=None):
+        cron_obj = self.pool.get('ir.cron')
+        if cron_id and state.get('state') == 'done':
+            cron_data = {'active': True}
+            cron_obj.write(cr, uid, [cron_id], cron_data)
+            return True
+        elif not cron_id and state.get('state') == 'draft':
+            fresh_cron_id = self._create_cron(cr, uid, ids, context)
+            return fresh_cron_id
+        elif cron_id and state.get('state') == 'draft':
+            cron_data = {'active': False}
+            cron_obj.write(cr, uid, [cron_id], cron_data)
+            return False
+        elif cron_id and state.get('state') == 'cancel':
+            cron_data = {'active': False}
+            cron_obj.write(cr, uid, [cron_id], cron_data)
+            return True
+
     def action_done(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
+        state = {
+            'state': 'done'
+        }
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            self._write(cr, uid, [wk_tmpl.id], {'state': 'done'})
+            self._write(cr, uid, [wk_tmpl.id], state)
+            self._update_cron(cr, uid, ids, wk_tmpl.id, wk_tmpl.period, state,
+                              context)
+
         return True
 
     def action_cancel(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
+        state = {
+            'state': 'cancel'
+        }
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            self._write(cr, uid, [wk_tmpl.id], {'state': 'cancel'})
+            self._write(cr, uid, [wk_tmpl.id], state)
+            self._update_cron(cr, uid, ids, wk_tmpl.id, wk_tmpl.period, state,
+                              context)
         return True
 
     def action_draft(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
+        state = {
+            'state': 'draft'
+        }
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            self._write(cr, uid, [wk_tmpl.id], {'state': 'draft'})
+            cron_id = self._update_cron(cr, uid, ids, wk_tmpl.id,
+                                        wk_tmpl.period, state,
+                                        context)
+            if cron_id:
+                state['cron_id'] = cron_id
+            self._write(cr, uid, [wk_tmpl.id], state)
+
+
         return True
 
     def _switch_shift(self, cr, uid, ids=False, context=None):
