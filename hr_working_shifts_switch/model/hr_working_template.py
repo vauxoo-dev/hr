@@ -108,31 +108,60 @@ class hr_working_template(osv.Model):
         'state': 'draft',
     }
 
-    def _create_cron(self, cr, uid, ids, context=None):
+    def _create_cron(self, cr, uid, ids, period, context=None):
+        """
+        This method creates a cron job related to a hr_working_template , it is
+        used on change of state and when a new template is created.
+
+        Param usage:
+
+            :param period: This is the periodicity  on wich it will change the
+            working hours of the template, it can be ´weekly´ or ´monthly´ in
+            lowercase.
+
+        """
         if context is None:
             context = {}
+        interval_type = {'weekly': 'weeks',
+                         'monthly': 'months'
+                         }
         cron_obj = self.pool.get('ir.cron')
-        cron_data = {
-            'name': 'Working Shift Switch %s' % ids[0],
-            'active': False,
-            'interval_number': 1,
-            'numbercall': -1,
-            'doall': True,
-            'model': 'hr.working.template',
-            'function': '_switch_shift',
-            'args': ([ids]),
-            }
+        cron_data = {'name': 'Working Shift Switch %s' % ids[0],
+                     'active': False,
+                     'interval_number': 1,
+                     'numbercall': -1,
+                     'doall': True,
+                     'model': 'hr.working.template',
+                     'function': '_switch_shift',
+                     'args': ([ids]),
+                     'interval_type': interval_type.get(period),
+                     }
         cron_id = cron_obj.create(cr, uid, cron_data, context)
         return cron_id
 
     def _update_cron(self, cr, uid, ids, cron_id, period, state, context=None):
+        """
+        This method updates/creates the related cron to a hr_working_template
+        based on the new state given to a template.
+
+        Param usage:
+
+            :param cron_id: An integer that contains the ID of the related cron
+            job if exists on the model ´ir.cron´.
+            :param period: This is the periodicity  on wich it will change the
+            working hours of the template, it can be ´weekly´ or ´monthly´ in
+            lowercase.
+            :param state: A string that will rule if the cron will be
+            activated/deactivated.
+
+        """
         cron_obj = self.pool.get('ir.cron')
         if cron_id and state.get('state') == 'done':
             cron_data = {'active': True}
             cron_obj.write(cr, uid, [cron_id], cron_data)
             return True
         elif not cron_id and state.get('state') == 'draft':
-            fresh_cron_id = self._create_cron(cr, uid, ids, context)
+            fresh_cron_id = self._create_cron(cr, uid, ids, period, context)
             return fresh_cron_id
         elif cron_id and state.get('state') == 'draft':
             cron_data = {'active': False}
