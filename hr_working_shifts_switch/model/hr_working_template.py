@@ -108,7 +108,15 @@ class hr_working_template(osv.Model):
         'state': 'draft',
     }
 
-    def _create_cron(self, cr, uid, ids, period, context=None):
+    def create(self, cr, uid, vals, context=None):
+        fresh_id = super(hr_working_template, self).create(cr, uid, vals,
+                                                           context=context)
+        cron_id = self._create_cron(cr, uid, [fresh_id], vals.get('period'),
+                                    context=context)
+        self.write(cr, uid, [fresh_id], {'cron_id': cron_id})
+        return fresh_id
+
+    def _create_cron(self, cr, uid, template_ids, period, context=None):
         """
         This method creates a cron job related to a hr_working_template , it is
         used on change of state and when a new template is created.
@@ -118,6 +126,8 @@ class hr_working_template(osv.Model):
             :param period: This is the periodicity  on wich it will change the
             working hours of the template, it can be ´weekly´ or ´monthly´ in
             lowercase.
+            :param template_ids: The template that will contain the data to
+            execute the cron job, ti will act as its ´ids´.
 
         """
         if context is None:
@@ -126,14 +136,14 @@ class hr_working_template(osv.Model):
                          'monthly': 'months'
                          }
         cron_obj = self.pool.get('ir.cron')
-        cron_data = {'name': 'Working Shift Switch %s' % ids[0],
+        cron_data = {'name': 'Working Shift Switch %s' % template_ids[0],
                      'active': False,
                      'interval_number': 1,
                      'numbercall': -1,
                      'doall': True,
                      'model': 'hr.working.template',
                      'function': '_switch_shift',
-                     'args': ([ids]),
+                     'args': ([template_ids]),
                      'interval_type': interval_type.get(period),
                      }
         cron_id = cron_obj.create(cr, uid, cron_data, context)
