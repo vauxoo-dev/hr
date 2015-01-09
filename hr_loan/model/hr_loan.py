@@ -112,31 +112,59 @@ class hr_loan(osv.Model):
         return date.replace(month=date.month + 1, day=1) - timedelta(days=1)
 
     def compute_shares(self, cur, uid, ids, context=None):
+        """
+        This method calculates the loan for an employee given some params on
+        the form of hr_loan, this is by dividing the amount given on the loan
+        by the share quantity, and taking in account the start and end date
+        based on payment type:
+
+        Fields usage:
+
+            :param Name: A free char field where you can freely use.
+            :param Amount Approved: The amount base to make all compute.
+            :param Share Qty: The number of parts in which will bi divided
+            ´Amount approved´.
+            :param Payment Type: The time periodicity in which the employee
+            will pay.
+            :param Start Date: The date in which the employee will start making
+            payments.
+
+
+        """
         if context is None:
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
+        str_rule = 'hr_loan.month_exception'
         hr_loan_line_obj = self.pool.get('hr.loan.line')
+        ir_cp_obj = self.pool.get('ir.config_parameter')
         for hr_loan_brw in self.browse(cur, uid, ids, context=context):
             old_loanline_ids = hr_loan_line_obj.search(
                 cur, uid, [('hr_loan_id', '=', hr_loan_brw.id)],
                 context=context)
+            # Delete previous loan lines if they exist
             if old_loanline_ids:
                 hr_loan_line_obj.unlink(
                     cur, uid, old_loanline_ids, context=context)
-
+            # validation if amounts on amount_approved and share quantity are
+            # greater than 0
             if hr_loan_brw.amount_approved <= 0 or\
                hr_loan_brw.share_quantity <= 0:
                 raise osv.except_osv(
                     _("Values not allowed"),
                     _('Amount Approved and Share Quantity\
                         must be greater than zero'))
-
             share = hr_loan_brw.amount_approved / hr_loan_brw.share_quantity
-
             current_date = datetime.strptime(hr_loan_brw.date_start,
                                              '%Y-%m-%d')
             for ind in xrange(0, hr_loan_brw.share_quantity):
-
+                # Obtaining the date where the calculation will start and
+                # storing it on current_date variable
+                if current_date.month == \
+                        int(ir_cp_obj.get_param(cur, uid,
+                                                str_rule,
+                                                default=False,
+                                                context=context)):
+                    current_date = current_date + relativedelta(months=1)
                 if hr_loan_brw.payment_type == 'fortnightly':
                     if current_date.day < 15:
                         current_date = current_date.replace(day=15)
@@ -149,6 +177,13 @@ class hr_loan(osv.Model):
                     current_date = current_date + relativedelta(days=7)
                 if hr_loan_brw.payment_type == 'monthly':
                     current_date = current_date + relativedelta(days=1)
+                    if current_date.month == \
+                            int(ir_cp_obj.get_param(cur, uid,
+                                                    str_rule,
+                                                    default=False,
+                                                    context=context)):
+                        current_date = current_date + \
+                            relativedelta(months=1)
                     current_date = self.last_day_of_month(current_date)
                 if hr_loan_brw.payment_type == 'bimonthly':
                     if ind == 0:
@@ -156,6 +191,13 @@ class hr_loan(osv.Model):
                         current_date = self.last_day_of_month(current_date)
                     else:
                         current_date = current_date + relativedelta(months=2)
+                        if current_date.month == \
+                                int(ir_cp_obj.get_param(cur, uid,
+                                                        str_rule,
+                                                        default=False,
+                                                        context=context)):
+                            current_date = current_date + \
+                                relativedelta(months=1)
                         current_date = self.last_day_of_month(current_date)
 
                 hr_loan_line_obj.create(cur, uid, {

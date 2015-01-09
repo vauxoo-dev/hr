@@ -28,7 +28,8 @@
     "depends": [
         'hr',
         'hr_payroll',
-        'hr_payroll_account'],
+        'hr_payroll_account',
+    ],
     "author": "Vauxoo",
     "description": """
 Odoo HR Loan
