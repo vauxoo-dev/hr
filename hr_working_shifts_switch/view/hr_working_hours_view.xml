@@ -22,7 +22,6 @@
                         <field name="contract_ids"/>
                         <field name="wking_tmpl_line_ids"/>
                         <field name="wking_tmpl_excpt_id"/>
-                        <field name="period"/>
                         <field name="current_working_id"/>
                         <field name="cron_id" invisible="True"/>
                         <field name="related_interval_type" attrs="{'readonly':[('cron_id','=',False)]}"/>
@@ -43,7 +42,6 @@
                     <field name="contract_ids"/>
                     <field name="wking_tmpl_line_ids"/>
                     <field name="wking_tmpl_excpt_id"/>
-                    <field name="period"/>
                     <field name="current_working_id"/>
                     <field name="state"/>
                 </tree>

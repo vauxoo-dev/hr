@@ -49,6 +49,14 @@ class hr_working_template(osv.Model):
         ('done', 'Active'),
         ('cancel', 'Cancelled')
     ]
+    PERIOD_SELECTION = [
+        ('minutes', 'Minutes'),
+        ('hours', 'Hours'),
+        ('work_days', 'Work Days'),
+        ('days', 'Days'),
+        ('weeks', 'Weeks'),
+        ('months', 'Months'),
+    ]
 
     _columns = {
         'name': fields.char(
@@ -75,10 +83,6 @@ class hr_working_template(osv.Model):
             'working_id',
             string='Working Template Exception',
             help='Working Template Exception'),
-        'period': fields.selection(
-            [('weekly', 'Weekly'), ('monthly', 'Montly')],
-            string='Period',
-            help='Period'),
         'current_working_id': fields.many2one(
             'hr.working.template.line',
             string='Current Working Template Line',
@@ -89,8 +93,9 @@ class hr_working_template(osv.Model):
             string='Cron Job',
             help='The cron job that will switch working hour',),
         'related_interval_type': fields.related('cron_id', 'interval_type',
-                                                type='char',
+                                                type='selection',
                                                 relation='ir.cron',
+                                                selection=PERIOD_SELECTION,
                                                 string='Related Interval\
                                                 Type'),
         'related_interval_number': fields.related('cron_id', 'interval_number',
@@ -111,7 +116,8 @@ class hr_working_template(osv.Model):
     def create(self, cr, uid, vals, context=None):
         fresh_id = super(hr_working_template, self).create(cr, uid, vals,
                                                            context=context)
-        cron_id = self._create_cron(cr, uid, [fresh_id], vals.get('period'),
+        cron_id = self._create_cron(cr, uid, [fresh_id],
+                                    vals.get('related_interval_type'),
                                     context=context)
         self.write(cr, uid, [fresh_id], {'cron_id': cron_id})
         return fresh_id
@@ -124,17 +130,14 @@ class hr_working_template(osv.Model):
         Param usage:
 
             :param period: This is the periodicity  on wich it will change the
-            working hours of the template, it can be ´weekly´ or ´monthly´ in
-            lowercase.
+            working hours of the template, it can be any of the available on
+            the selection list.
             :param template_ids: The template that will contain the data to
             execute the cron job, ti will act as its ´ids´.
 
         """
         if context is None:
             context = {}
-        interval_type = {'weekly': 'weeks',
-                         'monthly': 'months'
-                         }
         cron_obj = self.pool.get('ir.cron')
         cron_data = {'name': 'Working Shift Switch %s' % template_ids[0],
                      'active': False,
@@ -144,7 +147,7 @@ class hr_working_template(osv.Model):
                      'model': 'hr.working.template',
                      'function': '_switch_shift',
                      'args': ([template_ids]),
-                     'interval_type': interval_type.get(period),
+                     'interval_type': period,
                      }
         cron_id = cron_obj.create(cr, uid, cron_data, context)
         return cron_id
@@ -159,8 +162,8 @@ class hr_working_template(osv.Model):
             :param cron_id: An integer that contains the ID of the related cron
             job if exists on the model ´ir.cron´.
             :param period: This is the periodicity  on wich it will change the
-            working hours of the template, it can be ´weekly´ or ´monthly´ in
-            lowercase.
+            working hours of the template, it can be any of the available on
+            the selection list.
             :param state: A string that will rule if the cron will be
             activated/deactivated.
 
@@ -190,8 +193,8 @@ class hr_working_template(osv.Model):
         }
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
             self._write(cr, uid, [wk_tmpl.id], state)
-            self._update_cron(cr, uid, ids, wk_tmpl.cron_id.id, wk_tmpl.period,
-                              state, context)
+            self._update_cron(cr, uid, ids, wk_tmpl.cron_id.id,
+                              wk_tmpl.related_interval_type, state, context)
 
         return True
 
@@ -203,8 +206,8 @@ class hr_working_template(osv.Model):
         }
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
             self._write(cr, uid, [wk_tmpl.id], state)
-            self._update_cron(cr, uid, ids, wk_tmpl.cron_id.id, wk_tmpl.period,
-                              state, context)
+            self._update_cron(cr, uid, ids, wk_tmpl.cron_id.id,
+                              wk_tmpl.related_interval_type, state, context)
         return True
 
     def action_draft(self, cr, uid, ids, context=None):
@@ -215,7 +218,7 @@ class hr_working_template(osv.Model):
         }
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
             cron_id = self._update_cron(cr, uid, ids, wk_tmpl.cron_id.id,
-                                        wk_tmpl.period, state,
+                                        wk_tmpl.related_interval_type, state,
                                         context)
             if cron_id:
                 state['cron_id'] = cron_id

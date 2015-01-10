@@ -1,19 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* hr_working_shifts_switch
+# 	* hr_working_shifts_switch
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-31 23:21+0000\n"
-"PO-Revision-Date: 2014-10-31 23:21+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2015-01-16 02:49+0000\n"
+"PO-Revision-Date: 2015-01-15 20:55-0600\n"
+"Last-Translator: OscarAlca <oszckar@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"Language: es_MX\n"
+"X-Generator: Poedit 1.6.4\n"
 
 #. module: hr_working_shifts_switch
 #: view:hr.working.template:hr_working_shifts_switch.hr_working_template_form_view
@@ -37,8 +39,7 @@ msgid "Cancelled"
 msgstr "Cancelado"
 
 #. module: hr_working_shifts_switch
-#: field:hr.attendance,contract_id:0
-#: help:hr.attendance,contract_id:0
+#: field:hr.attendance,contract_id:0 help:hr.attendance,contract_id:0
 #: field:hr.working.template.exception,contract_id:0
 #: help:hr.working.template.exception,contract_id:0
 #: field:hr.working.template.history,contract_id:0
@@ -70,6 +71,11 @@ msgid "Created on"
 msgstr "Creado el"
 
 #. module: hr_working_shifts_switch
+#: field:hr.working.template,cron_id:0
+msgid "Cron Job"
+msgstr "Tarea Programada"
+
+#. module: hr_working_shifts_switch
 #: field:hr.working.template,current_working_id:0
 #: help:hr.working.template,current_working_id:0
 msgid "Current Working Template Line"
@@ -79,6 +85,11 @@ msgstr "Línea de Plantilla de Trabajo Actual"
 #: field:hr.working.template.history,date:0
 msgid "Date"
 msgstr "Fecha"
+
+#. module: hr_working_shifts_switch
+#: selection:hr.working.template,related_interval_type:0
+msgid "Days"
+msgstr "Dias"
 
 #. module: hr_working_shifts_switch
 #: field:hr.working.template.history,description:0
@@ -97,10 +108,13 @@ msgid "Employee"
 msgstr "Empleado"
 
 #. module: hr_working_shifts_switch
-#: field:hr.working.template,id:0
-#: field:hr.working.template.exception,id:0
-#: field:hr.working.template.history,id:0
-#: field:hr.working.template.line,id:0
+#: selection:hr.working.template,related_interval_type:0
+msgid "Hours"
+msgstr "Horas"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,id:0 field:hr.working.template.exception,id:0
+#: field:hr.working.template.history,id:0 field:hr.working.template.line,id:0
 msgid "ID"
 msgstr "ID"
 
@@ -121,6 +135,16 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: hr_working_shifts_switch
+#: selection:hr.working.template,related_interval_type:0
+msgid "Minutes"
+msgstr "Minutos"
+
+#. module: hr_working_shifts_switch
+#: selection:hr.working.template,related_interval_type:0
+msgid "Months"
+msgstr "Meses"
+
+#. module: hr_working_shifts_switch
 #: selection:hr.working.template,period:0
 msgid "Montly"
 msgstr "Mensual"
@@ -131,10 +155,25 @@ msgid "Name"
 msgstr "Nombre"
 
 #. module: hr_working_shifts_switch
-#: field:hr.working.template,period:0
-#: help:hr.working.template,period:0
+#: field:hr.working.template,period:0 help:hr.working.template,period:0
 msgid "Period"
 msgstr "Período"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,related_interval_number:0
+msgid ""
+"Related Interval                                                  Number"
+msgstr "Numero de intervalo Relacionado"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,related_interval_type:0
+msgid "Related Interval                                                Type"
+msgstr "Intervalo Relacionado"
+
+#. module: hr_working_shifts_switch
+#: field:hr.working.template,related_nextcall:0
+msgid "Related Next Execution"
+msgstr "Proxima ejecución relacionada"
 
 #. module: hr_working_shifts_switch
 #: field:hr.working.template.line,sequence:0
@@ -163,6 +202,11 @@ msgid "Switch Shift"
 msgstr "Cambio de Turno"
 
 #. module: hr_working_shifts_switch
+#: help:hr.working.template,cron_id:0
+msgid "The cron job that will switch working hour"
+msgstr "El Trabajo Programado que cambiará el horario de trabajo."
+
+#. module: hr_working_shifts_switch
 #: help:hr.working.template,state:0
 msgid "The status of the working template."
 msgstr "El estado de la plantilla de trabajo."
@@ -171,6 +215,16 @@ msgstr "El estado de la plantilla de trabajo."
 #: selection:hr.working.template,period:0
 msgid "Weekly"
 msgstr "Semanal"
+
+#. module: hr_working_shifts_switch
+#: selection:hr.working.template,related_interval_type:0
+msgid "Weeks"
+msgstr "Semanas"
+
+#. module: hr_working_shifts_switch
+#: selection:hr.working.template,related_interval_type:0
+msgid "Work Days"
+msgstr "Dias Habiles"
 
 #. module: hr_working_shifts_switch
 #: field:hr.working.template.exception,working_scheduler_id:0
@@ -183,10 +237,8 @@ msgid "Working Scheduler"
 msgstr "Horario de Trabajo Programado"
 
 #. module: hr_working_shifts_switch
-#: field:hr.attendance,working_id:0
-#: help:hr.attendance,working_id:0
-#: field:hr.contract,working_tmpl_id:0
-#: help:hr.contract,working_tmpl_id:0
+#: field:hr.attendance,working_id:0 help:hr.attendance,working_id:0
+#: field:hr.contract,working_tmpl_id:0 help:hr.contract,working_tmpl_id:0
 #: view:hr.working.template:hr_working_shifts_switch.hr_working_template_form_view
 #: view:hr.working.template:hr_working_shifts_switch.hr_working_template_tree_view
 #: field:hr.working.template.exception,working_id:0
@@ -239,5 +291,4 @@ msgstr "Líneas de Plantilla de Trabajo"
 #: help:hr.working.template,name:0
 #: help:hr.working.template.history,description:0
 msgid "help string"
-msgstr ""
-
+msgstr "Ayuda"
