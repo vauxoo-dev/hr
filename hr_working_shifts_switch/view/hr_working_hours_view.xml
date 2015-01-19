@@ -22,8 +22,11 @@
                         <field name="contract_ids"/>
                         <field name="wking_tmpl_line_ids"/>
                         <field name="wking_tmpl_excpt_id"/>
-                        <field name="period"/>
                         <field name="current_working_id"/>
+                        <field name="cron_id" invisible="True"/>
+                        <field name="related_interval_type" attrs="{'readonly':[('cron_id','=',False)]}"/>
+                        <field name="related_interval_number" attrs="{'readonly':[('cron_id','=',False)]}"/>
+                        <field name="related_nextcall" attrs="{'readonly':[('cron_id','=',False)]}"/>
                     </group>
                 </sheet>
                 </form>
@@ -39,7 +42,6 @@
                     <field name="contract_ids"/>
                     <field name="wking_tmpl_line_ids"/>
                     <field name="wking_tmpl_excpt_id"/>
-                    <field name="period"/>
                     <field name="current_working_id"/>
                     <field name="state"/>
                 </tree>
@@ -82,7 +84,7 @@
         </record>
 
         <!-- views of the hr.working.template model -->
-        
+
         <record model="ir.ui.view" id="hr_working_template_exception_form_view">
             <field name="name">hr.working.template.exception.form.view</field>
             <field name="model">hr.working.template.exception</field>

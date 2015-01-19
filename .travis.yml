@@ -15,6 +15,8 @@ install:
   - git clone https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
   - export PATH=${HOME}/maintainer-quality-tools/travis:$PATH
   - travis_install_nightly
+  - sudo pip install pytz
+  - sudo pip install babel
   #- sudo apt-get update
   #- sudo apt-get install openoffice.org python-genshi python-cairo python-openoffice python-lxml python-uno
   #- sudo apt-get install zip

@@ -49,6 +49,14 @@ class hr_working_template(osv.Model):
         ('done', 'Active'),
         ('cancel', 'Cancelled')
     ]
+    PERIOD_SELECTION = [
+        ('minutes', 'Minutes'),
+        ('hours', 'Hours'),
+        ('work_days', 'Work Days'),
+        ('days', 'Days'),
+        ('weeks', 'Weeks'),
+        ('months', 'Months'),
+    ]
 
     _columns = {
         'name': fields.char(
@@ -75,41 +83,146 @@ class hr_working_template(osv.Model):
             'working_id',
             string='Working Template Exception',
             help='Working Template Exception'),
-        'period': fields.selection(
-            [('weekly', 'Weekly'), ('monthly', 'Montly')],
-            string='Period',
-            help='Period'),
         'current_working_id': fields.many2one(
             'hr.working.template.line',
             string='Current Working Template Line',
             help='Current Working Template Line',
-            domain="[('working_id', '=', id)]",
-        ),
+            domain="[('working_id', '=', id)]",),
+        'cron_id': fields.many2one(
+            'ir.cron',
+            string='Cron Job',
+            help='The cron job that will switch working hour',),
+        'related_interval_type': fields.related('cron_id', 'interval_type',
+                                                type='selection',
+                                                relation='ir.cron',
+                                                selection=PERIOD_SELECTION,
+                                                string='Related Interval\
+                                                Type'),
+        'related_interval_number': fields.related('cron_id', 'interval_number',
+                                                  type='integer',
+                                                  relation='ir.cron',
+                                                  string='Related Interval\
+                                                  Number'),
+        'related_nextcall': fields.related('cron_id', 'nextcall',
+                                           type='datetime',
+                                           relation='ir.cron',
+                                           string='Related Next Execution'),
     }
 
     _defaults = {
         'state': 'draft',
     }
 
+    def create(self, cr, uid, vals, context=None):
+        fresh_id = super(hr_working_template, self).create(cr, uid, vals,
+                                                           context=context)
+        cron_id = self._create_cron(cr, uid, [fresh_id],
+                                    vals.get('related_interval_type'),
+                                    context=context)
+        self.write(cr, uid, [fresh_id], {'cron_id': cron_id})
+        return fresh_id
+
+    def _create_cron(self, cr, uid, template_ids, period, context=None):
+        """
+        This method creates a cron job related to a hr_working_template , it is
+        used on change of state and when a new template is created.
+
+        Param usage:
+
+            :param period: This is the periodicity  on wich it will change the
+            working hours of the template, it can be any of the available on
+            the selection list.
+            :param template_ids: The template that will contain the data to
+            execute the cron job, ti will act as its ´ids´.
+
+        """
+        if context is None:
+            context = {}
+        cron_obj = self.pool.get('ir.cron')
+        cron_data = {'name': 'Working Shift Switch %s' % template_ids[0],
+                     'active': False,
+                     'interval_number': 1,
+                     'numbercall': -1,
+                     'doall': True,
+                     'model': 'hr.working.template',
+                     'function': '_switch_shift',
+                     'args': ([template_ids]),
+                     'interval_type': period,
+                     }
+        cron_id = cron_obj.create(cr, uid, cron_data, context)
+        return cron_id
+
+    def _update_cron(self, cr, uid, ids, cron_id, period, state, context=None):
+        """
+        This method updates/creates the related cron to a hr_working_template
+        based on the new state given to a template.
+
+        Param usage:
+
+            :param cron_id: An integer that contains the ID of the related cron
+            job if exists on the model ´ir.cron´.
+            :param period: This is the periodicity  on wich it will change the
+            working hours of the template, it can be any of the available on
+            the selection list.
+            :param state: A string that will rule if the cron will be
+            activated/deactivated.
+
+        """
+        cron_obj = self.pool.get('ir.cron')
+        if cron_id and state.get('state') == 'done':
+            cron_data = {'active': True}
+            cron_obj.write(cr, uid, [cron_id], cron_data)
+            return True
+        elif not cron_id and state.get('state') == 'draft':
+            fresh_cron_id = self._create_cron(cr, uid, ids, period, context)
+            return fresh_cron_id
+        elif cron_id and state.get('state') == 'draft':
+            cron_data = {'active': False}
+            cron_obj.write(cr, uid, [cron_id], cron_data)
+            return False
+        elif cron_id and state.get('state') == 'cancel':
+            cron_data = {'active': False}
+            cron_obj.write(cr, uid, [cron_id], cron_data)
+            return True
+
     def action_done(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
+        state = {
+            'state': 'done'
+        }
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            self._write(cr, uid, [wk_tmpl.id], {'state': 'done'})
+            self._write(cr, uid, [wk_tmpl.id], state)
+            self._update_cron(cr, uid, ids, wk_tmpl.cron_id.id,
+                              wk_tmpl.related_interval_type, state, context)
+
         return True
 
     def action_cancel(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
+        state = {
+            'state': 'cancel'
+        }
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            self._write(cr, uid, [wk_tmpl.id], {'state': 'cancel'})
+            self._write(cr, uid, [wk_tmpl.id], state)
+            self._update_cron(cr, uid, ids, wk_tmpl.cron_id.id,
+                              wk_tmpl.related_interval_type, state, context)
         return True
 
     def action_draft(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
+        state = {
+            'state': 'draft'
+        }
         for wk_tmpl in self.browse(cr, uid, ids, context=context):
-            self._write(cr, uid, [wk_tmpl.id], {'state': 'draft'})
+            cron_id = self._update_cron(cr, uid, ids, wk_tmpl.cron_id.id,
+                                        wk_tmpl.related_interval_type, state,
+                                        context)
+            if cron_id:
+                state['cron_id'] = cron_id
+            self._write(cr, uid, [wk_tmpl.id], state)
         return True
 
     def _switch_shift(self, cr, uid, ids=False, context=None):
