@@ -25,26 +25,24 @@
 ##############################################################################
 
 {
-    "name" : "hr working shifts delay",
-    "version" : "1.0",
-    "author" : "Conectel ( Federico Manuel Echeverri Choux ) ",
-    "category" : "",
-    "description" : """    """,
-    "website" : "http://www.conectel.mx/",
-    "license" : "AGPL-3",
-    "depends" : [
-            "base",
-            "resource",
-            "hr",
-            "hr_contract",
-            "hr_attendance",
-            "hr_attendance_zk",
-        ],
-    "demo" : [],
-    "data" : [
-            "views/hr_working_shifts_delay_view.xml",
-
+    "name": "Human Resources - Working Shifts Delays",
+    "version": "1.0",
+    "author": "Vauxoo ",
+    "category": "",
+    "description": """    """,
+    "website": "http://www.vauxoo.com",
+    "license": "AGPL-3",
+    "depends": [
+        "base",
+        "resource",
+        "hr",
+        "hr_contract",
+        "hr_attendance",
     ],
-    "installable" : True,
-    "active" : False,
+    "demo": [],
+    "data": [
+        "views/hr_working_shifts_delay_view.xml",
+    ],
+    "installable": True,
+    "active": False,
 }
