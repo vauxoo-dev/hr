@@ -18,35 +18,28 @@
 #! /usr/bin/python
 
 
-from openerp.osv import fields, orm
+from openerp import models, fields, api, _
 
-class hr_working_shifts_delay (orm.Model):
 
-    _inherit = ['resource.calendar']
-    _columns = {
-    		'one_workday_as': fields.integer('One workday as', help=""),
-            'least_min': fields.integer('Least minutes of shift inteval (mins)', help="Least minutes of shift inteval (mins)"),
-            'min_as_late': fields.integer('Clock-in over mins count as later ( min )', help="Clock-in over mins count as later"),
-            'min_as_early': fields.integer('Clock-out over mins count as early ( min )', help="Clock-out over mins count as early"),
-            'noclockin_count_as': fields.selection([('late','Late'), ('absent','Absent')],'If no clock in, count as ( min )', required=True),
-            'noclockin_count_mins': fields.integer('If no clock in (min)', help=""),
-            'noclockout_count_as': fields.selection([('early','Early Leave'), ('absent','Absent')],'If no clock out, count as ( min )', required=True),
-            'noclockout_count_mins': fields.integer('If no clock out (min)', help=""),
-            'as_late_exceed': fields.integer('As late exceed', help=""),
-            'as_early_leave': fields.integer('As early leave', help=""),
-            'inter_leaving_ot': fields.integer('Interval of leaving count as OT', help=""),
-            'checkout_interval_ot': fields.integer('This interval count as OT', help=""),
-            'ot_after_checkout': fields.integer('The longest over time after check out', help=""),
-            'checkin_count_ot': fields.integer('Interval of check-in count as OT', help=""),
-            'checkin_interval_ot': fields.integer('This interval count as OT', help=""),
-            'ot_defore_checkin': fields.integer('The longest over time before check-in', help=""),
-            'longest_over_time': fields.integer('The longest over time', help=""),
-    }
+class hr_working_shifts_delay (models.Model):
 
-    _defautls = {
-    		'noclockin_count_as': 'late',
-    		'noclockin_count_mins': 60,
-    		'noclockout_count_as': 'early',
-    		'noclockout_count_mins': 60,
-    }
+    _inherit = 'resource.calendar'
+
+    one_workday_as = fields.Integer(string='One workday as', help="")
+    least_min = fields.Integer(string='Least minutes of shift inteval (mins)', help="Least minutes of shift inteval (mins)")
+    min_as_late = fields.Integer(string='Clock-in over mins count as later ( min )', help="Clock-in over mins count as later")
+    min_as_early = fields.Integer(string='Clock-out over mins count as early ( min )', help="Clock-out over mins count as early")
+    noclockin_count_as = fields.Selection([('late','Late'), ('absent','Absent')],string='If no clock in, count as ( min )', required=True, default='late')
+    noclockin_count_mins = fields.Integer(string='If no clock in (min)', help="", default=60)
+    noclockout_count_as = fields.Selection([('early','Early Leave'), ('absent','Absent')],string='If no clock out, count as ( min )', required=True, default='early')
+    noclockout_count_mins = fields.Integer(string='If no clock out (min)', help="", default=60)
+    as_late_exceed = fields.Integer(string='As late exceed', help="")
+    as_early_leave = fields.Integer(string='As early leave', help="")
+    inter_leaving_ot = fields.Integer(string='Interval of leaving count as OT', help="")
+    checkout_interval_ot = fields.Integer(string='This interval count as OT', help="")
+    ot_after_checkout = fields.Integer(string='The longest over time after check out', help="")
+    checkin_count_ot = fields.Integer(string='Interval of check-in count as OT', help="")
+    checkin_interval_ot = fields.Integer(string='This interval count as OT', help="")
+    ot_defore_checkin = fields.Integer(string='The longest over time before check-in', help="")
+    longest_over_time = fields.Integer(string='The longest over time', help="")
 
