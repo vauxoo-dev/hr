@@ -60,9 +60,9 @@ class hr_payslip_line(osv.osv):
     '''
     _inherit = 'hr.payslip.line'
 
-    def _get_partner_id(self, cr, uid, ids, field_name, arg, context=None):
+    def _get_partner_id(self, cr, uid, ids, credit_account, context=None):
         res = super(hr_payslip_line, self)._get_partner_id(
-            cr, uid, ids, field_name, arg, context=context)
+            cr, uid, ids, credit_account, context=context)
         for p_line in self.browse(cr, uid, ids, context=context):
             if p_line.salary_rule_id.partner_aml == 'default':
                 pass
