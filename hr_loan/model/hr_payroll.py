@@ -60,14 +60,15 @@ class hr_payslip_line(osv.osv):
     '''
     _inherit = 'hr.payslip.line'
 
-    def _get_partner_id(self, cr, uid, ids, credit_account, context=None):
+    def _get_partner_id(
+            self, cr, uid, payslip_line, credit_account, context=None):
         res = super(hr_payslip_line, self)._get_partner_id(
-            cr, uid, ids, credit_account, context=context)
-        for p_line in self.browse(cr, uid, ids, context=context):
+            cr, uid, payslip_line, credit_account, context=context)
+        for p_line in self.browse(cr, uid, payslip_line.id, context=context):
             if p_line.salary_rule_id.partner_aml == 'default':
                 pass
             elif p_line.salary_rule_id.partner_aml == 'loan':
-                res[p_line.id] = p_line.loan_line_id.hr_loan_id.partner_id.id
+                res = p_line.loan_line_id.hr_loan_id.partner_id.id
         return res
 
     _columns = {
